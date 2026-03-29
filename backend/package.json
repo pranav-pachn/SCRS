@@ -1,0 +1,33 @@
+{
+  "name": "v.2.0",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:genai": "node validateGenAiIntegration.js",
+    "test:keyrotation": "node tests/testKeyRotation.js",
+    "validate:keys": "node validateApiKeys.js",
+    "validate:diagnostic": "node validateApiDiagnostic.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "google-auth-library": "^10.6.1",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.16.2",
+    "openai": "^6.22.0",
+    "pdfkit": "^0.15.0",
+    "xss": "^1.0.15"
+  }
+}

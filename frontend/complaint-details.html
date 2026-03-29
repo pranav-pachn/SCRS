@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Complaint Details - SCRS Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-gray-200 min-h-screen">
+  <main class="max-w-5xl mx-auto px-4 py-8">
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-2xl font-bold text-white">Complaint Details</h1>
+      <a href="dashboard-admin.html" class="rounded-xl border border-slate-600 px-4 py-2 text-sm font-semibold text-slate-200 transition-colors hover:bg-slate-700">Back to Dashboard</a>
+    </div>
+
+    <section id="detailCard" class="bg-slate-800 border border-slate-700 rounded-lg p-5 hidden">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <p class="text-xs text-gray-400">Complaint ID</p>
+          <p id="complaintId" class="font-semibold text-white"></p>
+        </div>
+        <div>
+          <p class="text-xs text-gray-400">Category</p>
+          <p id="category" class="font-semibold text-white"></p>
+        </div>
+        <div>
+          <p class="text-xs text-gray-400">Location</p>
+          <p id="location" class="font-semibold text-white"></p>
+        </div>
+        <div>
+          <p class="text-xs text-gray-400">Priority</p>
+          <p id="priority" class="font-semibold text-white"></p>
+        </div>
+        <div>
+          <p class="text-xs text-gray-400">Status</p>
+          <p id="status" class="font-semibold text-white"></p>
+        </div>
+        <div>
+          <p class="text-xs text-gray-400">Submitted</p>
+          <p id="submitted" class="font-semibold text-white"></p>
+        </div>
+      </div>
+
+      <div class="mt-5">
+        <p class="text-xs text-gray-400">Description</p>
+        <p id="description" class="text-gray-300 mt-1 whitespace-pre-wrap"></p>
+      </div>
+
+      <div id="duplicateBlock" class="mt-5 p-3 rounded border border-amber-600/40 bg-amber-900/20 hidden">
+        <p id="duplicateText" class="text-amber-300 text-sm"></p>
+      </div>
+
+      <div class="mt-5 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="md:col-span-2">
+          <h2 class="text-white font-semibold mb-2">AI Analysis</h2>
+          <p class="text-sm text-gray-300"><span class="text-gray-400">Summary:</span> <span id="aiSummary"></span></p>
+          <p class="text-sm text-gray-300 mt-2"><span class="text-gray-400">Suggested Priority:</span> <span id="aiPriority"></span></p>
+          <p class="text-sm text-gray-300 mt-2"><span class="text-gray-400">Tags:</span> <span id="aiTags"></span></p>
+        </div>
+        <div>
+          <img id="proofImage" class="hidden rounded border border-slate-700" alt="Resolution proof" />
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <h2 class="text-white font-semibold mb-2">Timeline</h2>
+        <div id="timeline" class="space-y-2"></div>
+      </div>
+    </section>
+
+    <p id="stateMessage" class="text-gray-400">Loading complaint details...</p>
+  </main>
+
+  <script src="auth.js"></script>
+  <script>
+    requireAuth('admin');
+    const API_BASE = 'http://localhost:3000';
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function getComplaintIdFromQuery() {
+      const params = new URLSearchParams(window.location.search);
+      const id = Number(params.get('id'));
+      return Number.isInteger(id) && id > 0 ? id : null;
+    }
+
+    function renderTimeline(history) {
+      const timeline = document.getElementById('timeline');
+      if (!history || history.length === 0) {
+        timeline.innerHTML = '<p class="text-sm text-gray-400">No history yet.</p>';
+        return;
+      }
+
+      timeline.innerHTML = history.map((item) => {
+        return `<div class="p-3 bg-slate-900 rounded border border-slate-700">
+          <p class="text-sm text-gray-300">${escapeHtml(item.note || 'Updated complaint')}</p>
+          <p class="text-xs text-gray-500 mt-1">${new Date(item.created_at).toLocaleString()}</p>
+        </div>`;
+      }).join('');
+    }
+
+    async function loadComplaintDetail() {
+      const complaintId = getComplaintIdFromQuery();
+      const stateMessage = document.getElementById('stateMessage');
+      const detailCard = document.getElementById('detailCard');
+
+      if (!complaintId) {
+        stateMessage.textContent = 'Missing or invalid complaint id.';
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE}/admin/complaints/${complaintId}`, {
+          headers: getAuthHeaders({ 'Content-Type': 'application/json' })
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+        if (!data.success || !data.complaint) {
+          stateMessage.textContent = data.message || 'Complaint not found.';
+          return;
+        }
+
+        const c = data.complaint;
+        document.getElementById('complaintId').textContent = `#${c.id}`;
+        document.getElementById('category').textContent = c.category || 'N/A';
+        document.getElementById('location').textContent = c.location || 'N/A';
+        document.getElementById('priority').textContent = c.priority || 'N/A';
+        document.getElementById('status').textContent = c.status || 'N/A';
+        document.getElementById('submitted').textContent = new Date(c.created_at).toLocaleString();
+        document.getElementById('description').textContent = c.description || 'N/A';
+
+        document.getElementById('aiSummary').textContent = c.summary || 'No summary available';
+        document.getElementById('aiPriority').textContent = c.ai_suggested_priority || 'N/A';
+
+        let tags = [];
+        try {
+          tags = Array.isArray(c.tags) ? c.tags : JSON.parse(c.tags || '[]');
+        } catch (_) {
+          tags = [];
+        }
+        document.getElementById('aiTags').textContent = tags.length ? tags.join(', ') : 'N/A';
+
+        const duplicateBlock = document.getElementById('duplicateBlock');
+        if (c.has_similar && Number(c.similar_count) > 0) {
+          document.getElementById('duplicateText').textContent = `Similar complaint found in same location. Reports: ${Number(c.similar_count) + 1}`;
+          duplicateBlock.classList.remove('hidden');
+        }
+
+        const proofImage = document.getElementById('proofImage');
+        if (c.proof_url) {
+          proofImage.src = c.proof_url;
+          proofImage.classList.remove('hidden');
+        }
+
+        renderTimeline(data.history || []);
+
+        stateMessage.classList.add('hidden');
+        detailCard.classList.remove('hidden');
+      } catch (error) {
+        console.error('Failed to load complaint detail:', error);
+        stateMessage.textContent = 'Failed to load complaint details.';
+      }
+    }
+
+    loadComplaintDetail();
+  </script>
+</body>
+</html>

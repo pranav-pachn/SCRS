@@ -1,0 +1,2421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Operations Dashboard - SCRS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="bg-slate-900 text-gray-300 min-h-screen">
+    <div id="notificationContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-slate-800 border-r border-slate-700 p-6 hidden md:flex flex-col fixed h-screen">
+        <div class="mb-8">
+            <div class="flex items-center gap-3">
+                <img src="../assests/Civixa_logo_new.png" alt="SCRS Logo" class="h-10 w-auto object-contain block">
+                <h2 class="text-2xl font-bold leading-none text-white">SCRS</h2>
+            </div>
+            <p class="text-xs text-gray-400 mt-2">Admin Panel</p>
+        </div>
+        <nav class="space-y-2 flex-1">
+            <a href="dashboard-admin.html"
+                class="block px-4 py-2 rounded-lg bg-slate-800 text-indigo-400 font-medium hover:bg-slate-800 transition duration-300">📊
+                Dashboard</a>
+            <a href="complaint-details-admin.html"
+                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">📋
+                Assigned Complaints</a>
+            <a href="admin-analytics.html"
+                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">📈
+                Analytics</a>
+            <a href="admin-profile.html"
+                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">👤
+                Profile & Settings</a>
+            <a href="support.html"
+                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">Support</a>
+        </nav>
+        <div id="authSection" class="border-t border-slate-700 pt-4">
+            <div id="authProfile" style="display:none;" class="space-y-2">
+                <p class="text-sm text-gray-400 font-medium">Admin:</p>
+                <p class="font-semibold text-white text-sm" id="authName"></p>
+                <button onclick="logout()"
+                    class="w-full px-3 py-2 rounded-lg bg-red-600/20 text-red-400 hover:bg-red-600/30 transition text-sm font-medium">Logout</button>
+            </div>
+            <div id="authLinks" class="space-y-2">
+                <a href="login.html"
+                    class="block w-full px-3 py-2 rounded-lg bg-indigo-600 text-white text-center hover:bg-indigo-500 transition font-medium">Login</a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Header -->
+    <header class="bg-slate-800 border-b border-slate-700 md:hidden">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <img src="../assests/Civixa_logo_new.png" alt="SCRS Logo" class="h-10 w-auto object-contain">
+                    <span class="text-2xl font-bold text-white">SCRS</span>
+                </div>
+
+                <!-- Right Side: Notifications + Profile -->
+                <div class="flex items-center space-x-4">
+                    <!-- Notification Component -->
+                    <div class="relative">
+                        <button id="notificationBtn" class="relative rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-700/80">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg>
+                            <span
+                                class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full font-semibold">
+                                5
+                            </span>
+                        </button>
+
+                        <!-- Notification Dropdown -->
+                        <div id="notificationDropdown"
+                            class="hidden absolute right-0 mt-3 w-80 sm:w-96 bg-slate-800 rounded-xl shadow-xl border border-slate-700 z-50">
+
+                            <!-- Header -->
+                            <div class="flex items-center justify-between px-4 py-3 border-b border-slate-700">
+                                <h3 class="text-white font-semibold text-lg">Notifications</h3>
+                                <button onclick="alert('All notifications marked as read.'); return false;"
+                                    class="text-indigo-400 hover:text-indigo-300 text-xs font-medium transition">
+                                    Mark all as read
+                                </button>
+                            </div>
+
+                            <!-- Notification List -->
+                            <div class="max-h-80 overflow-y-auto">
+
+                                <!-- Notification 1 - Unread -->
+                                <div class="p-4 hover:bg-slate-700 transition border-b border-slate-700 cursor-pointer">
+                                    <div class="flex items-start space-x-3">
+                                        <div class="w-2 h-2 bg-indigo-500 rounded-full mt-2 flex-shrink-0"></div>
+                                        <div class="flex-1">
+                                            <p class="text-white font-medium">New Assignment: Complaint #1290</p>
+                                            <p class="text-gray-400 text-sm mt-1">Critical water supply issue assigned
+                                                to you. Location: Park Avenue, Sector 8.</p>
+                                            <p class="text-xs text-gray-500 mt-2">5 minutes ago</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Notification 2 - Unread -->
+                                <div class="p-4 hover:bg-slate-700 transition border-b border-slate-700 cursor-pointer">
+                                    <div class="flex items-start space-x-3">
+                                        <div class="w-2 h-2 bg-indigo-500 rounded-full mt-2 flex-shrink-0"></div>
+                                        <div class="flex-1">
+                                            <p class="text-white font-medium">SLA Alert: Complaint #1283</p>
+                                            <p class="text-gray-400 text-sm mt-1">Garbage collection complaint has
+                                                exceeded 7-day SLA. Immediate action required.</p>
+                                            <p class="text-xs text-gray-500 mt-2">1 hour ago</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Notification 3 - Unread -->
+                                <div class="p-4 hover:bg-slate-700 transition border-b border-slate-700 cursor-pointer">
+                                    <div class="flex items-start space-x-3">
+                                        <div class="w-2 h-2 bg-indigo-500 rounded-full mt-2 flex-shrink-0"></div>
+                                        <div class="flex-1">
+                                            <p class="text-white font-medium">Citizen Added Remark</p>
+                                            <p class="text-gray-400 text-sm mt-1">New comment on Complaint #1287
+                                                requesting status update.</p>
+                                            <p class="text-xs text-gray-500 mt-2">2 hours ago</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Notification 4 - Unread -->
+                                <div class="p-4 hover:bg-slate-700 transition border-b border-slate-700 cursor-pointer">
+                                    <div class="flex items-start space-x-3">
+                                        <div class="w-2 h-2 bg-indigo-500 rounded-full mt-2 flex-shrink-0"></div>
+                                        <div class="flex-1">
+                                            <p class="text-white font-medium">Priority Escalated</p>
+                                            <p class="text-gray-400 text-sm mt-1">Authority changed Complaint #1289 from
+                                                High to Critical priority.</p>
+                                            <p class="text-xs text-gray-500 mt-2">4 hours ago</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Notification 5 - Unread -->
+                                <div class="p-4 hover:bg-slate-700 transition cursor-pointer">
+                                    <div class="flex items-start space-x-3">
+                                        <div class="w-2 h-2 bg-indigo-500 rounded-full mt-2 flex-shrink-0"></div>
+                                        <div class="flex-1">
+                                            <p class="text-white font-medium">Workload Summary</p>
+                                            <p class="text-gray-400 text-sm mt-1">You have 12 active complaints today. 3
+                                                are critical priority.</p>
+                                            <p class="text-xs text-gray-500 mt-2">8 hours ago</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Footer -->
+                            <div class="px-4 py-3 border-t border-slate-700 text-center">
+                                <a href="#" onclick="alert('Navigating to full notifications page...'); return false;"
+                                    class="text-indigo-400 hover:text-indigo-300 text-sm font-medium transition">
+                                    View all notifications
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Profile Dropdown -->
+                    <div class="relative">
+                        <button id="profileMenuBtn"
+                            class="flex items-center space-x-2 rounded-full p-2 text-slate-300 transition-colors hover:bg-slate-700/80">
+                            <img id="headerProfileAvatar"
+                                src="https://ui-avatars.com/api/?name=Admin+User&background=4f46e5&color=fff"
+                                alt="Profile" class="w-9 h-9 rounded-full">
+                            <span id="headerProfileName" class="text-sm font-medium text-white hidden md:block">Admin
+                                User</span>
+                            <i class="fas fa-chevron-down text-xs text-gray-400"></i>
+                        </button>
+
+                        <!-- Dropdown Menu -->
+                        <div id="profileDropdownMenu"
+                            class="hidden absolute right-0 mt-2 w-48 bg-slate-800 border border-slate-700 rounded-lg shadow-lg z-50">
+                            <a href="#" onclick="openProfileModal(); return false;" id="myProfileLink"
+                                class="block px-4 py-2 text-sm hover:bg-slate-700 rounded-t-lg transition">
+                                <i class="fas fa-user mr-2"></i> My Profile
+                            </a>
+                            <a href="#" onclick="openSettingsModal(); return false;" id="settingsLink"
+                                class="block px-4 py-2 text-sm hover:bg-slate-700 transition">
+                                <i class="fas fa-cog mr-2"></i> Settings
+                            </a>
+                            <hr class="border-slate-700">
+                            <a href="#" id="profileLogoutLink"
+                                class="block px-4 py-2 text-sm text-red-400 hover:bg-slate-700 rounded-b-lg transition">
+                                <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="md:ml-64 p-6 md:p-8 bg-slate-900">
+
+        <!-- Page Title -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-white mb-2">Admin Operations Dashboard</h1>
+            <p class="text-gray-400">Manage assigned civic complaints.</p>
+        </div>
+
+        <!-- Stats Row (Assigned Only) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+
+            <!-- Assigned -->
+            <div
+                class="bg-slate-800 rounded-lg p-6 border border-slate-700 hover:border-indigo-600 transition transform hover:scale-105 duration-200">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-medium text-gray-400">Assigned</h3>
+                    <i class="fas fa-tasks text-indigo-600 text-xl"></i>
+                </div>
+                <p class="text-4xl font-bold text-white mb-1" data-stat="assigned">48</p>
+                <p class="text-xs text-gray-500">Total workload</p>
+            </div>
+
+            <!-- Pending -->
+            <div
+                class="bg-slate-800 rounded-lg p-6 border border-slate-700 hover:border-yellow-600 transition transform hover:scale-105 duration-200">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-medium text-gray-400">Pending</h3>
+                    <i class="fas fa-hourglass-half text-yellow-600 text-xl"></i>
+                </div>
+                <p class="text-4xl font-bold text-white mb-1" data-stat="pending">20</p>
+                <p class="text-xs text-gray-500">Not started</p>
+            </div>
+
+            <!-- In Progress -->
+            <div
+                class="bg-slate-800 rounded-lg p-6 border border-slate-700 hover:border-blue-600 transition transform hover:scale-105 duration-200">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-medium text-gray-400">In Progress</h3>
+                    <i class="fas fa-spinner text-blue-600 text-xl"></i>
+                </div>
+                <p class="text-4xl font-bold text-white mb-1" data-stat="inprogress">22</p>
+                <p class="text-xs text-gray-500">Currently handling</p>
+            </div>
+
+            <!-- Critical -->
+            <div
+                class="bg-slate-800 rounded-lg p-6 border border-slate-700 hover:border-red-600 transition transform hover:scale-105 duration-200">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-medium text-gray-400">Critical</h3>
+                    <i class="fas fa-exclamation-circle text-red-600 text-xl"></i>
+                </div>
+                <p class="text-4xl font-bold text-white mb-1" data-stat="critical">6</p>
+                <p class="text-xs text-gray-500">High priority</p>
+            </div>
+
+            <!-- Resolved Rate -->
+            <div
+                class="bg-slate-800 rounded-lg p-6 border border-slate-700 hover:border-green-600 transition transform hover:scale-105 duration-200">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-medium text-gray-400">Resolved Rate</h3>
+                    <i class="fas fa-chart-line text-green-600 text-xl"></i>
+                </div>
+                <p class="text-4xl font-bold text-white mb-1" data-stat="resolvedrate">82%</p>
+                <p class="text-xs text-gray-500">Performance</p>
+            </div>
+
+        </div>
+
+        <!-- Assigned Complaints Table -->
+        <div class="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden mb-8">
+            <div class="px-6 py-4 border-b border-slate-700 flex items-center justify-between">
+                <h2 class="text-xl font-bold text-white">Assigned Complaints</h2>
+                <div class="flex space-x-2">
+                    <button id="filterToggleBtn"
+                        class="px-3 py-1 text-xs bg-slate-700 text-gray-300 rounded hover:bg-slate-600 transition">
+                        <i class="fas fa-filter mr-1"></i> Filter
+                    </button>
+                    <button id="exportBtn"
+                        class="px-3 py-1 text-xs bg-slate-700 text-gray-300 rounded hover:bg-slate-600 transition">
+                        <i class="fas fa-download mr-1"></i> Export
+                    </button>
+                </div>
+            </div>
+
+            <div id="filterPanel" class="hidden px-6 py-4 border-b border-slate-700 bg-slate-900/40">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <select id="adminStatusFilter"
+                        class="px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none text-sm">
+                        <option value="">All Status</option>
+                        <option value="Submitted">Submitted</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Resolved">Resolved</option>
+                    </select>
+                    <select id="adminPriorityFilter"
+                        class="px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none text-sm">
+                        <option value="">All Priority</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                        <option value="Critical">Critical</option>
+                    </select>
+                    <input id="adminCategoryFilter" type="text" placeholder="Category (e.g. Water Supply)"
+                        class="px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none text-sm" />
+                </div>
+                <div class="mt-3 flex items-center gap-2">
+                    <button id="applyFilterBtn"
+                        class="px-3 py-2 text-xs bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">Apply
+                        Filters</button>
+                    <button id="clearFilterBtn"
+                        class="px-3 py-2 text-xs bg-slate-700 text-gray-300 rounded hover:bg-slate-600 transition">Clear</button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-slate-900">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                Category</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                Location</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                Priority</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                SLA</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-700">
+
+                        <!-- Row 1 -->
+                        <tr class="hover:bg-slate-700 transition">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">#1289</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">Road Damage</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">Sector 12, Block A</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-2 py-1 text-xs font-semibold rounded-full bg-red-600/20 text-red-400">Critical</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-600/20 text-yellow-400">In
+                                    Progress</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-600/20 text-red-400">9
+                                    days</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <button
+                                    class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold transition view-btn"
+                                    data-complaint-id="1289">
+                                    <i class="fas fa-eye mr-1"></i> View
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Row 2 -->
+                        <tr class="hover:bg-slate-700 transition">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">#1287</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">Streetlight Issue</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">Main Street, Zone 3</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-2 py-1 text-xs font-semibold rounded-full bg-orange-600/20 text-orange-400">High</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-600/20 text-blue-400">Pending</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-600/20 text-yellow-400">5
+                                    days</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <button
+                                    class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold transition view-btn"
+                                    data-complaint-id="1287">
+                                    <i class="fas fa-eye mr-1"></i> View
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Row 3 -->
+                        <tr class="hover:bg-slate-700 transition">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">#1285</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">Water Supply</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">Park Avenue, Sector 8</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-2 py-1 text-xs font-semibold rounded-full bg-red-600/20 text-red-400">Critical</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-600/20 text-yellow-400">In
+                                    Progress</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-2 py-1 text-xs font-semibold rounded-full bg-green-600/20 text-green-400">2
+                                    days</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <button
+                                    class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold transition view-btn"
+                                    data-complaint-id="1285">
+                                    <i class="fas fa-eye mr-1"></i> View
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Row 4 -->
+                        <tr class="hover:bg-slate-700 transition">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">#1283</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">Garbage Collection</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">Oak Street, Block B</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-600/20 text-yellow-400">Medium</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-600/20 text-blue-400">Pending</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-600/20 text-red-400">11
+                                    days</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <button
+                                    class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold transition view-btn"
+                                    data-complaint-id="1283">
+                                    <i class="fas fa-eye mr-1"></i> View
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Row 5 -->
+                        <tr class="hover:bg-slate-700 transition">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">#1282</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">Park Maintenance</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">Central Park, Zone 1</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-2 py-1 text-xs font-semibold rounded-full bg-green-600/20 text-green-400">Low</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-600/20 text-yellow-400">In
+                                    Progress</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-2 py-1 text-xs font-semibold rounded-full bg-green-600/20 text-green-400">1
+                                    day</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <button
+                                    class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold transition view-btn"
+                                    data-complaint-id="1282">
+                                    <i class="fas fa-eye mr-1"></i> View
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Row 6 -->
+                        <tr class="hover:bg-slate-700 transition">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">#1280</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">Traffic Signal</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">Highway Junction 4</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-2 py-1 text-xs font-semibold rounded-full bg-red-600/20 text-red-400">Critical</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-600/20 text-blue-400">Pending</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-600/20 text-yellow-400">4
+                                    days</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <button
+                                    class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold transition">
+                                    <i class="fas fa-edit mr-1"></i> Update
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Row 7 -->
+                        <tr class="hover:bg-slate-700 transition">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">#1278</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">Drainage Blockage</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">Riverside Road, Sector 5</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-2 py-1 text-xs font-semibold rounded-full bg-orange-600/20 text-orange-400">High</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-600/20 text-yellow-400">In
+                                    Progress</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-600/20 text-yellow-400">6
+                                    days</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <button
+                                    class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold transition">
+                                    <i class="fas fa-edit mr-1"></i> Update
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Row 8 -->
+                        <tr class="hover:bg-slate-700 transition">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">#1276</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">Noise Pollution</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">Industrial Area, Zone 7</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-600/20 text-yellow-400">Medium</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-600/20 text-blue-400">Pending</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-2 py-1 text-xs font-semibold rounded-full bg-green-600/20 text-green-400">2
+                                    days</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <button
+                                    class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold transition">
+                                    <i class="fas fa-edit mr-1"></i> Update
+                                </button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="px-6 py-4 border-t border-slate-700 flex items-center justify-between">
+                <p class="text-sm text-gray-400">Showing 1 to 8 of 48 complaints</p>
+                <div class="flex space-x-2">
+                    <button
+                        class="px-3 py-1 bg-slate-700 text-gray-400 rounded hover:bg-slate-600 transition text-sm">Previous</button>
+                    <button
+                        class="px-3 py-1 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition text-sm font-semibold">1</button>
+                    <button
+                        class="px-3 py-1 bg-slate-700 text-gray-300 rounded hover:bg-slate-600 transition text-sm">2</button>
+                    <button
+                        class="px-3 py-1 bg-slate-700 text-gray-300 rounded hover:bg-slate-600 transition text-sm">3</button>
+                    <button
+                        class="px-3 py-1 bg-slate-700 text-gray-300 rounded hover:bg-slate-600 transition text-sm">4</button>
+                    <button
+                        class="px-3 py-1 bg-slate-700 text-gray-300 rounded hover:bg-slate-600 transition text-sm">Next</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Row -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+            <!-- Weekly Resolution Trend -->
+            <div class="bg-slate-800 rounded-lg border border-slate-700 p-6">
+                <h3 class="text-lg font-semibold text-white mb-4">
+                    <i class="fas fa-chart-line mr-2 text-indigo-400"></i>
+                    Weekly Resolution Trend
+                </h3>
+                <div class="bg-slate-900 rounded-lg h-64 flex items-center justify-center border border-slate-700">
+                    <div class="text-center">
+                        <i class="fas fa-chart-bar text-6xl text-slate-700 mb-3"></i>
+                        <p class="text-sm text-gray-500">Chart visualization placeholder</p>
+                        <p class="text-xs text-gray-600 mt-2">Avg resolution time: 4.2 days</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="bg-slate-800 rounded-lg border border-slate-700 p-6">
+                <h3 class="text-lg font-semibold text-white mb-4">
+                    <i class="fas fa-history mr-2 text-indigo-400"></i>
+                    Recent Activity
+                </h3>
+                <div class="space-y-4">
+
+                    <!-- Activity 1 -->
+                    <div class="flex items-start space-x-3 pb-4 border-b border-slate-700">
+                        <div class="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                        <div class="flex-1">
+                            <p class="text-sm text-gray-300"><span class="font-semibold text-white">#1289</span> status
+                                updated to <span class="text-yellow-400">In Progress</span></p>
+                            <p class="text-xs text-gray-500 mt-1">2 hours ago</p>
+                        </div>
+                    </div>
+
+                    <!-- Activity 2 -->
+                    <div class="flex items-start space-x-3 pb-4 border-b border-slate-700">
+                        <div class="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                        <div class="flex-1">
+                            <p class="text-sm text-gray-300">New complaint <span
+                                    class="font-semibold text-white">#1290</span> assigned to you</p>
+                            <p class="text-xs text-gray-500 mt-1">4 hours ago</p>
+                        </div>
+                    </div>
+
+                    <!-- Activity 3 -->
+                    <div class="flex items-start space-x-3 pb-4 border-b border-slate-700">
+                        <div class="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                        <div class="flex-1">
+                            <p class="text-sm text-gray-300"><span class="font-semibold text-white">#1275</span> marked
+                                as <span class="text-green-400">Resolved</span></p>
+                            <p class="text-xs text-gray-500 mt-1">6 hours ago</p>
+                        </div>
+                    </div>
+
+                    <!-- Activity 4 -->
+                    <div class="flex items-start space-x-3 pb-4 border-b border-slate-700">
+                        <div class="w-2 h-2 bg-yellow-500 rounded-full mt-2"></div>
+                        <div class="flex-1">
+                            <p class="text-sm text-gray-300"><span class="font-semibold text-white">#1283</span>
+                                escalated due to SLA breach</p>
+                            <p class="text-xs text-gray-500 mt-1">1 day ago</p>
+                        </div>
+                    </div>
+
+                    <!-- Activity 5 -->
+                    <div class="flex items-start space-x-3">
+                        <div class="w-2 h-2 bg-indigo-500 rounded-full mt-2"></div>
+                        <div class="flex-1">
+                            <p class="text-sm text-gray-300">Citizen added remark to <span
+                                    class="font-semibold text-white">#1287</span></p>
+                            <p class="text-xs text-gray-500 mt-1">1 day ago</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 border-t border-slate-700 mt-12">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <p class="text-sm text-gray-400">&copy; 2026 SCRS. All rights reserved.</p>
+                <div class="flex space-x-4 mt-4 md:mt-0">
+                    <a href="privacy.html" class="text-sm text-gray-400 hover:text-white transition">Privacy Policy</a>
+                    <a href="terms.html" class="text-sm text-gray-400 hover:text-white transition">Terms of Service</a>
+                    <a href="support.html" class="text-sm text-gray-400 hover:text-white transition">Contact Support</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- My Profile Modal -->
+    <div id="profileModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div class="bg-slate-800 rounded-xl border border-slate-700 shadow-2xl max-w-2xl w-full">
+            <div class="px-6 py-4 border-b border-slate-700 flex items-center justify-between">
+                <h3 class="text-xl font-bold text-white">
+                    <i class="fas fa-user mr-2 text-indigo-400"></i>My Profile
+                </h3>
+                <button onclick="closeProfileModal()" class="text-gray-400 hover:text-white transition text-xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="px-6 py-5 space-y-6 max-h-[70vh] overflow-y-auto">
+                <!-- Profile Picture Section -->
+                <div class="flex items-center space-x-4">
+                    <img id="profileAvatar"
+                        src="https://ui-avatars.com/api/?name=Admin+User&background=4f46e5&color=fff" alt="Profile"
+                        class="w-20 h-20 rounded-full border-4 border-indigo-600">
+                    <div>
+                        <h4 id="profileName" class="text-xl font-bold text-white">Admin User</h4>
+                        <p id="profileRole" class="text-sm text-indigo-400 font-semibold">Admin</p>
+                        <p id="profileEmail" class="text-sm text-gray-400">admin@civixa.com</p>
+                    </div>
+                </div>
+
+                <!-- Account Information -->
+                <div class="bg-slate-900 rounded-lg p-4 border border-slate-700">
+                    <h5 class="text-sm font-semibold text-white mb-3">Account Information</h5>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">User ID:</span>
+                            <span id="profileUserId" class="text-white font-medium">#-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Account Created:</span>
+                            <span id="profileCreatedAt" class="text-white font-medium">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Profile Form -->
+                <div class="space-y-4">
+                    <h5 class="text-sm font-semibold text-white">Update Profile</h5>
+
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-2">Full Name</label>
+                        <input type="text" id="updateName" placeholder="Enter your name"
+                            class="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-2">Email Address</label>
+                        <input type="email" id="updateEmail" placeholder="Enter your email"
+                            class="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none">
+                    </div>
+
+                    <!-- Password Change Section -->
+                    <div class="border-t border-slate-700 pt-4 mt-4">
+                        <h5 class="text-sm font-semibold text-white mb-3">Change Password</h5>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-2">Current Password</label>
+                                <input type="password" id="currentPassword" placeholder="Enter current password"
+                                    class="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-2">New Password</label>
+                                <input type="password" id="newPassword" placeholder="Enter new password"
+                                    class="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-2">Confirm New Password</label>
+                                <input type="password" id="confirmPassword" placeholder="Confirm new password"
+                                    class="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Status Message -->
+                    <div id="profileUpdateStatus" class="hidden"></div>
+                </div>
+            </div>
+            <div class="px-6 py-4 border-t border-slate-700 flex gap-2">
+                <button onclick="closeProfileModal()"
+                    class="flex-1 bg-slate-600 hover:bg-slate-700 text-white py-2 rounded-lg font-semibold transition">
+                    Cancel
+                </button>
+                <button onclick="saveProfileChanges()"
+                    class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-semibold transition">
+                    <i class="fas fa-save mr-2"></i>Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div class="bg-slate-800 rounded-xl border border-slate-700 shadow-2xl max-w-2xl w-full">
+            <div class="px-6 py-4 border-b border-slate-700 flex items-center justify-between">
+                <h3 class="text-xl font-bold text-white">
+                    <i class="fas fa-cog mr-2 text-indigo-400"></i>Settings
+                </h3>
+                <button onclick="closeSettingsModal()" class="text-gray-400 hover:text-white transition text-xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="px-6 py-5 space-y-6 max-h-[70vh] overflow-y-auto">
+
+                <!-- Dashboard Preferences -->
+                <div class="space-y-4">
+                    <h5 class="text-sm font-semibold text-white border-b border-slate-700 pb-2">
+                        <i class="fas fa-desktop mr-2 text-indigo-400"></i>Dashboard Preferences
+                    </h5>
+
+                    <!-- Auto-refresh Setting -->
+                    <div class="flex items-center justify-between bg-slate-900 p-4 rounded-lg border border-slate-700">
+                        <div>
+                            <p class="text-white font-medium">Auto-Refresh</p>
+                            <p class="text-sm text-gray-400">Automatically refresh data every 30 seconds</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="settingAutoRefresh" class="sr-only peer" checked>
+                            <div
+                                class="w-11 h-6 bg-slate-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600">
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Desktop Notifications -->
+                    <div class="flex items-center justify-between bg-slate-900 p-4 rounded-lg border border-slate-700">
+                        <div>
+                            <p class="text-white font-medium">Desktop Notifications</p>
+                            <p class="text-sm text-gray-400">Receive browser notifications for important updates</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="settingDesktopNotif" class="sr-only peer">
+                            <div
+                                class="w-11 h-6 bg-slate-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600">
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Sound Alerts -->
+                    <div class="flex items-center justify-between bg-slate-900 p-4 rounded-lg border border-slate-700">
+                        <div>
+                            <p class="text-white font-medium">Sound Alerts</p>
+                            <p class="text-sm text-gray-400">Play sound for critical priority complaints</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="settingSoundAlerts" class="sr-only peer">
+                            <div
+                                class="w-11 h-6 bg-slate-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600">
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Display Settings -->
+                <div class="space-y-4">
+                    <h5 class="text-sm font-semibold text-white border-b border-slate-700 pb-2">
+                        <i class="fas fa-palette mr-2 text-indigo-400"></i>Display Settings
+                    </h5>
+
+                    <!-- Theme -->
+                    <div class="bg-slate-900 p-4 rounded-lg border border-slate-700">
+                        <label class="block text-white font-medium mb-2">Theme</label>
+                        <select id="settingTheme"
+                            class="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none">
+                            <option value="dark">Dark (Default)</option>
+                            <option value="light">Light</option>
+                            <option value="auto">Auto (System)</option>
+                        </select>
+                    </div>
+
+                    <!-- Items Per Page -->
+                    <div class="bg-slate-900 p-4 rounded-lg border border-slate-700">
+                        <label class="block text-white font-medium mb-2">Items Per Page</label>
+                        <select id="settingItemsPerPage"
+                            class="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none">
+                            <option value="10">10</option>
+                            <option value="20" selected>20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Status Message -->
+                <div id="settingsUpdateStatus" class="hidden"></div>
+            </div>
+            <div class="px-6 py-4 border-t border-slate-700 flex gap-2">
+                <button onclick="closeSettingsModal()"
+                    class="flex-1 bg-slate-600 hover:bg-slate-700 text-white py-2 rounded-lg font-semibold transition">
+                    Cancel
+                </button>
+                <button onclick="saveSettings()"
+                    class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-semibold transition">
+                    <i class="fas fa-save mr-2"></i>Save Settings
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Profile Modal -->
+    <div id="profileModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div class="bg-slate-800 rounded-xl border border-slate-700 shadow-2xl max-w-lg w-full">
+            <div class="px-6 py-4 border-b border-slate-700 flex items-center justify-between">
+                <h3 class="text-xl font-bold text-white">My Profile</h3>
+                <button id="closeProfileModalBtn" class="text-gray-400 hover:text-white transition text-xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="px-6 py-5 space-y-4">
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Full Name</label>
+                    <input id="profileNameInput" type="text"
+                        class="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none" />
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Email</label>
+                    <input id="profileEmailInput" type="email"
+                        class="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none" />
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Role</label>
+                    <input id="profileRoleInput" type="text" readonly
+                        class="w-full px-3 py-2 bg-slate-900 border border-slate-700 text-gray-400 rounded-lg" />
+                </div>
+
+                <!-- Password Change Section -->
+                <div class="border-t border-slate-700 pt-4 mt-4">
+                    <h4 class="text-sm font-semibold text-white mb-3">Change Password (Optional)</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">Current Password</label>
+                            <input id="profileCurrentPassword" type="password"
+                                class="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none"
+                                placeholder="Leave blank to keep current" />
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">New Password</label>
+                            <input id="profileNewPassword" type="password"
+                                class="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none"
+                                placeholder="Min 6 characters" />
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">Confirm New Password</label>
+                            <input id="profileConfirmPassword" type="password"
+                                class="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="px-6 py-4 border-t border-slate-700 flex gap-2">
+                <button id="cancelProfileBtn"
+                    class="flex-1 bg-slate-600 hover:bg-slate-700 text-white py-2 rounded-lg font-semibold transition">Cancel</button>
+                <button id="saveProfileBtn"
+                    class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-semibold transition">Save
+                    Profile</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div class="bg-slate-800 rounded-xl border border-slate-700 shadow-2xl max-w-lg w-full">
+            <div class="px-6 py-4 border-b border-slate-700 flex items-center justify-between">
+                <h3 class="text-xl font-bold text-white">Settings</h3>
+                <button id="closeSettingsModalBtn" class="text-gray-400 hover:text-white transition text-xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="px-6 py-5 space-y-4">
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Complaints per page</label>
+                    <select id="settingsPerPage"
+                        class="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none">
+                        <option value="8">8</option>
+                        <option value="12">12</option>
+                        <option value="20">20</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Auto refresh interval</label>
+                    <select id="settingsAutoRefresh"
+                        class="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none">
+                        <option value="0">Off</option>
+                        <option value="30">Every 30 seconds</option>
+                        <option value="60">Every 1 minute</option>
+                    </select>
+                </div>
+                <label class="flex items-center gap-3 cursor-pointer">
+                    <input id="settingsCompactMode" type="checkbox"
+                        class="w-4 h-4 text-indigo-600 rounded focus:ring-indigo-500" />
+                    <span class="text-sm text-gray-300">Compact table rows</span>
+                </label>
+            </div>
+            <div class="px-6 py-4 border-t border-slate-700 flex gap-2">
+                <button id="cancelSettingsBtn"
+                    class="flex-1 bg-slate-600 hover:bg-slate-700 text-white py-2 rounded-lg font-semibold transition">Cancel</button>
+                <button id="saveSettingsBtn"
+                    class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-semibold transition">Save
+                    Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Complaint Detail Modal -->
+    <div id="complaintDetailModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div
+            class="bg-slate-800 rounded-xl border border-slate-700 shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+
+            <!-- Modal Header -->
+            <div
+                class="sticky top-0 bg-slate-800 px-6 py-4 border-b border-slate-700 flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-white">Complaint Details</h2>
+                    <p class="text-sm text-gray-400 mt-1">ID: <span id="modalComplaintId"
+                            class="text-indigo-400 font-semibold"></span></p>
+                </div>
+                <button id="closeModalBtn" class="text-gray-400 hover:text-white transition text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="px-6 py-6 space-y-6">
+
+                <!-- Basic Information Section -->
+                <div class="bg-slate-900 rounded-lg p-4 border border-slate-700">
+                    <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                        <i class="fas fa-info-circle mr-2 text-indigo-400"></i> Basic Information
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs text-gray-400 uppercase tracking-wide">Category</label>
+                            <p id="modalCategory" class="text-white font-medium mt-1"></p>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 uppercase tracking-wide">Location</label>
+                            <p id="modalLocation" class="text-white font-medium mt-1"></p>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 uppercase tracking-wide">Status</label>
+                            <p id="modalStatus" class="mt-1"></p>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 uppercase tracking-wide">Priority</label>
+                            <p id="modalPriority" class="mt-1"></p>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 uppercase tracking-wide">Submitted Date</label>
+                            <p id="modalCreatedAt" class="text-white font-medium mt-1"></p>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 uppercase tracking-wide">Updated Date</label>
+                            <p id="modalUpdatedAt" class="text-white font-medium mt-1"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description Section -->
+                <div class="bg-slate-900 rounded-lg p-4 border border-slate-700">
+                    <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                        <i class="fas fa-file-alt mr-2 text-indigo-400"></i> Description
+                    </h3>
+                    <p id="modalDescription" class="text-gray-300 leading-relaxed whitespace-pre-wrap"></p>
+                </div>
+
+                <!-- Submitter Information Section -->
+                <div class="bg-slate-900 rounded-lg p-4 border border-slate-700">
+                    <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                        <i class="fas fa-user mr-2 text-indigo-400"></i> Submitter Information
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs text-gray-400 uppercase tracking-wide">Name</label>
+                            <p id="modalSubmitterName" class="text-white font-medium mt-1"></p>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 uppercase tracking-wide">Email</label>
+                            <p id="modalSubmitterEmail" class="text-white font-medium mt-1 break-words"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image Section -->
+                <div id="imageSection" class="bg-slate-900 rounded-lg p-4 border border-slate-700">
+                    <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                        <i class="fas fa-image mr-2 text-indigo-400"></i> Complaint Image
+                    </h3>
+                    <div class="max-w-full">
+                        <img id="modalComplaintImage" src="" alt="Complaint"
+                            class="w-full max-h-96 object-cover rounded-lg border border-slate-600">
+                    </div>
+                </div>
+
+                <!-- AI Analysis Section -->
+                <div id="aiSection" class="bg-slate-900 rounded-lg p-4 border border-slate-700">
+                    <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                        <i class="fas fa-brain mr-2 text-indigo-400"></i> AI Analysis
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-xs text-gray-400 uppercase tracking-wide">AI Summary</label>
+                            <p id="modalSummary" class="text-gray-300 mt-1 leading-relaxed"></p>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 uppercase tracking-wide">Suggested Priority</label>
+                            <p id="modalAISuggestedPriority" class="mt-1"></p>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 uppercase tracking-wide">AI Tags</label>
+                            <div id="modalAITags" class="flex flex-wrap gap-2 mt-2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resolution Proof Section -->
+                <div id="proofSection" class="bg-slate-900 rounded-lg p-4 border border-slate-700">
+                    <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                        <i class="fas fa-check-circle mr-2 text-green-400"></i> Resolution Proof
+                    </h3>
+                    <div id="proofContent" class="space-y-2">
+                        <p id="noProofMessage" class="text-gray-400">No resolution proof uploaded yet</p>
+                        <div id="proofImageContainer" class="hidden max-w-full">
+                            <img id="modalProofImage" src="" alt="Resolution Proof"
+                                class="w-full max-h-96 object-cover rounded-lg border border-slate-600">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Remarks Section -->
+                <div class="bg-slate-900 rounded-lg p-4 border border-slate-700">
+                    <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                        <i class="fas fa-comments mr-2 text-indigo-400"></i> Admin Remarks
+                    </h3>
+                    <div id="remarksList" class="space-y-3 max-h-48 overflow-y-auto mb-4"></div>
+
+                    <div class="pt-4 border-t border-slate-600 space-y-2">
+                        <textarea id="newRemarkText" placeholder="Add a new internal remark..."
+                            class="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg placeholder-gray-500 focus:border-indigo-400 focus:outline-none text-sm resize-none"
+                            rows="3"></textarea>
+                        <button id="addRemarkBtn"
+                            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-semibold transition">
+                            <i class="fas fa-plus mr-1"></i> Add Remark
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer with Actions -->
+            <div class="sticky bottom-0 bg-slate-800 px-6 py-4 border-t border-slate-700 flex gap-2">
+                <button id="changeStatusBtn"
+                    class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold transition flex items-center justify-center">
+                    <i class="fas fa-sync-alt mr-2"></i> Update Status
+                </button>
+                <button id="uploadProofBtn"
+                    class="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-semibold transition flex items-center justify-center">
+                    <i class="fas fa-upload mr-2"></i> Upload Proof
+                </button>
+                <button id="escalateBtn"
+                    class="flex-1 bg-orange-600 hover:bg-orange-700 text-white py-2 rounded-lg font-semibold transition flex items-center justify-center">
+                    <i class="fas fa-arrow-up mr-2"></i> Escalate
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Update Modal -->
+    <div id="statusModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div class="bg-slate-800 rounded-xl border border-slate-700 shadow-2xl max-w-md w-full">
+            <div class="px-6 py-4 border-b border-slate-700">
+                <h3 class="text-xl font-bold text-white">Update Status</h3>
+            </div>
+            <div class="px-6 py-4">
+                <select id="statusSelect"
+                    class="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none">
+                    <option value="">Select new status</option>
+                    <option value="Submitted">Submitted</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Resolved">Resolved</option>
+                </select>
+            </div>
+            <div class="px-6 py-4 border-t border-slate-700 flex gap-2">
+                <button id="statusCancelBtn"
+                    class="flex-1 bg-slate-600 hover:bg-slate-700 text-white py-2 rounded-lg font-semibold transition">Cancel</button>
+                <button id="statusConfirmBtn"
+                    class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-semibold transition">Update</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Proof Upload Modal -->
+    <div id="proofModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div class="bg-slate-800 rounded-xl border border-slate-700 shadow-2xl max-w-md w-full">
+            <div class="px-6 py-4 border-b border-slate-700">
+                <h3 class="text-xl font-bold text-white">Upload Resolution Proof</h3>
+            </div>
+            <div class="px-6 py-4">
+                <p class="text-sm text-gray-300 mb-4">Provide the image URL showing the completed work:</p>
+                <input type="text" id="proofUrlInput" placeholder="https://example.com/image.jpg"
+                    class="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg placeholder-gray-500 focus:border-indigo-400 focus:outline-none">
+            </div>
+            <div class="px-6 py-4 border-t border-slate-700 flex gap-2">
+                <button id="proofCancelBtn"
+                    class="flex-1 bg-slate-600 hover:bg-slate-700 text-white py-2 rounded-lg font-semibold transition">Cancel</button>
+                <button id="proofConfirmBtn"
+                    class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-semibold transition">Upload</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Escalate Modal -->
+    <div id="escalateModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div class="bg-slate-800 rounded-xl border border-slate-700 shadow-2xl max-w-md w-full">
+            <div class="px-6 py-4 border-b border-slate-700">
+                <h3 class="text-xl font-bold text-white">Escalate Complaint Priority</h3>
+            </div>
+            <div class="px-6 py-4 space-y-4">
+                <div>
+                    <label class="text-sm text-gray-300 mb-2 block">Escalation Reason</label>
+                    <textarea id="escalateReasonInput" placeholder="Explain why this complaint requires escalation..."
+                        class="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg placeholder-gray-500 focus:border-indigo-400 focus:outline-none resize-none"
+                        rows="3"></textarea>
+                </div>
+            </div>
+            <div class="px-6 py-4 border-t border-slate-700 flex gap-2">
+                <button id="escalateCancelBtn"
+                    class="flex-1 bg-slate-600 hover:bg-slate-700 text-white py-2 rounded-lg font-semibold transition">Cancel</button>
+                <button id="escalateConfirmBtn"
+                    class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-semibold transition">Escalate</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        // Protect this page - only admins can access
+        requireAuth('admin');
+
+        // Modal Handling Functions
+        function openProfileModal() {
+            document.getElementById('profileDropdownMenu').classList.add('hidden');
+            document.getElementById('profileModal').classList.remove('hidden');
+
+            // Populate data
+            const userStr = localStorage.getItem('token_placeholder');
+            if (userStr) {
+                try {
+                    const user = JSON.parse(userStr);
+                    document.getElementById('profileName').textContent = user.name || 'Admin User';
+                    document.getElementById('profileEmail').textContent = user.email || 'admin@civixa.com';
+                    document.getElementById('profileUserId').textContent = user.id || '#-';
+                    document.getElementById('profileCreatedAt').textContent = 'March 2026';
+
+                    document.getElementById('updateName').value = user.name || '';
+                    document.getElementById('updateEmail').value = user.email || '';
+                } catch (e) { }
+            }
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.add('hidden');
+            document.getElementById('profileUpdateStatus').classList.add('hidden');
+        }
+
+        function saveProfileChanges() {
+            const nameInput = document.getElementById('updateName').value;
+            const emailInput = document.getElementById('updateEmail').value;
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const statusDiv = document.getElementById('profileUpdateStatus');
+
+            if (newPassword && newPassword !== confirmPassword) {
+                statusDiv.classList.remove('hidden');
+                statusDiv.className = 'mt-3 p-3 bg-red-900/50 border border-red-500 text-red-400 rounded-lg text-sm';
+                statusDiv.innerHTML = '<i class="fas fa-exclamation-circle mr-2"></i>New passwords do not match';
+                return;
+            }
+
+            // Update user in localStorage
+            let userStr = localStorage.getItem('token_placeholder');
+            let user = { name: 'Admin User', email: 'admin@civixa.com' };
+            if (userStr) {
+                try {
+                    user = JSON.parse(userStr);
+                } catch (e) { }
+            }
+            if (nameInput) user.name = nameInput;
+            if (emailInput) user.email = emailInput;
+            localStorage.setItem('token_placeholder', JSON.stringify(user));
+
+            // Update UI elements in the modal
+            document.getElementById('profileName').textContent = user.name || 'Admin User';
+            document.getElementById('profileEmail').textContent = user.email || 'admin@civixa.com';
+
+            // Also update any avatar names if present
+            const avatarElems = document.querySelectorAll('img[src*="ui-avatars.com"]');
+            avatarElems.forEach(img => {
+                let currentUrl = new URL(img.src);
+                currentUrl.searchParams.set('name', user.name || 'Admin User');
+                img.src = currentUrl.toString();
+            });
+
+            // Show success message
+            statusDiv.classList.remove('hidden');
+            statusDiv.className = 'mt-3 p-3 bg-green-900/50 border border-green-500 text-green-400 rounded-lg text-sm';
+            statusDiv.innerHTML = '<i class="fas fa-check-circle mr-2"></i>Profile updated successfully';
+
+            // Clear password fields
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+
+            setTimeout(() => {
+                closeProfileModal();
+            }, 1500);
+        }
+
+        function openSettingsModal() {
+            document.getElementById('profileDropdownMenu').classList.add('hidden');
+            document.getElementById('settingsModal').classList.remove('hidden');
+        }
+
+        function closeSettingsModal() {
+            document.getElementById('settingsModal').classList.add('hidden');
+            document.getElementById('settingsUpdateStatus').classList.add('hidden');
+        }
+
+        function saveSettings() {
+            const statusDiv = document.getElementById('settingsUpdateStatus');
+            statusDiv.classList.remove('hidden');
+            statusDiv.className = 'mt-3 p-3 bg-green-900/50 border border-green-500 text-green-400 rounded-lg text-sm';
+            statusDiv.innerHTML = '<i class="fas fa-check-circle mr-2"></i>Settings saved successfully (Demo)';
+
+            setTimeout(() => {
+                closeSettingsModal();
+            }, 1500);
+        }
+
+        // Toggle dropdown handling
+        const profileBtn = document.getElementById('profileMenuBtn'); // Changed from 'profileBtn' to 'profileMenuBtn' to match existing ID
+        const profileDropdownMenu = document.getElementById('profileDropdownMenu');
+
+        if (profileBtn && profileDropdownMenu) {
+            profileBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                profileDropdownMenu.classList.toggle('hidden');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!profileBtn.contains(e.target) && !profileDropdownMenu.contains(e.target)) {
+                    profileDropdownMenu.classList.add('hidden');
+                }
+            });
+        }
+
+
+        //const profileDropdownMenu = document.getElementById('profileDropdownMenu');
+        // Notification Dropdown Toggle Logic
+        const notificationBtn = document.getElementById('notificationBtn');
+        const notificationDropdown = document.getElementById('notificationDropdown');
+        const myProfileLink = document.getElementById('myProfileLink');
+        const settingsLink = document.getElementById('settingsLink');
+        const profileLogoutLink = document.getElementById('profileLogoutLink');
+
+        const profileModal = document.getElementById('profileModal');
+        const settingsModal = document.getElementById('settingsModal');
+        const closeProfileModalBtn = document.getElementById('closeProfileModalBtn');
+        const closeSettingsModalBtn = document.getElementById('closeSettingsModalBtn');
+        const cancelProfileBtn = document.getElementById('cancelProfileBtn');
+        const cancelSettingsBtn = document.getElementById('cancelSettingsBtn');
+        const saveProfileBtn = document.getElementById('saveProfileBtn');
+        const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+
+        const headerProfileName = document.getElementById('headerProfileName');
+        const headerProfileAvatar = document.getElementById('headerProfileAvatar');
+        const profileNameInput = document.getElementById('profileNameInput');
+        const profileEmailInput = document.getElementById('profileEmailInput');
+        const profileRoleInput = document.getElementById('profileRoleInput');
+
+        const settingsPerPage = document.getElementById('settingsPerPage');
+        const settingsAutoRefresh = document.getElementById('settingsAutoRefresh');
+        const settingsCompactMode = document.getElementById('settingsCompactMode');
+
+        // Toggle dropdown
+        notificationBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            notificationDropdown.classList.toggle('hidden');
+        });
+
+        profileMenuBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            profileDropdownMenu.classList.toggle('hidden');
+        });
+
+        // Close when clicking outside
+        document.addEventListener('click', function (e) {
+            if (!notificationDropdown.contains(e.target) && e.target !== notificationBtn) {
+                notificationDropdown.classList.add('hidden');
+            }
+            if (!profileDropdownMenu.contains(e.target) && e.target !== profileMenuBtn && !profileMenuBtn.contains(e.target)) {
+                profileDropdownMenu.classList.add('hidden');
+            }
+        });
+
+        // Close on ESC key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                notificationDropdown.classList.add('hidden');
+                profileDropdownMenu.classList.add('hidden');
+            }
+        });
+
+        // Prevent dropdown from closing when clicking inside
+        notificationDropdown.addEventListener('click', function (e) {
+            e.stopPropagation();
+        });
+
+        profileDropdownMenu.addEventListener('click', function (e) {
+            e.stopPropagation();
+        });
+
+        myProfileLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            profileDropdownMenu.classList.add('hidden');
+            profileModal.classList.remove('hidden');
+        });
+
+        settingsLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            profileDropdownMenu.classList.add('hidden');
+            if (typeof adminSettings !== 'undefined') {
+                settingsPerPage.value = String(adminSettings.perPage || 8);
+                settingsAutoRefresh.value = String(adminSettings.autoRefresh || 0);
+                settingsCompactMode.checked = Boolean(adminSettings.compactMode);
+            }
+            settingsModal.classList.remove('hidden');
+        });
+
+        profileLogoutLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            const confirmLogout = confirm('Are you sure you want to logout?');
+            if (!confirmLogout) return;
+            clearAuth();
+            window.location.href = 'login.html';
+        });
+
+        [closeProfileModalBtn, cancelProfileBtn].forEach(btn => {
+            btn.addEventListener('click', () => profileModal.classList.add('hidden'));
+        });
+
+        [closeSettingsModalBtn, cancelSettingsBtn].forEach(btn => {
+            btn.addEventListener('click', () => settingsModal.classList.add('hidden'));
+        });
+
+        profileModal.addEventListener('click', function (e) {
+            if (e.target === profileModal) profileModal.classList.add('hidden');
+        });
+
+        settingsModal.addEventListener('click', function (e) {
+            if (e.target === settingsModal) settingsModal.classList.add('hidden');
+        });
+
+        // ============================================================
+        // COMPLAINT DETAIL MODAL FUNCTIONALITY
+        // ============================================================
+        const complaintDetailModal = document.getElementById('complaintDetailModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const statusModal = document.getElementById('statusModal');
+        const proofModal = document.getElementById('proofModal');
+        const escalateModal = document.getElementById('escalateModal');
+        let currentComplaintId = null;
+
+        // Close modals on button click
+        closeModalBtn.addEventListener('click', () => closeDetailModal());
+        document.getElementById('statusCancelBtn').addEventListener('click', () => statusModal.classList.add('hidden'));
+        document.getElementById('proofCancelBtn').addEventListener('click', () => proofModal.classList.add('hidden'));
+        document.getElementById('escalateCancelBtn').addEventListener('click', () => escalateModal.classList.add('hidden'));
+
+        // Close modals on background click
+        [complaintDetailModal, statusModal, proofModal, escalateModal].forEach(modal => {
+            modal.addEventListener('click', function (e) {
+                if (e.target === this) {
+                    this.classList.add('hidden');
+                }
+            });
+        });
+
+        // Close modal on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                complaintDetailModal.classList.add('hidden');
+                statusModal.classList.add('hidden');
+                proofModal.classList.add('hidden');
+                escalateModal.classList.add('hidden');
+                profileModal.classList.add('hidden');
+                settingsModal.classList.add('hidden');
+            }
+        });
+
+        function populateAdminProfile(user) {
+            const safeName = user?.name || 'Admin User';
+            const safeEmail = user?.email || '';
+            const safeRole = (user?.role || 'admin').toUpperCase();
+
+            headerProfileName.textContent = safeName;
+            headerProfileAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(safeName)}&background=4f46e5&color=fff`;
+
+            profileNameInput.value = safeName;
+            profileEmailInput.value = safeEmail;
+            profileRoleInput.value = safeRole;
+        }
+
+        async function initializeAdminProfile() {
+            const auth = getStoredAuth();
+            if (auth?.user) {
+                populateAdminProfile(auth.user);
+            }
+
+            try {
+                const response = await fetch('http://localhost:3000/auth/me', {
+                    headers: getAuthHeaders()
+                });
+
+                if (!response.ok) return;
+                const data = await response.json();
+                if (data.success && data.user) {
+                    populateAdminProfile(data.user);
+                    if (auth?.token) {
+                        setStoredAuth(auth.token, data.user);
+                    }
+                }
+            } catch (error) {
+                console.warn('Profile fetch skipped:', error);
+            }
+        }
+
+        saveProfileBtn.addEventListener('click', async () => {
+            const name = profileNameInput.value.trim();
+            const email = profileEmailInput.value.trim();
+            const currentPassword = document.getElementById('profileCurrentPassword').value;
+            const newPassword = document.getElementById('profileNewPassword').value;
+            const confirmPassword = document.getElementById('profileConfirmPassword').value;
+
+            if (!name || !email) {
+                showNotification('Name and email are required', 'error');
+                return;
+            }
+
+            // Password change validation
+            const isChangingPassword = currentPassword || newPassword || confirmPassword;
+            if (isChangingPassword) {
+                if (!currentPassword) {
+                    showNotification('Current password is required to change password', 'error');
+                    return;
+                }
+                if (!newPassword) {
+                    showNotification('New password is required', 'error');
+                    return;
+                }
+                if (newPassword.length < 6) {
+                    showNotification('New password must be at least 6 characters', 'error');
+                    return;
+                }
+                if (newPassword !== confirmPassword) {
+                    showNotification('New passwords do not match', 'error');
+                    return;
+                }
+            }
+
+            try {
+                const payload = { name, email };
+                if (isChangingPassword) {
+                    payload.currentPassword = currentPassword;
+                    payload.newPassword = newPassword;
+                }
+
+                const response = await fetch('http://localhost:3000/auth/me', {
+                    method: 'PUT',
+                    headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+                if (!response.ok || !data.success) {
+                    showNotification(data.message || 'Failed to update profile', 'error');
+                    return;
+                }
+
+                const auth = getStoredAuth();
+                setStoredAuth(data.token || auth.token, data.user);
+                populateAdminProfile(data.user);
+
+                // Clear password fields
+                document.getElementById('profileCurrentPassword').value = '';
+                document.getElementById('profileNewPassword').value = '';
+                document.getElementById('profileConfirmPassword').value = '';
+
+                profileModal.classList.add('hidden');
+                showNotification(isChangingPassword ? 'Profile and password updated successfully' : 'Profile updated successfully', 'success');
+            } catch (error) {
+                console.error('Profile update error:', error);
+                showNotification('Failed to update profile', 'error');
+            }
+        });
+
+        saveSettingsBtn.addEventListener('click', async () => {
+            if (typeof adminSettings === 'undefined') {
+                showNotification('Settings could not be loaded', 'error');
+                return;
+            }
+
+            adminSettings.perPage = Number(settingsPerPage.value) || 8;
+            adminSettings.autoRefresh = Number(settingsAutoRefresh.value) || 0;
+            adminSettings.compactMode = Boolean(settingsCompactMode.checked);
+
+            if (typeof saveAdminSettings === 'function') {
+                saveAdminSettings();
+            }
+            if (typeof applyAdminSettings === 'function') {
+                applyAdminSettings();
+            }
+
+            if (typeof loadComplaintsTable === 'function') {
+                await loadComplaintsTable(1, activeAdminFilters || {});
+            }
+
+            settingsModal.classList.add('hidden');
+            showNotification('Settings saved successfully', 'success');
+        });
+
+        initializeAdminProfile();
+
+        // Fetch and display complaint details
+        async function openDetailModal(complaintId) {
+            currentComplaintId = complaintId;
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`http://localhost:3000/admin/complaints/${complaintId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success && data.complaint) {
+                    populateDetailModal(data.complaint, data.remarks || []);
+                    complaintDetailModal.classList.remove('hidden');
+                } else {
+                    showNotification(data.message || 'Failed to fetch complaint details', 'error');
+                }
+            } catch (error) {
+                console.error('Error fetching complaint:', error);
+                showNotification('Connection error while fetching complaint details', 'error');
+            }
+        }
+
+        // Populate modal with complaint data
+        function populateDetailModal(complaint, remarks) {
+            // Basic info
+            document.getElementById('modalComplaintId').textContent = complaint.id;
+            document.getElementById('modalCategory').textContent = complaint.category || 'N/A';
+            document.getElementById('modalLocation').textContent = complaint.location || 'N/A';
+            document.getElementById('modalDescription').textContent = complaint.description || 'N/A';
+
+            // Status badge
+            const statusDiv = document.getElementById('modalStatus');
+            const statusColor = {
+                'Submitted': 'bg-blue-600/20 text-blue-400',
+                'In Progress': 'bg-yellow-600/20 text-yellow-400',
+                'Resolved': 'bg-green-600/20 text-green-400'
+            };
+            statusDiv.innerHTML = `<span class="px-2 py-1 text-xs font-semibold rounded-full ${statusColor[complaint.status] || 'bg-gray-600/20 text-gray-400'}">${complaint.status || 'Unknown'}</span>`;
+
+            // Priority badge
+            const priorityDiv = document.getElementById('modalPriority');
+            const priorityColor = {
+                'Low': 'bg-green-600/20 text-green-400',
+                'Medium': 'bg-yellow-600/20 text-yellow-400',
+                'High': 'bg-orange-600/20 text-orange-400',
+                'Critical': 'bg-red-600/20 text-red-400'
+            };
+            priorityDiv.innerHTML = `<span class="px-2 py-1 text-xs font-semibold rounded-full ${priorityColor[complaint.priority] || 'bg-gray-600/20 text-gray-400'}">${complaint.priority || 'Unknown'}</span>`;
+
+            // Dates
+            document.getElementById('modalCreatedAt').textContent = new Date(complaint.created_at).toLocaleString();
+            document.getElementById('modalUpdatedAt').textContent = new Date(complaint.updated_at).toLocaleString();
+
+            // Submitter info
+            document.getElementById('modalSubmitterName').textContent = complaint.submitter_name || 'Unknown';
+            document.getElementById('modalSubmitterEmail').textContent = complaint.submitter_email || 'N/A';
+
+            // Complaint image
+            const imageSection = document.getElementById('imageSection');
+            if (complaint.image_url) {
+                document.getElementById('modalComplaintImage').src = complaint.image_url;
+                imageSection.classList.remove('hidden');
+            } else {
+                imageSection.classList.add('hidden');
+            }
+
+            // AI Analysis
+            const aiSection = document.getElementById('aiSection');
+            if (complaint.summary || complaint.ai_suggested_priority || complaint.tags) {
+                document.getElementById('modalSummary').textContent = complaint.summary || 'No AI summary available';
+
+                if (complaint.ai_suggested_priority) {
+                    const aiPriorityDiv = document.getElementById('modalAISuggestedPriority');
+                    aiPriorityDiv.innerHTML = `<span class="px-2 py-1 text-xs font-semibold rounded-full ${priorityColor[complaint.ai_suggested_priority] || 'bg-gray-600/20 text-gray-400'}">${complaint.ai_suggested_priority}</span>`;
+                }
+
+                // Parse and display tags
+                const tagsContainer = document.getElementById('modalAITags');
+                tagsContainer.innerHTML = '';
+                try {
+                    const tags = Array.isArray(complaint.tags) ? complaint.tags : JSON.parse(complaint.tags || '[]');
+                    if (tags.length > 0) {
+                        tags.forEach(tag => {
+                            const tagEl = document.createElement('span');
+                            tagEl.className = 'px-2 py-1 text-xs bg-indigo-600/20 text-indigo-300 rounded-full';
+                            tagEl.textContent = tag;
+                            tagsContainer.appendChild(tagEl);
+                        });
+                    }
+                } catch (e) {
+                    console.warn('Could not parse tags:', e);
+                }
+                aiSection.classList.remove('hidden');
+            } else {
+                aiSection.classList.add('hidden');
+            }
+
+            // Resolution proof
+            const proofSection = document.getElementById('proofSection');
+            const proofContent = document.getElementById('proofContent');
+            const noProofMessage = document.getElementById('noProofMessage');
+            const proofImageContainer = document.getElementById('proofImageContainer');
+
+            if (complaint.proof_url) {
+                document.getElementById('modalProofImage').src = complaint.proof_url;
+                proofImageContainer.classList.remove('hidden');
+                noProofMessage.classList.add('hidden');
+            } else {
+                proofImageContainer.classList.add('hidden');
+                noProofMessage.classList.remove('hidden');
+            }
+
+            // Remarks
+            displayRemarks(remarks);
+        }
+
+        // Display remarks
+        function displayRemarks(remarks) {
+            const remarksList = document.getElementById('remarksList');
+            remarksList.innerHTML = '';
+
+            if (!remarks || remarks.length === 0) {
+                remarksList.innerHTML = '<p class="text-gray-400 text-sm">No remarks yet</p>';
+                return;
+            }
+
+            remarks.forEach(remark => {
+                const remarkEl = document.createElement('div');
+                remarkEl.className = 'p-3 bg-slate-800 border border-slate-600 rounded-lg';
+                remarkEl.innerHTML = `
+                    <div class="flex justify-between items-start mb-1">
+                        <span class="text-sm font-semibold text-indigo-400">${remark.admin_name || 'Admin'}</span>
+                        <span class="text-xs text-gray-500">${new Date(remark.created_at).toLocaleString()}</span>
+                    </div>
+                    <p class="text-sm text-gray-300">${remark.remark_text}</p>
+                `;
+                remarksList.appendChild(remarkEl);
+            });
+        }
+
+        // Close detail modal
+        function closeDetailModal() {
+            complaintDetailModal.classList.add('hidden');
+            currentComplaintId = null;
+        }
+
+        // Action buttons
+        document.getElementById('changeStatusBtn').addEventListener('click', () => {
+            statusModal.classList.remove('hidden');
+        });
+
+        document.getElementById('uploadProofBtn').addEventListener('click', () => {
+            proofModal.classList.remove('hidden');
+        });
+
+        document.getElementById('escalateBtn').addEventListener('click', () => {
+            escalateModal.classList.remove('hidden');
+        });
+
+        document.getElementById('addRemarkBtn').addEventListener('click', async () => {
+            const remarkText = document.getElementById('newRemarkText').value.trim();
+            if (!remarkText) {
+                showNotification('Please enter a remark', 'error');
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`http://localhost:3000/admin/complaints/${currentComplaintId}/remark`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ remark_text: remarkText })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    showNotification('Remark added successfully', 'success');
+                    document.getElementById('newRemarkText').value = '';
+                    // Refresh complaint details to get updated remarks
+                    openDetailModal(currentComplaintId);
+                } else {
+                    showNotification(data.message || 'Failed to add remark', 'error');
+                }
+            } catch (error) {
+                console.error('Error adding remark:', error);
+                showNotification('Connection error while adding remark', 'error');
+            }
+        });
+
+        document.getElementById('statusConfirmBtn').addEventListener('click', async () => {
+            const newStatus = document.getElementById('statusSelect').value;
+            if (!newStatus) {
+                showNotification('Please select a status', 'error');
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`http://localhost:3000/admin/complaints/${currentComplaintId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    showNotification('Status updated successfully', 'success');
+                    statusModal.classList.add('hidden');
+                    // Refresh complaint details
+                    openDetailModal(currentComplaintId);
+                } else {
+                    showNotification(data.message || 'Failed to update status', 'error');
+                }
+            } catch (error) {
+                console.error('Error updating status:', error);
+                showNotification('Connection error while updating status', 'error');
+            }
+        });
+
+        document.getElementById('proofConfirmBtn').addEventListener('click', async () => {
+            const proofUrl = document.getElementById('proofUrlInput').value.trim();
+            if (!proofUrl) {
+                showNotification('Please enter a valid URL', 'error');
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`http://localhost:3000/admin/complaints/${currentComplaintId}/resolve-proof`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ proof_url: proofUrl })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    showNotification('Proof uploaded successfully', 'success');
+                    document.getElementById('proofUrlInput').value = '';
+                    proofModal.classList.add('hidden');
+                    // Refresh complaint details
+                    openDetailModal(currentComplaintId);
+                } else {
+                    showNotification(data.message || 'Failed to upload proof', 'error');
+                }
+            } catch (error) {
+                console.error('Error uploading proof:', error);
+                showNotification('Connection error while uploading proof', 'error');
+            }
+        });
+
+        document.getElementById('escalateConfirmBtn').addEventListener('click', async () => {
+            const reason = document.getElementById('escalateReasonInput').value.trim();
+            if (!reason) {
+                showNotification('Please provide an escalation reason', 'error');
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`http://localhost:3000/admin/complaints/${currentComplaintId}/escalate`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ reason })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    showNotification('Complaint escalated successfully', 'success');
+                    document.getElementById('escalateReasonInput').value = '';
+                    escalateModal.classList.add('hidden');
+                    // Refresh complaint details
+                    openDetailModal(currentComplaintId);
+                } else {
+                    showNotification(data.message || 'Failed to escalate complaint', 'error');
+                }
+            } catch (error) {
+                console.error('Error escalating complaint:', error);
+                showNotification('Connection error while escalating complaint', 'error');
+            }
+        });
+
+        // Attach click handlers to View buttons
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const complaintId = btn.getAttribute('data-complaint-id');
+                window.location.href = `complaint-details-admin.html?id=${complaintId}`;
+            });
+        });
+
+        // Notification helper
+        function showNotification(message, type) {
+            const notificationContainer = document.getElementById('notificationContainer') ||
+                (function () {
+                    const container = document.createElement('div');
+                    container.id = 'notificationContainer';
+                    container.className = 'fixed bottom-4 right-4 space-y-2 z-40';
+                    document.body.appendChild(container);
+                    return container;
+                })();
+
+            const notification = document.createElement('div');
+            const bgColor = type === 'success' ? 'bg-green-600' : 'bg-red-600';
+            notification.className = `${bgColor} text-white px-4 py-3 rounded-lg shadow-lg animate-pulse`;
+            notification.textContent = message;
+            notificationContainer.appendChild(notification);
+
+            setTimeout(() => notification.remove(), 3000);
+        }
+    </script>
+
+    <!-- Admin Dashboard Data Loading Script -->
+    <script>
+        const API_BASE = 'http://localhost:3000';
+        let currentPage = 1;
+        let totalPages = 1;
+        let monthlyTrendChart = null;
+        let activeAdminFilters = {};
+        let adminAutoRefreshTimer = null;
+        const ADMIN_SETTINGS_KEY = 'adminDashboardSettings';
+        const defaultAdminSettings = {
+            perPage: 8,
+            autoRefresh: 0,
+            compactMode: false
+        };
+        let adminSettings = { ...defaultAdminSettings };
+
+        // Get auth token and headers
+        function getAuthHeaders() {
+            const token = localStorage.getItem('token');
+            return {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            };
+        }
+
+        // Load dashboard statistics
+        async function loadDashboardStats() {
+            try {
+                const response = await fetch(`${API_BASE}/admin/dashboard`, {
+                    headers: getAuthHeaders()
+                });
+
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+
+                const data = await response.json();
+                const stats = data.dashboard;
+
+                // Update stats cards
+                document.querySelector('[data-stat="assigned"]').textContent = stats.assigned_total || 0;
+                document.querySelector('[data-stat="pending"]').textContent = stats.pending_count || 0;
+                document.querySelector('[data-stat="critical"]').textContent = stats.critical_count || 0;
+                document.querySelector('[data-stat="overdue"]').textContent = stats.overdue_count || 0;
+            } catch (error) {
+                console.error('❌ Error loading dashboard stats:', error);
+            }
+        }
+
+        // Load complaints table
+        async function loadComplaintsTable(page = 1, filters = {}) {
+            try {
+                currentPage = page;
+                activeAdminFilters = filters || {};
+                const params = new URLSearchParams({
+                    page: page,
+                    perPage: adminSettings.perPage || 8,
+                    ...filters
+                });
+
+                const response = await fetch(`${API_BASE}/admin/complaints?${params}`, {
+                    headers: getAuthHeaders()
+                });
+
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+
+                const data = await response.json();
+                const complaints = data.complaints || [];
+                const pagination = data.pagination || {};
+                totalPages = pagination.totalPages || 1;
+
+                // Update table body
+                const tbody = document.querySelector('tbody');
+                if (complaints.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" class="px-6 py-8 text-center text-gray-500">No complaints assigned yet</td></tr>';
+                    updatePaginationInfo(0, 0, 0);
+                    return;
+                }
+
+                tbody.innerHTML = complaints.map(c => {
+                    const priorityColors = {
+                        'Critical': 'bg-red-600/20 text-red-400',
+                        'High': 'bg-orange-600/20 text-orange-400',
+                        'Medium': 'bg-yellow-600/20 text-yellow-400',
+                        'Low': 'bg-green-600/20 text-green-400'
+                    };
+
+                    const statusColors = {
+                        'Submitted': 'bg-blue-600/20 text-blue-400',
+                        'In Progress': 'bg-yellow-600/20 text-yellow-400',
+                        'Resolved': 'bg-green-600/20 text-green-400'
+                    };
+
+                    const daysOpen = c.days_since_created || 0;
+                    const slaClass = daysOpen > 7 ? 'bg-red-600/20 text-red-400' : 'bg-green-600/20 text-green-400';
+
+                    return `
+                        <tr class="hover:bg-slate-700 transition">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">#${c.id}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${c.category}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">${c.location}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full ${priorityColors[c.priority] || ''}">${c.priority}</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full ${statusColors[c.status] || ''}">${c.status}</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full ${slaClass}">${daysOpen} days</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <button class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold transition view-btn" data-complaint-id="${c.id}">
+                                    View
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+
+                if (adminSettings.compactMode) {
+                    tbody.querySelectorAll('td').forEach(td => {
+                        td.classList.remove('py-4');
+                        td.classList.add('py-2');
+                    });
+                }
+
+                // Reattach event listeners to new View buttons
+                document.querySelectorAll('.view-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const complaintId = btn.getAttribute('data-complaint-id');
+                        window.location.href = `complaint-details-admin.html?id=${complaintId}`;
+                    });
+                });
+
+                updatePaginationInfo(pagination.currentPage || 1, pagination.from || 0, pagination.to || 0, pagination.total || 0);
+                renderPaginationButtons();
+            } catch (error) {
+                console.error('❌ Error loading complaints table:', error);
+            }
+        }
+
+        // Update pagination info text
+        function updatePaginationInfo(page, from, to, total) {
+            const infoText = document.querySelector('.px-6.py-4.border-t p');
+            if (infoText) {
+                infoText.textContent = total > 0 ? `Showing ${from} to ${to} of ${total} complaints` : 'No complaints to display';
+            }
+        }
+
+        // Render pagination buttons
+        function renderPaginationButtons() {
+            const paginationContainer = document.querySelector('.px-6.py-4.border-t .flex.space-x-2');
+            if (!paginationContainer) return;
+
+            let html = `
+                <button onclick="changePage(${currentPage - 1})" class="px-3 py-1 bg-slate-700 text-gray-400 rounded hover:bg-slate-600 transition text-sm" ${currentPage === 1 ? 'disabled' : ''}>Previous</button>
+            `;
+
+            // Show page numbers (max 5)
+            const startPage = Math.max(1, currentPage - 2);
+            const endPage = Math.min(totalPages, startPage + 4);
+
+            for (let i = startPage; i <= endPage; i++) {
+                const activeClass = i === currentPage ? 'bg-indigo-600 text-white' : 'bg-slate-700 text-gray-300';
+                html += `<button onclick="changePage(${i})" class="px-3 py-1 ${activeClass} rounded hover:bg-slate-600 transition text-sm font-semibold">${i}</button>`;
+            }
+
+            html += `
+                <button onclick="changePage(${currentPage + 1})" class="px-3 py-1 bg-slate-700 text-gray-300 rounded hover:bg-slate-600 transition text-sm" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>
+            `;
+
+            paginationContainer.innerHTML = html;
+        }
+
+        // Change page function (global for onclick)
+        function changePage(page) {
+            if (page < 1 || page > totalPages) return;
+            loadComplaintsTable(page, activeAdminFilters);
+        }
+
+        function getAdminFilterValues() {
+            const status = document.getElementById('adminStatusFilter')?.value?.trim() || '';
+            const priority = document.getElementById('adminPriorityFilter')?.value?.trim() || '';
+            const category = document.getElementById('adminCategoryFilter')?.value?.trim() || '';
+
+            const filters = {};
+            if (status) filters.status = status;
+            if (priority) filters.priority = priority;
+            if (category) filters.category = category;
+            return filters;
+        }
+
+        function resetAdminFiltersUI() {
+            const statusEl = document.getElementById('adminStatusFilter');
+            const priorityEl = document.getElementById('adminPriorityFilter');
+            const categoryEl = document.getElementById('adminCategoryFilter');
+            if (statusEl) statusEl.value = '';
+            if (priorityEl) priorityEl.value = '';
+            if (categoryEl) categoryEl.value = '';
+        }
+
+        function loadAdminSettings() {
+            try {
+                const raw = localStorage.getItem(ADMIN_SETTINGS_KEY);
+                if (!raw) {
+                    adminSettings = { ...defaultAdminSettings };
+                    return;
+                }
+                const parsed = JSON.parse(raw);
+                adminSettings = {
+                    perPage: Number(parsed.perPage) || defaultAdminSettings.perPage,
+                    autoRefresh: Number(parsed.autoRefresh) || 0,
+                    compactMode: Boolean(parsed.compactMode)
+                };
+            } catch (error) {
+                adminSettings = { ...defaultAdminSettings };
+            }
+        }
+
+        function saveAdminSettings() {
+            localStorage.setItem(ADMIN_SETTINGS_KEY, JSON.stringify(adminSettings));
+        }
+
+        function applyAdminSettings() {
+            if (adminAutoRefreshTimer) {
+                clearInterval(adminAutoRefreshTimer);
+                adminAutoRefreshTimer = null;
+            }
+
+            if (adminSettings.autoRefresh > 0) {
+                adminAutoRefreshTimer = setInterval(() => {
+                    loadDashboardStats();
+                    loadComplaintsTable(currentPage, activeAdminFilters);
+                    loadActivityFeed();
+                }, adminSettings.autoRefresh * 1000);
+            }
+        }
+
+        // Load activity feed
+        async function loadActivityFeed() {
+            try {
+                const response = await fetch(`${API_BASE}/admin/activity-feed`, {
+                    headers: getAuthHeaders()
+                });
+
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+
+                const data = await response.json();
+                const activities = data.activities || [];
+
+                const activityContainer = document.querySelector('.bg-slate-800.rounded-lg.border.border-slate-700.p-6:has(h3 .fa-history) .space-y-4');
+                if (!activityContainer) return;
+
+                if (activities.length === 0) {
+                    activityContainer.innerHTML = '<p class="text-gray-500 text-sm">No recent activity</p>';
+                    return;
+                }
+
+                activityContainer.innerHTML = activities.map((act, idx) => {
+                    const colors = {
+                        'status_change': 'bg-green-500',
+                        'assigned': 'bg-blue-500',
+                        'priority_escalated': 'bg-yellow-500',
+                        'remark_added': 'bg-indigo-500',
+                        'resolved': 'bg-green-500'
+                    };
+
+                    const borderClass = idx < activities.length - 1 ? 'border-b border-slate-700' : '';
+                    const timestamp = new Date(act.timestamp).toLocaleString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+
+                    return `
+                        <div class="flex items-start space-x-3 pb-4 ${borderClass}">
+                            <div class="w-2 h-2 ${colors[act.activity_type] || 'bg-gray-500'} rounded-full mt-2"></div>
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-300">${act.summary}</p>
+                                <p class="text-xs text-gray-500 mt-1">${timestamp}</p>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('❌ Error loading activity feed:', error);
+            }
+        }
+
+        // Load monthly trends chart
+        async function loadMonthlyTrendsChart() {
+            try {
+                const response = await fetch(`${API_BASE}/admin/statistics/monthly-trends`, {
+                    headers: getAuthHeaders()
+                });
+
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+
+                const data = await response.json();
+                const trends = data.trends || [];
+
+                if (trends.length === 0) return;
+
+                // Find chart canvas in the Weekly Resolution Trend section
+                const chartContainer = document.querySelector('.bg-slate-800.rounded-lg.border.border-slate-700.p-6:has(h3 .fa-chart-line) .bg-slate-900');
+                if (!chartContainer) return;
+
+                // Replace placeholder with canvas
+                chartContainer.innerHTML = '<canvas id="weeklyTrendCanvas"></canvas>';
+                const canvas = document.getElementById('weeklyTrendCanvas');
+
+                if (monthlyTrendChart) monthlyTrendChart.destroy();
+
+                const ctx = canvas.getContext('2d');
+                monthlyTrendChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: trends.map(t => t.month),
+                        datasets: [
+                            {
+                                label: 'Submitted',
+                                data: trends.map(t => t.status_counts?.Submitted || 0),
+                                borderColor: 'rgba(59, 130, 246, 1)',
+                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                tension: 0.4
+                            },
+                            {
+                                label: 'In Progress',
+                                data: trends.map(t => t.status_counts?.['In Progress'] || 0),
+                                borderColor: 'rgba(251, 191, 36, 1)',
+                                backgroundColor: 'rgba(251, 191, 36, 0.1)',
+                                tension: 0.4
+                            },
+                            {
+                                label: 'Resolved',
+                                data: trends.map(t => t.status_counts?.Resolved || 0),
+                                borderColor: 'rgba(34, 197, 94, 1)',
+                                backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                                tension: 0.4
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                labels: { color: '#d1d5db', font: { size: 12 } }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                                ticks: { color: '#9ca3af' }
+                            },
+                            x: {
+                                grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                                ticks: { color: '#9ca3af' }
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('❌ Error loading monthly trends chart:', error);
+            }
+        }
+
+        // Export complaints as CSV
+        async function exportComplaintsCSV() {
+            try {
+                const response = await fetch(`${API_BASE}/admin/complaints?format=all`, {
+                    headers: getAuthHeaders()
+                });
+
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+
+                const data = await response.json();
+                const complaints = data.complaints || [];
+
+                if (complaints.length === 0) {
+                    alert('No complaints to export');
+                    return;
+                }
+
+                // Generate CSV
+                const headers = ['ID', 'Category', 'Location', 'Priority', 'Status', 'Created Date', 'Days Open'];
+                const csvRows = [headers.join(',')];
+
+                complaints.forEach(c => {
+                    const row = [
+                        c.id,
+                        `"${c.category}"`,
+                        `"${c.location}"`,
+                        c.priority,
+                        c.status,
+                        new Date(c.created_at).toLocaleDateString(),
+                        c.days_since_created || 0
+                    ];
+                    csvRows.push(row.join(','));
+                });
+
+                const csvContent = csvRows.join('\n');
+                const blob = new Blob([csvContent], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `admin-complaints-${new Date().toISOString().split('T')[0]}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+
+                showNotification('Complaints exported successfully', 'success');
+            } catch (error) {
+                console.error('❌ Error exporting complaints:', error);
+                showNotification('Failed to export complaints', 'error');
+            }
+        }
+
+        // Initialize dashboard on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Check authentication
+            if (!localStorage.getItem('token')) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            loadAdminSettings();
+            applyAdminSettings();
+
+            // Load all dashboard data
+            await Promise.all([
+                loadDashboardStats(),
+                loadComplaintsTable(1),
+                loadActivityFeed(),
+                loadMonthlyTrendsChart()
+            ]);
+
+            const filterToggleBtn = document.getElementById('filterToggleBtn');
+            const filterPanel = document.getElementById('filterPanel');
+            const applyFilterBtn = document.getElementById('applyFilterBtn');
+            const clearFilterBtn = document.getElementById('clearFilterBtn');
+
+            if (filterToggleBtn && filterPanel) {
+                filterToggleBtn.addEventListener('click', () => {
+                    filterPanel.classList.toggle('hidden');
+                });
+            }
+
+            if (applyFilterBtn) {
+                applyFilterBtn.addEventListener('click', async () => {
+                    activeAdminFilters = getAdminFilterValues();
+                    await loadComplaintsTable(1, activeAdminFilters);
+                });
+            }
+
+            if (clearFilterBtn) {
+                clearFilterBtn.addEventListener('click', async () => {
+                    resetAdminFiltersUI();
+                    activeAdminFilters = {};
+                    await loadComplaintsTable(1, activeAdminFilters);
+                });
+            }
+
+            // Attach export button handler
+            const exportBtn = document.getElementById('exportBtn');
+            if (exportBtn) {
+                exportBtn.addEventListener('click', exportComplaintsCSV);
+            }
+        });
+    </script>
+
+</body>
+
+</html>

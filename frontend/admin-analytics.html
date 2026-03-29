@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Analytics - SCRS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="bg-slate-900 text-gray-300 min-h-screen">
+    <div id="notificationContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-slate-800 border-r border-slate-700 p-6 hidden md:flex flex-col fixed h-screen">
+        <div class="mb-8">
+            <div class="flex items-center gap-3">
+                <img src="../assests/Civixa_logo_new.png" alt="SCRS Logo" class="h-10 w-auto object-contain block">
+                <h2 class="text-2xl font-bold leading-none text-white">SCRS</h2>
+            </div>
+            <p class="text-xs text-gray-400 mt-2">Admin Panel</p>
+        </div>
+        <nav class="space-y-2 flex-1">
+            <a href="dashboard-admin.html"
+                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">📊
+                Dashboard</a>
+            <a href="complaint-details-admin.html"
+                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">📋
+                Assigned Complaints</a>
+            <a href="admin-analytics.html"
+                class="block px-4 py-2 rounded-lg bg-slate-800 text-indigo-400 font-medium hover:bg-slate-800 transition duration-300">📈
+                Analytics</a>
+            <a href="admin-profile.html"
+                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">👤
+                Profile & Settings</a>
+            <a href="support.html"
+                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">Support</a>
+        </nav>
+        <div class="border-t border-slate-700 pt-4">
+            <div class="space-y-2">
+                <p class="text-sm text-gray-400 font-medium">Admin:</p>
+                <p class="font-semibold text-white text-sm" id="authName">Admin User</p>
+                <button onclick="logout()"
+                    class="w-full px-3 py-2 rounded-lg bg-red-600/20 text-red-400 hover:bg-red-600/30 transition text-sm font-medium">Logout</button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="md:ml-64 p-6 md:p-8 bg-slate-900">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-white mb-2">Admin Analytics</h1>
+            <p class="text-gray-400">Performance metrics and insights for your administrative work.</p>
+        </div>
+
+        <!-- Performance Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Total Assigned -->
+            <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-medium text-gray-400">Total Assigned</h3>
+                    <i class="fas fa-clipboard-list text-indigo-600 text-xl"></i>
+                </div>
+                <p class="text-3xl font-bold text-white mb-1" id="totalAssigned">48</p>
+                <p class="text-xs text-gray-500">All time complaints</p>
+            </div>
+
+            <!-- Resolved -->
+            <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-medium text-gray-400">Resolved</h3>
+                    <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                </div>
+                <p class="text-3xl font-bold text-white mb-1" id="totalResolved">36</p>
+                <p class="text-xs text-gray-500">Successfully completed</p>
+            </div>
+
+            <!-- Average Resolution Time -->
+            <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-medium text-gray-400">Avg Resolution Time</h3>
+                    <i class="fas fa-clock text-blue-600 text-xl"></i>
+                </div>
+                <p class="text-3xl font-bold text-white mb-1" id="avgResolutionTime">2.4</p>
+                <p class="text-xs text-gray-500">Days per complaint</p>
+            </div>
+
+            <!-- Performance Score -->
+            <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-medium text-gray-400">Performance Score</h3>
+                    <i class="fas fa-trophy text-yellow-600 text-xl"></i>
+                </div>
+                <p class="text-3xl font-bold text-white mb-1" id="performanceScore">92%</p>
+                <p class="text-xs text-gray-500">Overall rating</p>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Weekly Resolution Trend -->
+            <div class="bg-slate-800 rounded-lg border border-slate-700 p-6">
+                <h2 class="text-xl font-bold text-white mb-4">Weekly Resolution Trend</h2>
+                <div class="relative h-64">
+                    <canvas id="weeklyTrendChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Category Distribution -->
+            <div class="bg-slate-800 rounded-lg border border-slate-700 p-6">
+                <h2 class="text-xl font-bold text-white mb-4">Category Distribution</h2>
+                <div class="relative h-64">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Priority Distribution -->
+        <div class="bg-slate-800 rounded-lg border border-slate-700 p-6 mb-8">
+            <h2 class="text-xl font-bold text-white mb-4">Priority Distribution</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="relative h-48">
+                    <canvas id="priorityChart"></canvas>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-400">Critical</span>
+                        <span class="text-white font-semibold">6 complaints</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-400">High</span>
+                        <span class="text-white font-semibold">12 complaints</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-400">Medium</span>
+                        <span class="text-white font-semibold">22 complaints</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-400">Low</span>
+                        <span class="text-white font-semibold">8 complaints</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Timeline -->
+        <div class="bg-slate-800 rounded-lg border border-slate-700 p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-bold text-white">Recent Activity</h2>
+                <button id="refreshActivityBtn" class="px-3 py-1 bg-slate-700 text-gray-300 rounded hover:bg-slate-600 transition text-sm">
+                    <i class="fas fa-sync mr-1"></i>Refresh
+                </button>
+            </div>
+            
+            <div class="space-y-3" id="activityTimeline">
+                <div class="flex items-start space-x-3">
+                    <div class="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                    <div class="flex-1">
+                        <p class="text-white text-sm">Complaint #1289 marked as resolved</p>
+                        <p class="text-gray-500 text-xs">2 hours ago</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                    <div class="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                    <div class="flex-1">
+                        <p class="text-white text-sm">Complaint #1290 assigned to you</p>
+                        <p class="text-gray-500 text-xs">5 hours ago</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                    <div class="w-2 h-2 bg-yellow-500 rounded-full mt-2"></div>
+                    <div class="flex-1">
+                        <p class="text-white text-sm">Status updated for Complaint #1287</p>
+                        <p class="text-gray-500 text-xs">1 day ago</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                    <div class="w-2 h-2 bg-indigo-500 rounded-full mt-2"></div>
+                    <div class="flex-1">
+                        <p class="text-white text-sm">Added remark to Complaint #1285</p>
+                        <p class="text-gray-500 text-xs">2 days ago</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="auth.js"></script>
+    <script>
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            const auth = requireAuth(['admin']);
+            if (!auth) return;
+
+            // Load analytics data
+            loadAnalyticsData();
+            
+            // Setup charts
+            setupCharts();
+            
+            // Setup event listeners
+            setupEventListeners();
+        });
+
+        function loadAnalyticsData() {
+            fetch('http://localhost:3000/api/admin/analytics', {
+                headers: getAuthHeaders()
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updatePerformanceCards(data.performance);
+                    updateCharts(data.charts);
+                    updateActivityTimeline(data.activities);
+                } else {
+                    showNotification('Failed to load analytics data', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error loading analytics:', error);
+                showNotification('Connection error', 'error');
+                // Load mock data for demo
+                loadMockData();
+            });
+        }
+
+        function updatePerformanceCards(performance) {
+            document.getElementById('totalAssigned').textContent = performance.total_assigned || 48;
+            document.getElementById('totalResolved').textContent = performance.total_resolved || 36;
+            document.getElementById('avgResolutionTime').textContent = performance.avg_resolution_time || '2.4';
+            document.getElementById('performanceScore').textContent = performance.performance_score || '92%';
+        }
+
+        function setupCharts() {
+            // Weekly Resolution Trend Chart
+            const weeklyCtx = document.getElementById('weeklyTrendChart').getContext('2d');
+            window.weeklyTrendChart = new Chart(weeklyCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Resolved',
+                        data: [3, 5, 4, 7, 6, 8, 5],
+                        borderColor: 'rgb(99, 102, 241)',
+                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Category Distribution Chart
+            const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+            window.categoryChart = new Chart(categoryCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Road Damage', 'Water Supply', 'Garbage', 'Streetlight', 'Traffic'],
+                    datasets: [{
+                        data: [12, 8, 15, 6, 7],
+                        backgroundColor: [
+                            'rgba(239, 68, 68, 0.8)',
+                            'rgba(59, 130, 246, 0.8)',
+                            'rgba(34, 197, 94, 0.8)',
+                            'rgba(251, 191, 36, 0.8)',
+                            'rgba(168, 85, 247, 0.8)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: 'rgba(255, 255, 255, 0.7)',
+                                padding: 20
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Priority Distribution Chart
+            const priorityCtx = document.getElementById('priorityChart').getContext('2d');
+            window.priorityChart = new Chart(priorityCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Critical', 'High', 'Medium', 'Low'],
+                    datasets: [{
+                        label: 'Number of Complaints',
+                        data: [6, 12, 22, 8],
+                        backgroundColor: [
+                            'rgba(239, 68, 68, 0.8)',
+                            'rgba(251, 191, 36, 0.8)',
+                            'rgba(59, 130, 246, 0.8)',
+                            'rgba(34, 197, 94, 0.8)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateCharts(chartData) {
+            if (chartData.weekly_trend) {
+                window.weeklyTrendChart.data.datasets[0].data = chartData.weekly_trend;
+                window.weeklyTrendChart.update();
+            }
+            
+            if (chartData.category_distribution) {
+                window.categoryChart.data.labels = chartData.category_distribution.labels;
+                window.categoryChart.data.datasets[0].data = chartData.category_distribution.data;
+                window.categoryChart.update();
+            }
+            
+            if (chartData.priority_distribution) {
+                window.priorityChart.data.datasets[0].data = chartData.priority_distribution;
+                window.priorityChart.update();
+            }
+        }
+
+        function updateActivityTimeline(activities) {
+            const timeline = document.getElementById('activityTimeline');
+            timeline.innerHTML = activities.map(activity => `
+                <div class="flex items-start space-x-3">
+                    <div class="w-2 h-2 ${getActivityColor(activity.type)} rounded-full mt-2"></div>
+                    <div class="flex-1">
+                        <p class="text-white text-sm">${activity.description}</p>
+                        <p class="text-gray-500 text-xs">${formatTimeAgo(activity.timestamp)}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getActivityColor(type) {
+            const colors = {
+                'resolved': 'bg-green-500',
+                'assigned': 'bg-blue-500',
+                'status_updated': 'bg-yellow-500',
+                'remark_added': 'bg-indigo-500',
+                'proof_uploaded': 'bg-purple-500'
+            };
+            return colors[type] || 'bg-gray-500';
+        }
+
+        function formatTimeAgo(timestamp) {
+            const now = new Date();
+            const activityTime = new Date(timestamp);
+            const diffMs = now - activityTime;
+            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+            const diffDays = Math.floor(diffHours / 24);
+            
+            if (diffDays > 0) {
+                return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+            } else if (diffHours > 0) {
+                return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+            } else {
+                return 'Just now';
+            }
+        }
+
+        function setupEventListeners() {
+            document.getElementById('refreshActivityBtn').addEventListener('click', function() {
+                this.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>Loading...';
+                
+                fetch('http://localhost:3000/api/admin/activities', {
+                    headers: getAuthHeaders()
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        updateActivityTimeline(data.activities);
+                        showNotification('Activity refreshed', 'success');
+                    } else {
+                        showNotification('Failed to refresh activity', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error refreshing activity:', error);
+                    showNotification('Connection error', 'error');
+                })
+                .finally(() => {
+                    this.innerHTML = '<i class="fas fa-sync mr-1"></i>Refresh';
+                });
+            });
+        }
+
+        function loadMockData() {
+            // Mock data for demonstration
+            updatePerformanceCards({
+                total_assigned: 48,
+                total_resolved: 36,
+                avg_resolution_time: '2.4',
+                performance_score: '92%'
+            });
+
+            const mockActivities = [
+                { type: 'resolved', description: 'Complaint #1289 marked as resolved', timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000) },
+                { type: 'assigned', description: 'Complaint #1290 assigned to you', timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000) },
+                { type: 'status_updated', description: 'Status updated for Complaint #1287', timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000) },
+                { type: 'remark_added', description: 'Added remark to Complaint #1285', timestamp: new Date(Date.now() - 48 * 60 * 60 * 1000) }
+            ];
+            
+            updateActivityTimeline(mockActivities);
+        }
+
+        function showNotification(message, type) {
+            const container = document.getElementById('notificationContainer');
+            const notification = document.createElement('div');
+            const bgColor = type === 'success' ? 'bg-green-600' : 'bg-red-600';
+            notification.className = `${bgColor} text-white px-4 py-3 rounded-lg shadow-lg`;
+            notification.textContent = message;
+            container.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        function logout() {
+            clearAuth();
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+
+</html>

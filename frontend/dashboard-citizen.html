@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Citizen Dashboard - SCRS Municipal</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-tertiary-container": "#ffb48b",
+            "surface-variant": "#e1e3e4",
+            "tertiary-fixed-dim": "#ffb68e",
+            "surface-container-high": "#e7e8e9",
+            "surface-tint": "#1d5fa8",
+            "background": "#f8f9fa",
+            "on-surface-variant": "#424751",
+            "surface-container-low": "#f3f4f5",
+            "secondary": "#48626e",
+            "error": "#ba1a1a",
+            "on-primary-fixed-variant": "#004787",
+            "on-primary-container": "#a5c7ff",
+            "inverse-on-surface": "#f0f1f2",
+            "on-secondary-fixed": "#021f29",
+            "on-secondary-fixed-variant": "#304a55",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-fixed": "#ffdbca",
+            "on-secondary": "#ffffff",
+            "outline-variant": "#c2c6d3",
+            "on-primary": "#ffffff",
+            "primary-container": "#00529b",
+            "error-container": "#ffdad6",
+            "on-tertiary-fixed": "#331200",
+            "on-surface": "#191c1d",
+            "on-error": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "primary": "#003b72",
+            "on-background": "#191c1d",
+            "primary-fixed-dim": "#a6c8ff",
+            "surface-dim": "#d9dadb",
+            "surface": "#f8f9fa",
+            "on-error-container": "#93000a",
+            "surface-container": "#edeeef",
+            "inverse-surface": "#2e3132",
+            "inverse-primary": "#a6c8ff",
+            "secondary-fixed": "#cbe7f5",
+            "on-primary-fixed": "#001c3b",
+            "tertiary": "#642a00",
+            "tertiary-container": "#883b00",
+            "on-secondary-container": "#4e6874",
+            "outline": "#727782",
+            "surface-container-highest": "#e1e3e4",
+            "secondary-fixed-dim": "#afcbd8",
+            "on-tertiary-fixed-variant": "#773300",
+            "surface-bright": "#f8f9fa",
+            "primary-fixed": "#d5e3ff",
+            "secondary-container": "#cbe7f5"
+          },
+          fontFamily: {
+            "headline": ["Public Sans"],
+            "body": ["Inter"],
+            "label": ["Inter"]
+          },
+          borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"}
+        }
+      }
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    body { font-family: 'Inter', sans-serif; }
+    h1, h2, h3, .headline { font-family: 'Public Sans', sans-serif; }
+    .hero-gradient { background: linear-gradient(135deg, #003b72 0%, #00529b 100%); }
+    .glass-panel { background: rgba(248, 249, 250, 0.72); backdrop-filter: blur(20px); }
+    .dark .glass-panel { background: rgba(2, 6, 23, 0.72); }
+    .dark body {
+      background: #020617;
+      color: #e5e7eb;
+    }
+    .dark .bg-background,
+    .dark .bg-surface,
+    .dark .bg-surface-container-lowest {
+      background-color: #0f172a !important;
+    }
+    .dark .bg-surface-container-low {
+      background-color: #1e293b !important;
+    }
+    .dark .bg-surface-container,
+    .dark .bg-surface-container-high,
+    .dark .bg-surface-container-highest {
+      background-color: #334155 !important;
+    }
+    .dark .text-on-surface {
+      color: #f1f5f9 !important;
+    }
+    .dark .text-on-surface-variant,
+    .dark .text-outline,
+    .dark .text-outline-variant {
+      color: #94a3b8 !important;
+    }
+    .dark .border-surface-variant,
+    .dark .border-outline,
+    .dark .border-outline-variant {
+      border-color: #334155 !important;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-background text-on-surface dark:bg-slate-950 dark:text-slate-100">
+  <aside class="fixed left-0 top-0 z-50 hidden h-screen w-64 overflow-y-auto bg-slate-100 p-4 font-['Public_Sans'] text-sm antialiased dark:bg-slate-900 md:flex md:flex-col">
+    <div class="mb-8 px-2">
+      <h1 class="text-xl font-black tracking-tighter text-blue-900 dark:text-white">City Services</h1>
+      <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Management Portal</p>
+    </div>
+    <nav class="flex-1 space-y-1">
+      <a class="flex items-center px-4 py-3 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50" href="index.html">
+        <span class="material-symbols-outlined mr-3">home</span><span class="font-medium">Home</span>
+      </a>
+      <a class="flex items-center rounded-r-lg border-l-4 border-blue-800 bg-white px-4 py-3 text-blue-700 shadow-sm transition-transform duration-200 hover:translate-x-1 dark:bg-slate-800 dark:text-blue-300" href="dashboard-citizen.html">
+        <span class="material-symbols-outlined mr-3">dashboard</span><span class="font-medium">Dashboard</span>
+      </a>
+      <a class="flex items-center px-4 py-3 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50" href="my-complaints.html">
+        <span class="material-symbols-outlined mr-3">list_alt</span><span class="font-medium">My Complaints</span>
+      </a>
+      <a class="flex items-center px-4 py-3 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50" href="complaint.html">
+        <span class="material-symbols-outlined mr-3">add_circle</span><span class="font-medium">Submit Request</span>
+      </a>
+      <a class="flex items-center px-4 py-3 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50" href="support.html">
+        <span class="material-symbols-outlined mr-3">contact_support</span><span class="font-medium">Support</span>
+      </a>
+    </nav>
+    <div class="mt-auto space-y-1 border-t border-slate-200 pt-6 dark:border-slate-800">
+      <a href="complaint.html" class="mb-4 flex w-full items-center justify-center gap-2 rounded-xl hero-gradient px-4 py-3 font-bold text-white shadow-lg transition-opacity hover:opacity-90">
+        <span class="material-symbols-outlined">add</span>New Complaint
+      </a>
+      <a class="flex items-center px-4 py-2 text-slate-500 transition-colors hover:text-blue-600" href="support.html">
+        <span class="material-symbols-outlined mr-3">dns</span><span class="text-xs">System Status</span>
+      </a>
+      <a class="flex items-center px-4 py-2 text-slate-500 transition-colors hover:text-error" href="login.html">
+        <span class="material-symbols-outlined mr-3">logout</span><span class="text-xs">Logout</span>
+      </a>
+    </div>
+  </aside>
+
+  <div class="flex min-h-screen flex-col md:ml-64">
+    <header class="sticky top-0 z-40 flex w-full items-center justify-between bg-slate-50/70 px-6 py-3 font-['Public_Sans'] font-medium tracking-tight shadow-sm backdrop-blur-xl dark:bg-slate-950/70">
+      <div class="flex items-center gap-8">
+        <span class="text-xl font-bold tracking-tighter text-blue-900 dark:text-blue-100 md:hidden">SCRS</span>
+        <nav class="hidden items-center space-x-6 lg:flex">
+          <a class="border-b-2 border-blue-700 py-1 font-bold text-blue-700 dark:text-blue-300" href="dashboard-citizen.html">Dashboard</a>
+          <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="index.html">Home</a>
+          <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="my-complaints.html">My Complaints</a>
+          <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="support.html">Support</a>
+        </nav>
+      </div>
+      <div class="flex items-center space-x-4">
+        <div class="relative hidden sm:block">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+          <input class="rounded-full border-none bg-slate-100 py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary dark:bg-slate-900" placeholder="Search complaints..." type="text"/>
+        </div>
+        <button id="notificationBtn" class="rounded-full p-2 text-slate-500 transition-colors hover:bg-blue-50/50 dark:hover:bg-blue-900/20" type="button">
+          <span class="material-symbols-outlined">notifications</span>
+        </button>
+        <button id="themeToggleBtn" class="rounded-full p-2 text-slate-500 transition-colors hover:bg-blue-50/50 dark:hover:bg-blue-900/20" type="button">
+          <span id="themeToggleIcon" class="material-symbols-outlined">dark_mode</span>
+        </button>
+        <button onclick="openProfileModal()" class="rounded-full p-1 transition-colors hover:bg-blue-50/50 dark:hover:bg-blue-900/20" type="button">
+          <img id="headerAvatar" alt="User profile avatar" class="h-8 w-8 rounded-full border border-slate-300" src="https://ui-avatars.com/api/?name=Citizen+User&background=4f46e5&color=fff"/>
+        </button>
+      </div>
+      <div id="notificationDropdown" class="hidden absolute right-6 top-16 z-50 w-80 rounded-xl border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-800">
+        <div class="border-b border-slate-200 px-4 py-3 dark:border-slate-700">
+          <h3 class="font-semibold text-on-surface">Notifications</h3>
+        </div>
+        <div class="max-h-72 overflow-y-auto">
+          <div class="border-b border-slate-100 px-4 py-3 text-sm text-on-surface-variant dark:border-slate-700">Complaint updates appear here.</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto w-full max-w-7xl flex-grow space-y-10 p-6 pb-24 md:p-10 md:pb-10">
+      <section class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div class="hero-gradient relative col-span-1 flex min-h-[240px] flex-col justify-center overflow-hidden rounded-2xl p-8 text-white shadow-lg lg:col-span-2">
+          <div class="relative z-10">
+            <h2 class="mb-2 text-3xl font-bold tracking-tight">Welcome back, Citizen</h2>
+            <p class="max-w-md text-blue-100 opacity-90">Your active reports are being processed. Your contribution helps make the community safer.</p>
+            <div class="mt-6 flex gap-4">
+              <a class="rounded-xl bg-white px-6 py-2.5 text-sm font-bold text-primary shadow-md transition-colors hover:bg-blue-50" href="my-complaints.html">View All Requests</a>
+            </div>
+          </div>
+          <div class="pointer-events-none absolute right-0 top-0 h-full w-1/3 opacity-10">
+            <span class="material-symbols-outlined -mr-20 -mt-10 text-[200px]" style="font-variation-settings:'FILL' 1;">account_balance</span>
+          </div>
+        </div>
+        <div class="flex flex-col justify-between rounded-2xl border border-surface-variant bg-tertiary-container p-8 text-white shadow-sm">
+          <div>
+            <span class="material-symbols-outlined mb-4 text-4xl">campaign</span>
+            <h3 class="text-xl font-bold leading-tight">Identify a new issue in your area?</h3>
+          </div>
+          <a href="complaint.html" class="mt-4 flex items-center justify-center gap-2 rounded-xl border border-white/30 bg-white/20 py-3 font-bold text-white backdrop-blur-md transition-all hover:bg-white/30">
+            <span class="material-symbols-outlined">add_circle</span>Submit New Report
+          </a>
+        </div>
+      </section>
+
+      <section class="grid grid-cols-1 gap-6 sm:grid-cols-3 lg:grid-cols-4">
+        <div class="rounded-2xl border border-surface-variant border-l-4 border-primary bg-surface-container-lowest p-6 shadow-sm">
+          <p class="text-sm font-medium text-on-surface-variant">My Total Complaints</p>
+          <h4 class="mt-2 text-3xl font-extrabold tracking-tighter text-on-surface" data-stat="total">0</h4>
+        </div>
+        <div class="rounded-2xl border border-surface-variant border-l-4 border-amber-600 bg-surface-container-lowest p-6 shadow-sm">
+          <p class="text-sm font-medium text-on-surface-variant">Pending</p>
+          <h4 class="mt-2 text-3xl font-extrabold tracking-tighter text-on-surface" data-stat="pending">0</h4>
+        </div>
+        <div class="rounded-2xl border border-surface-variant border-l-4 border-red-600 bg-surface-container-lowest p-6 shadow-sm">
+          <p class="text-sm font-medium text-on-surface-variant">Critical</p>
+          <h4 class="mt-2 text-3xl font-extrabold tracking-tighter text-on-surface" data-stat="critical">0</h4>
+        </div>
+        <div class="rounded-2xl border border-surface-variant border-l-4 border-emerald-600 bg-surface-container-lowest p-6 shadow-sm">
+          <p class="text-sm font-medium text-on-surface-variant">Resolved</p>
+          <h4 class="mt-2 text-3xl font-extrabold tracking-tighter text-on-surface" data-stat="resolved">0</h4>
+        </div>
+      </section>
+
+      <section class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        <div class="overflow-hidden rounded-2xl border border-surface-variant bg-surface-container-lowest shadow-sm lg:col-span-8">
+          <div class="flex items-center justify-between border-b border-surface-variant bg-surface-bright p-6">
+            <h3 class="text-lg font-bold text-primary">Recent Reports</h3>
+            <button class="text-sm font-bold text-primary hover:underline" type="button">Download CSV</button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full border-collapse text-left">
+              <thead>
+                <tr class="bg-surface-container-low text-xs font-bold uppercase tracking-wider text-on-surface-variant">
+                  <th class="px-6 py-4">Report ID</th>
+                  <th class="px-6 py-4">Issue Category</th>
+                  <th class="px-6 py-4">Status</th>
+                  <th class="px-6 py-4">Priority</th>
+                  <th class="px-6 py-4 text-right">Submitted</th>
+                  <th class="px-6 py-4">Action</th>
+                </tr>
+              </thead>
+              <tbody id="reportsTableBody" class="divide-y divide-surface-variant"></tbody>
+            </table>
+          </div>
+          <div class="px-6 py-4 border-t border-surface-variant flex items-center justify-between">
+            <p id="paginationInfo" class="text-sm text-on-surface-variant">Loading complaints...</p>
+            <div id="paginationButtons" class="flex space-x-2"></div>
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-surface-variant bg-surface-container-lowest p-6 shadow-sm lg:col-span-4">
+          <div class="mb-6">
+            <h3 class="text-lg font-bold text-primary">Service Trends</h3>
+            <p class="text-xs text-on-surface-variant">Reports over the last 6 months</p>
+          </div>
+          <div class="flex items-end justify-between gap-2 px-2">
+            <div class="flex w-full flex-col items-center gap-2"><div class="relative h-24 w-full rounded-t-lg bg-slate-100"><div class="absolute bottom-0 h-12 w-full rounded-t-lg bg-primary-fixed-dim"></div></div><span class="text-[10px] font-bold text-slate-400">MAY</span></div>
+            <div class="flex w-full flex-col items-center gap-2"><div class="relative h-24 w-full rounded-t-lg bg-slate-100"><div class="absolute bottom-0 h-16 w-full rounded-t-lg bg-primary-fixed-dim"></div></div><span class="text-[10px] font-bold text-slate-400">JUN</span></div>
+            <div class="flex w-full flex-col items-center gap-2"><div class="relative h-24 w-full rounded-t-lg bg-slate-100"><div class="absolute bottom-0 h-8 w-full rounded-t-lg bg-primary-fixed-dim"></div></div><span class="text-[10px] font-bold text-slate-400">JUL</span></div>
+            <div class="flex w-full flex-col items-center gap-2"><div class="relative h-24 w-full rounded-t-lg bg-slate-100"><div class="absolute bottom-0 h-20 w-full rounded-t-lg bg-primary-fixed-dim"></div></div><span class="text-[10px] font-bold text-slate-400">AUG</span></div>
+            <div class="flex w-full flex-col items-center gap-2"><div class="relative h-24 w-full rounded-t-lg bg-slate-100"><div class="absolute bottom-0 h-14 w-full rounded-t-lg bg-primary"></div></div><span class="text-[10px] font-black text-primary">SEP</span></div>
+          </div>
+          <div class="mt-8 rounded-xl bg-surface-container-low p-4">
+            <div class="flex items-center justify-between text-sm">
+              <span class="text-on-surface-variant">Resolution Avg.</span>
+              <span class="font-bold text-primary">3.2 Days</span>
+            </div>
+            <div class="mt-2 h-1.5 w-full rounded-full bg-surface-variant"><div class="h-full w-[80%] rounded-full bg-primary"></div></div>
+          </div>
+          <div class="mt-6 rounded-xl border border-indigo-600/30 bg-gradient-to-r from-indigo-600/20 to-purple-600/20 p-4">
+            <p class="text-sm text-on-surface-variant">Transparency Insight</p>
+            <p class="mt-2 text-xl font-bold text-primary" data-stat="transparency">0</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="mt-auto w-full border-t border-slate-200 bg-slate-50 py-8 font-['Inter'] text-xs tracking-wide dark:border-slate-800 dark:bg-slate-950">
+      <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-12 md:flex-row">
+        <div class="text-center text-slate-500 md:text-left dark:text-slate-400"><p>&copy; 2026 Municipal SCRS. Architectural Trust System.</p></div>
+        <div class="flex items-center space-x-6">
+          <a class="text-slate-400 transition-colors hover:text-slate-600" href="privacy.html">Privacy Policy</a>
+          <a class="text-slate-400 transition-colors hover:text-slate-600" href="terms.html">Terms of Service</a>
+          <a class="text-slate-400 transition-colors hover:text-slate-600" href="support.html">Contact</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <nav class="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around border-t border-slate-200 bg-white/80 py-3 backdrop-blur-lg dark:border-slate-800 dark:bg-slate-950/85 md:hidden">
+    <a class="flex flex-col items-center text-slate-400 dark:text-slate-500" href="index.html"><span class="material-symbols-outlined">home</span><span class="mt-1 text-[10px] font-medium">Home</span></a>
+    <a class="flex flex-col items-center text-blue-700 dark:text-blue-300" href="dashboard-citizen.html"><span class="material-symbols-outlined">dashboard</span><span class="mt-1 text-[10px] font-bold">Dashboard</span></a>
+    <div class="relative -top-8"><a href="complaint.html" class="hero-gradient flex h-14 w-14 items-center justify-center rounded-full text-white shadow-lg"><span class="material-symbols-outlined text-3xl">add</span></a></div>
+    <a class="flex flex-col items-center text-slate-400 dark:text-slate-500" href="my-complaints.html"><span class="material-symbols-outlined">list_alt</span><span class="mt-1 text-[10px] font-medium">Complaints</span></a>
+    <a class="flex flex-col items-center text-slate-400 dark:text-slate-500" href="support.html"><span class="material-symbols-outlined">help</span><span class="mt-1 text-[10px] font-medium">Support</span></a>
+    <button onclick="openProfileModal()" class="flex flex-col items-center text-slate-400 dark:text-slate-500" type="button"><span class="material-symbols-outlined">account_circle</span><span class="mt-1 text-[10px] font-medium">Profile</span></button>
+  </nav>
+
+  <div id="profileModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+    <div class="w-full max-w-xl rounded-xl border border-slate-700 bg-slate-800 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-slate-700 px-6 py-4">
+        <h3 class="text-xl font-bold text-white">My Profile</h3>
+        <button onclick="closeProfileModal()" class="text-xl text-gray-400 transition hover:text-white" type="button">&times;</button>
+      </div>
+      <div class="space-y-4 px-6 py-5">
+        <div>
+          <label class="mb-2 block text-sm text-gray-400">Full Name</label>
+          <input id="updateName" class="w-full rounded-lg border border-slate-600 bg-slate-700 px-3 py-2 text-white focus:border-indigo-400 focus:outline-none" type="text"/>
+        </div>
+        <div>
+          <label class="mb-2 block text-sm text-gray-400">Email Address</label>
+          <input id="updateEmail" class="w-full rounded-lg border border-slate-600 bg-slate-700 px-3 py-2 text-white focus:border-indigo-400 focus:outline-none" type="email"/>
+        </div>
+        <div id="profileUpdateStatus" class="hidden"></div>
+      </div>
+      <div class="flex gap-2 border-t border-slate-700 px-6 py-4">
+        <button onclick="closeProfileModal()" class="flex-1 rounded-lg bg-slate-600 py-2 font-semibold text-white transition hover:bg-slate-700">Cancel</button>
+        <button onclick="saveProfileChanges()" class="flex-1 rounded-lg bg-indigo-600 py-2 font-semibold text-white transition hover:bg-indigo-700">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="settingsModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+    <div class="w-full max-w-lg rounded-xl border border-slate-700 bg-slate-800 p-6 shadow-2xl">
+      <div class="mb-4 flex items-center justify-between">
+        <h3 class="text-xl font-bold text-white">Settings</h3>
+        <button onclick="closeSettingsModal()" class="text-xl text-gray-400 transition hover:text-white" type="button">&times;</button>
+      </div>
+      <p class="text-sm text-gray-400">Demo settings panel.</p>
+      <div id="settingsUpdateStatus" class="hidden"></div>
+      <div class="mt-4 flex justify-end gap-2">
+        <button onclick="closeSettingsModal()" class="rounded-lg bg-slate-600 px-4 py-2 text-white">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
+  <script>
+    requireAuth('citizen');
+
+    function openProfileModal() {
+      const modal = document.getElementById('profileModal');
+      modal.classList.remove('hidden');
+
+      const userStr = localStorage.getItem('token_placeholder');
+      if (userStr) {
+        try {
+          const user = JSON.parse(userStr);
+          document.getElementById('updateName').value = user.name || '';
+          document.getElementById('updateEmail').value = user.email || '';
+        } catch (error) {
+          console.error('Profile parse error:', error);
+        }
+      }
+    }
+
+    function closeProfileModal() {
+      document.getElementById('profileModal').classList.add('hidden');
+      document.getElementById('profileUpdateStatus').classList.add('hidden');
+    }
+
+    function saveProfileChanges() {
+      const nameInput = document.getElementById('updateName').value.trim();
+      const emailInput = document.getElementById('updateEmail').value.trim();
+      const statusDiv = document.getElementById('profileUpdateStatus');
+
+      let user = { name: 'Citizen User', email: 'citizen@example.com' };
+      try {
+        user = JSON.parse(localStorage.getItem('token_placeholder') || '{}') || user;
+      } catch (error) {
+        console.error(error);
+      }
+
+      if (nameInput) user.name = nameInput;
+      if (emailInput) user.email = emailInput;
+      localStorage.setItem('token_placeholder', JSON.stringify(user));
+
+      const avatarUrl = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.name || 'Citizen User') + '&background=4f46e5&color=fff';
+      document.getElementById('headerAvatar').src = avatarUrl;
+
+      statusDiv.classList.remove('hidden');
+      statusDiv.className = 'mt-2 rounded-lg border border-green-500 bg-green-900/50 p-2 text-sm text-green-400';
+      statusDiv.textContent = 'Profile updated successfully';
+
+      setTimeout(closeProfileModal, 1200);
+    }
+
+    function openSettingsModal() {
+      document.getElementById('settingsModal').classList.remove('hidden');
+    }
+
+    function closeSettingsModal() {
+      document.getElementById('settingsModal').classList.add('hidden');
+    }
+
+    document.getElementById('notificationBtn').addEventListener('click', function(e) {
+      e.stopPropagation();
+      document.getElementById('notificationDropdown').classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', function(e) {
+      const drop = document.getElementById('notificationDropdown');
+      if (!drop.contains(e.target) && e.target.id !== 'notificationBtn') {
+        drop.classList.add('hidden');
+      }
+    });
+
+    (function initializeTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      const root = document.documentElement;
+      root.classList.toggle('dark', savedTheme === 'dark');
+      root.classList.toggle('light', savedTheme !== 'dark');
+      root.setAttribute('data-theme', savedTheme);
+      const icon = document.getElementById('themeToggleIcon');
+      if (icon) {
+        icon.textContent = savedTheme === 'dark' ? 'light_mode' : 'dark_mode';
+      }
+    })();
+
+    document.getElementById('themeToggleBtn').addEventListener('click', function() {
+      const root = document.documentElement;
+      const isDark = root.classList.toggle('dark');
+      root.classList.toggle('light', !isDark);
+      root.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      const icon = document.getElementById('themeToggleIcon');
+      if (icon) {
+        icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+      }
+    });
+  </script>
+  <script src="citizen-dashboard.js"></script>
+</body>
+</html>

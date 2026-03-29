@@ -1,0 +1,73 @@
+{
+  "functional": [
+    {
+      "feature": "Update Complaint Status",
+      "pass": true
+    }
+  ],
+  "security": [
+    {
+      "vulnerability": "Access Control",
+      "description": "Admin dashboard properly blocks citizen",
+      "severity": "Pass"
+    },
+    {
+      "vulnerability": "SQL Injection Prevention",
+      "description": "Login handles SQLi payload safely",
+      "severity": "Pass"
+    },
+    {
+      "vulnerability": "IDOR",
+      "description": "Citizen blocked from updating status",
+      "severity": "Pass"
+    }
+  ],
+  "fuzz": [
+    {
+      "payload": "Empty Body",
+      "result": "Correctly rejected",
+      "pass": true
+    },
+    {
+      "payload": "Missing Location",
+      "result": "Correctly rejected",
+      "pass": true
+    },
+    {
+      "payload": "Massive Description (XSS/Overflow test)",
+      "result": "Handled payload",
+      "pass": true
+    },
+    {
+      "payload": "Invalid Category",
+      "result": "Handled payload",
+      "pass": true
+    }
+  ],
+  "performance": [
+    {
+      "endpoint": "POST /complaints",
+      "time": 5,
+      "payload": "Empty Body"
+    },
+    {
+      "endpoint": "POST /complaints",
+      "time": 4,
+      "payload": "Missing Location"
+    },
+    {
+      "endpoint": "POST /complaints",
+      "time": 450,
+      "payload": "Massive Description (XSS/Overflow test)"
+    },
+    {
+      "endpoint": "POST /complaints",
+      "time": 146,
+      "payload": "Invalid Category"
+    },
+    {
+      "endpoint": "GET /stats/summary",
+      "time": 4
+    }
+  ]
+}

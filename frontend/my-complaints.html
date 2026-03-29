@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Complaints - City Services</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "outline-variant": "#c2c6d3",
+            "on-primary": "#ffffff",
+            "primary-container": "#00529b",
+            "error-container": "#ffdad6",
+            "on-tertiary-fixed": "#331200",
+            "on-surface": "#191c1d",
+            "on-primary-container": "#a5c7ff",
+            "inverse-on-surface": "#f0f1f2",
+            "on-secondary-fixed": "#021f29",
+            "surface-container-lowest": "#ffffff",
+            "on-secondary-fixed-variant": "#304a55",
+            "tertiary-fixed": "#ffdbca",
+            "on-secondary": "#ffffff",
+            "on-surface-variant": "#424751",
+            "surface-container-low": "#f3f4f5",
+            "secondary": "#48626e",
+            "error": "#ba1a1a",
+            "on-primary-fixed-variant": "#004787",
+            "on-tertiary-container": "#ffb48b",
+            "surface-variant": "#e1e3e4",
+            "tertiary-fixed-dim": "#ffb68e",
+            "surface-tint": "#1d5fa8",
+            "surface-container-high": "#e7e8e9",
+            "background": "#f8f9fa",
+            "secondary-fixed-dim": "#afcbd8",
+            "on-tertiary-fixed-variant": "#773300",
+            "surface-bright": "#f8f9fa",
+            "primary-fixed": "#d5e3ff",
+            "secondary-container": "#cbe7f5",
+            "outline": "#727782",
+            "on-secondary-container": "#4e6874",
+            "surface-container-highest": "#e1e3e4",
+            "surface-dim": "#d9dadb",
+            "surface": "#f8f9fa",
+            "on-error-container": "#93000a",
+            "surface-container": "#edeeef",
+            "inverse-surface": "#2e3132",
+            "secondary-fixed": "#cbe7f5",
+            "inverse-primary": "#a6c8ff",
+            "on-primary-fixed": "#001c3b",
+            "tertiary-container": "#883b00",
+            "tertiary": "#642a00",
+            "on-error": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "primary": "#003b72",
+            "on-background": "#191c1d",
+            "primary-fixed-dim": "#a6c8ff"
+          },
+          fontFamily: {
+            "headline": ["Public Sans"],
+            "body": ["Inter"],
+            "label": ["Inter"]
+          },
+          borderRadius: {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .glass-effect {
+      background: rgba(248, 249, 250, 0.72);
+      backdrop-filter: blur(18px);
+    }
+    .hero-gradient {
+      background: linear-gradient(135deg, #003b72 0%, #00529b 100%);
+    }
+    .dark .glass-effect {
+      background: rgba(15, 23, 42, 0.74);
+    }
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .dark body {
+      background: #020617;
+      color: #e5e7eb;
+    }
+    .dark .bg-surface,
+    .dark .bg-background,
+    .dark .bg-surface-container-lowest {
+      background-color: #0f172a !important;
+    }
+    .dark .bg-surface-container-low {
+      background-color: #1e293b !important;
+    }
+    .dark .bg-surface-container,
+    .dark .bg-surface-container-high,
+    .dark .bg-surface-container-highest {
+      background-color: #334155 !important;
+    }
+    .dark .text-on-surface {
+      color: #f1f5f9 !important;
+    }
+    .dark .text-on-surface-variant,
+    .dark .text-outline,
+    .dark .text-outline-variant {
+      color: #94a3b8 !important;
+    }
+    .dark .border-surface-variant,
+    .dark .border-outline,
+    .dark .border-outline-variant {
+      border-color: #334155 !important;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body min-h-screen dark:bg-slate-950 dark:text-slate-100">
+  <div id="notificationContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+  <aside class="fixed left-0 top-0 z-50 hidden h-screen w-64 overflow-y-auto bg-slate-100 p-4 font-['Public_Sans'] text-sm antialiased dark:bg-slate-900 md:flex md:flex-col">
+    <div class="mb-8 px-2">
+      <h1 class="text-xl font-black tracking-tighter text-blue-900 dark:text-white">City Services</h1>
+      <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Management Portal</p>
+    </div>
+
+    <nav class="flex-1 space-y-1">
+      <a class="flex items-center px-4 py-3 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50" href="index.html">
+        <span class="material-symbols-outlined mr-3">home</span><span class="font-medium">Home</span>
+      </a>
+      <a class="flex items-center px-4 py-3 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50" href="dashboard-citizen.html">
+        <span class="material-symbols-outlined mr-3">dashboard</span><span class="font-medium">Dashboard</span>
+      </a>
+      <a class="flex items-center rounded-r-lg border-l-4 border-blue-800 bg-white px-4 py-3 text-blue-700 shadow-sm transition-transform duration-200 hover:translate-x-1 dark:bg-slate-800 dark:text-blue-300" href="my-complaints.html">
+        <span class="material-symbols-outlined mr-3">list_alt</span><span class="font-medium">My Complaints</span>
+      </a>
+      <a class="flex items-center px-4 py-3 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50" href="complaint.html">
+        <span class="material-symbols-outlined mr-3">add_circle</span><span class="font-medium">Submit Request</span>
+      </a>
+      <a class="flex items-center px-4 py-3 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50" href="support.html">
+        <span class="material-symbols-outlined mr-3">contact_support</span><span class="font-medium">Support</span>
+      </a>
+      <a id="adminLink" style="display:none;" class="flex items-center px-4 py-3 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50" href="dashboard-admin.html">
+        <span class="material-symbols-outlined mr-3">admin_panel_settings</span><span class="font-medium">Admin Dashboard</span>
+      </a>
+      <a id="authorityLink" style="display:none;" class="flex items-center px-4 py-3 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50" href="dashboard-authority.html">
+        <span class="material-symbols-outlined mr-3">gavel</span><span class="font-medium">Authority Dashboard</span>
+      </a>
+    </nav>
+
+    <div class="mt-auto p-4 space-y-2">
+      <a href="complaint.html" class="block w-full rounded-xl bg-primary py-3 text-center font-bold text-on-primary shadow-lg transition-all hover:brightness-110">
+        Report New Issue
+      </a>
+      <div class="my-4 h-px bg-slate-200 dark:bg-slate-800"></div>
+      <a class="flex items-center gap-3 px-4 py-2 text-slate-500 transition-all hover:bg-slate-200 dark:text-slate-400 dark:hover:bg-slate-800" href="privacy.html">
+        <span class="material-symbols-outlined">settings</span>
+        <span>Settings</span>
+      </a>
+      <button id="sidebarLogout" class="flex w-full items-center gap-3 px-4 py-2 text-left text-slate-500 transition-all hover:bg-slate-200 dark:text-slate-400 dark:hover:bg-slate-800">
+        <span class="material-symbols-outlined">logout</span>
+        <span>Logout</span>
+      </button>
+      <div id="authProfile" class="mt-3 rounded-xl bg-white/60 p-3 dark:bg-slate-800/80" style="display:none;">
+        <p class="text-xs text-on-surface-variant">Signed in as</p>
+        <p id="authName" class="text-sm font-semibold text-on-surface"></p>
+        <p id="authRole" class="mt-1 inline-block rounded-full bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-800 dark:bg-blue-900/40 dark:text-blue-200"></p>
+      </div>
+      <div id="authLinks" class="space-y-2" style="display:none;">
+        <a href="login.html" class="block w-full rounded-xl bg-primary px-3 py-2 text-center text-sm font-semibold text-on-primary">Login</a>
+        <a href="register.html" class="block w-full rounded-xl border border-primary px-3 py-2 text-center text-sm font-semibold text-primary">Register</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="min-h-screen md:ml-64 pb-28 lg:pb-8">
+    <header class="sticky top-0 z-40 flex w-full items-center justify-between bg-slate-50/70 px-6 py-3 font-['Public_Sans'] font-medium tracking-tight shadow-sm backdrop-blur-xl dark:bg-slate-950/70">
+      <div class="flex items-center gap-8">
+        <span class="text-xl font-bold tracking-tighter text-blue-900 dark:text-blue-100 md:hidden">SCRS</span>
+        <nav class="hidden items-center space-x-6 lg:flex">
+          <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="index.html">Home</a>
+          <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="dashboard-citizen.html">Dashboard</a>
+          <a class="border-b-2 border-blue-700 py-1 font-bold text-blue-700 dark:text-blue-300" href="my-complaints.html">My Complaints</a>
+          <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="support.html">Support</a>
+        </nav>
+      </div>
+      <div class="flex items-center space-x-4">
+        <button id="themeToggleBtn" class="rounded-full p-2 text-slate-500 transition-colors hover:bg-blue-50/50 dark:hover:bg-blue-900/20" type="button">
+          <span id="themeToggleIcon" class="material-symbols-outlined">dark_mode</span>
+        </button>
+        <a href="support.html" class="rounded-full p-2 text-slate-500 transition-colors hover:bg-blue-50/50 dark:hover:bg-blue-900/20">
+          <span class="material-symbols-outlined">help</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="mx-auto max-w-7xl space-y-8 p-6 md:p-10">
+      <section class="grid grid-cols-1 gap-6 md:grid-cols-4">
+        <div class="relative col-span-1 overflow-hidden rounded-xl hero-gradient p-8 text-on-primary md:col-span-4">
+          <div class="relative z-10">
+            <h2 class="mb-2 text-3xl font-black tracking-tight">Track Your Impact</h2>
+            <p class="max-w-md opacity-85">Monitoring your submitted reports helps keep the city safer, cleaner, and responsive.</p>
+          </div>
+          <div class="relative z-10 mt-6 flex gap-4">
+            <div class="min-w-[120px] rounded-xl bg-white/10 p-4 text-center backdrop-blur-md">
+              <div id="heroTotal" class="text-2xl font-bold">0</div>
+              <div class="text-xs uppercase tracking-widest opacity-70">Total</div>
+            </div>
+            <div class="min-w-[120px] rounded-xl bg-white/10 p-4 text-center backdrop-blur-md">
+              <div id="heroPending" class="text-2xl font-bold text-tertiary-fixed">0</div>
+              <div class="text-xs uppercase tracking-widest opacity-70">Pending</div>
+            </div>
+          </div>
+          <div class="absolute right-0 top-0 h-full w-1/3 bg-cover bg-center opacity-10" style="background-image:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=60');"></div>
+        </div>
+      </section>
+
+      <section class="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
+        <div class="flex flex-wrap items-center gap-3">
+          <button data-filter="all" class="filter-btn rounded-full bg-primary px-5 py-2 text-sm font-semibold text-on-primary shadow-sm">All Issues</button>
+          <button data-filter="submitted" class="filter-btn rounded-full bg-surface-container-low px-5 py-2 text-sm font-semibold text-on-surface-variant transition-colors hover:bg-surface-container-high">Pending</button>
+          <button data-filter="in progress" class="filter-btn rounded-full bg-surface-container-low px-5 py-2 text-sm font-semibold text-on-surface-variant transition-colors hover:bg-surface-container-high">In Progress</button>
+          <button data-filter="resolved" class="filter-btn rounded-full bg-surface-container-low px-5 py-2 text-sm font-semibold text-on-surface-variant transition-colors hover:bg-surface-container-high">Resolved</button>
+        </div>
+        <div class="flex w-full items-center gap-4 md:w-auto">
+          <div class="relative flex-1 md:w-72">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+            <input id="searchInput" type="text" placeholder="Search by ID, category, or location..." class="w-full rounded-xl border-none bg-surface-container-lowest py-2 pl-10 pr-4 text-sm shadow-sm focus:ring-2 focus:ring-primary"/>
+          </div>
+          <button id="clearFiltersBtn" class="rounded-xl bg-surface-container-lowest p-2 text-outline shadow-sm transition-colors hover:text-primary" type="button" title="Reset filters">
+            <span class="material-symbols-outlined">filter_list_off</span>
+          </button>
+        </div>
+      </section>
+
+      <section id="complaintsList" class="space-y-4"></section>
+
+      <section id="noComplaints" class="hidden rounded-2xl border border-surface-variant bg-surface-container-lowest p-10 text-center shadow-sm">
+        <div class="mb-2 text-5xl">📋</div>
+        <h3 class="text-2xl font-bold text-on-surface">No Complaints Found</h3>
+        <p class="mt-2 text-on-surface-variant">No complaints match your filters right now. Try resetting filters or submit a new issue.</p>
+        <a href="complaint.html" class="mt-6 inline-block rounded-xl bg-primary px-6 py-3 font-semibold text-on-primary">Report New Issue</a>
+      </section>
+
+      <footer class="flex justify-center pt-2">
+        <nav id="paginationNav" class="flex items-center gap-2"></nav>
+      </footer>
+    </div>
+  </main>
+
+  <nav class="fixed bottom-0 left-0 z-40 flex w-full items-center justify-around rounded-t-2xl border-t border-slate-100 bg-white/80 px-4 pb-6 pt-2 text-[11px] font-semibold backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/80 lg:hidden">
+    <a class="flex flex-col items-center justify-center px-5 py-2 text-slate-400 transition-all hover:text-blue-600 active:scale-90 dark:text-slate-500" href="index.html">
+      <span class="material-symbols-outlined">home</span>
+      <span>Home</span>
+    </a>
+    <a class="flex flex-col items-center justify-center rounded-2xl bg-blue-50 px-5 py-2 text-blue-800 transition-all active:scale-90 dark:bg-blue-900/30 dark:text-blue-200" href="my-complaints.html">
+      <span class="material-symbols-outlined">history</span>
+      <span>History</span>
+    </a>
+    <a class="flex flex-col items-center justify-center px-5 py-2 text-slate-400 transition-all hover:text-blue-600 active:scale-90 dark:text-slate-500" href="support.html">
+      <span class="material-symbols-outlined">menu_book</span>
+      <span>Support</span>
+    </a>
+    <button id="mobileLogout" class="flex flex-col items-center justify-center px-5 py-2 text-slate-400 transition-all hover:text-blue-600 active:scale-90 dark:text-slate-500" type="button">
+      <span class="material-symbols-outlined">logout</span>
+      <span>Logout</span>
+    </button>
+  </nav>
+
+  <div id="complaintModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/45 p-4">
+    <div class="max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900">
+      <div class="sticky top-0 flex items-center justify-between border-b border-slate-200 bg-white/90 px-6 py-4 backdrop-blur dark:border-slate-700 dark:bg-slate-900/90">
+        <h3 class="text-xl font-bold text-on-surface">Complaint Details</h3>
+        <button id="closeModalBtn" class="text-2xl text-on-surface-variant transition hover:text-on-surface" type="button">&times;</button>
+      </div>
+      <div id="modalBody" class="space-y-4 p-6"></div>
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
+  <script>
+    let allComplaints = [];
+    let filteredComplaints = [];
+    let selectedStatus = 'all';
+    let searchTerm = '';
+    let currentPage = 1;
+    const perPage = 6;
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function sanitizeImageUrl(value) {
+      const url = String(value || '').trim();
+      if (!url) return '';
+      const isSafeDataImage = /^data:image\/(png|jpe?g|gif);base64,[a-z0-9+/=\s]+$/i.test(url);
+      const isSafeHttp = /^https?:\/\/[^\s]+$/i.test(url);
+      return isSafeDataImage || isSafeHttp ? url : '';
+    }
+
+    function formatDate(raw) {
+      if (!raw) return 'Unknown date';
+      const d = new Date(raw);
+      if (Number.isNaN(d.getTime())) return escapeHtml(String(raw));
+      return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+
+    function normalizeStatus(value) {
+      return String(value || '').toLowerCase().trim();
+    }
+
+    function getStatusBadge(status) {
+      const normalized = normalizeStatus(status);
+      if (normalized.includes('resolved') || normalized.includes('completed')) {
+        return '<div class="flex items-center gap-2 rounded-full bg-surface-container-highest px-3 py-1 text-on-surface-variant"><span class="h-2 w-2 rounded-full bg-green-500"></span><span class="text-xs font-bold uppercase tracking-tight">Resolved</span></div>';
+      }
+      if (normalized.includes('progress')) {
+        return '<div class="flex items-center gap-2 rounded-full bg-secondary-container px-3 py-1 text-on-secondary-container"><span class="h-2 w-2 rounded-full bg-primary-fixed"></span><span class="text-xs font-bold uppercase tracking-tight">In Progress</span></div>';
+      }
+      return '<div class="flex items-center gap-2 rounded-full bg-tertiary-container/20 px-3 py-1 text-tertiary"><span class="h-2 w-2 rounded-full bg-tertiary"></span><span class="text-xs font-bold uppercase tracking-tight">Pending Review</span></div>';
+    }
+
+    function getPriorityStripe(priority) {
+      const normalized = String(priority || '').toLowerCase();
+      if (normalized.includes('critical') || normalized.includes('high')) return 'bg-red-500';
+      if (normalized.includes('medium')) return 'bg-amber-500';
+      return 'bg-primary';
+    }
+
+    function updateSidebarAuth() {
+      const auth = getStoredAuth();
+      const authProfile = document.getElementById('authProfile');
+      const authLinks = document.getElementById('authLinks');
+      const adminLink = document.getElementById('adminLink');
+      const authorityLink = document.getElementById('authorityLink');
+
+      if (auth && auth.token && auth.user) {
+        document.getElementById('authName').textContent = auth.user.name || 'User';
+        document.getElementById('authRole').textContent = String(auth.user.role || 'citizen').toUpperCase();
+        authProfile.style.display = 'block';
+        authLinks.style.display = 'none';
+        adminLink.style.display = auth.user.role === 'admin' ? 'flex' : 'none';
+        authorityLink.style.display = auth.user.role === 'authority' ? 'flex' : 'none';
+      } else {
+        authProfile.style.display = 'none';
+        authLinks.style.display = 'block';
+        adminLink.style.display = 'none';
+        authorityLink.style.display = 'none';
+      }
+    }
+
+    function logout() {
+      if (confirm('Are you sure you want to logout?')) {
+        clearAuth();
+        window.location.href = 'index.html';
+      }
+    }
+
+    async function loadComplaints() {
+      try {
+        const auth = requireAuth(['citizen', 'admin', 'authority']);
+        if (!auth) return;
+
+        const response = await fetch('http://localhost:3000/complaints/my?page=1&perPage=1000', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            ...getAuthHeaders()
+          }
+        });
+
+        if (!response.ok) {
+          const err = await response.json().catch(() => ({}));
+          throw new Error(err.message || ('HTTP ' + response.status));
+        }
+
+        const payload = await response.json();
+        allComplaints = Array.isArray(payload.data)
+          ? payload.data
+          : Array.isArray(payload.complaints)
+            ? payload.complaints
+            : [];
+
+        applyFilters();
+      } catch (error) {
+        console.error('Failed to load complaints:', error);
+        allComplaints = [];
+        applyFilters();
+      }
+    }
+
+    function applyFilters() {
+      filteredComplaints = allComplaints.filter((item) => {
+        const status = normalizeStatus(item.status);
+        const normalizedSearch = searchTerm.toLowerCase();
+        const idText = String(item.complaint_id || item.id || '').toLowerCase();
+        const categoryText = String(item.category || '').toLowerCase();
+        const locationText = String(item.location || '').toLowerCase();
+        const descriptionText = String(item.description || '').toLowerCase();
+
+        const statusMatch = selectedStatus === 'all' || status.includes(selectedStatus);
+        const searchMatch = !normalizedSearch ||
+          idText.includes(normalizedSearch) ||
+          categoryText.includes(normalizedSearch) ||
+          locationText.includes(normalizedSearch) ||
+          descriptionText.includes(normalizedSearch);
+
+        return statusMatch && searchMatch;
+      });
+
+      currentPage = 1;
+      renderSummary();
+      renderComplaints();
+      renderPagination();
+      syncFilterUi();
+    }
+
+    function renderSummary() {
+      const pending = allComplaints.filter((item) => {
+        const status = normalizeStatus(item.status);
+        return status.includes('submitted') || status.includes('pending');
+      }).length;
+
+      document.getElementById('heroTotal').textContent = String(allComplaints.length).padStart(2, '0');
+      document.getElementById('heroPending').textContent = String(pending).padStart(2, '0');
+    }
+
+    function getPagedItems() {
+      const start = (currentPage - 1) * perPage;
+      return filteredComplaints.slice(start, start + perPage);
+    }
+
+    function renderComplaints() {
+      const list = document.getElementById('complaintsList');
+      const emptyState = document.getElementById('noComplaints');
+      const pageItems = getPagedItems();
+
+      list.innerHTML = '';
+
+      if (filteredComplaints.length === 0) {
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+
+      pageItems.forEach((complaint) => {
+        const displayId = complaint.complaint_id || (complaint.id ? ('COMP-' + String(complaint.id).padStart(4, '0')) : 'N/A');
+        const title = complaint.title || complaint.category || 'Citizen Complaint';
+        const description = complaint.description || 'No description provided';
+        const createdDate = formatDate(complaint.created_at || complaint.date);
+        const stripe = getPriorityStripe(complaint.priority);
+        const safeThumb = sanitizeImageUrl(complaint.image_url);
+
+        const card = document.createElement('div');
+        card.className = 'group relative overflow-hidden rounded-2xl border border-surface-variant bg-surface-container-lowest p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-lg dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800';
+        card.innerHTML =
+          '<div class="absolute left-0 top-0 h-full w-1.5 ' + stripe + '"></div>' +
+          '<div class="flex flex-col gap-6 md:flex-row md:items-center">' +
+            '<div class="flex-1 space-y-2">' +
+              '<div class="flex flex-wrap items-center gap-3">' +
+                '<span class="text-xs font-bold uppercase tracking-widest text-primary">ID: ' + escapeHtml(displayId) + '</span>' +
+                '<span class="h-1 w-1 rounded-full bg-outline-variant"></span>' +
+                '<span class="text-xs text-on-surface-variant">Submitted ' + escapeHtml(createdDate) + '</span>' +
+              '</div>' +
+              '<h3 class="text-lg font-bold text-blue-900 transition-colors group-hover:text-primary dark:text-blue-100">' + escapeHtml(title) + '</h3>' +
+              '<p class="line-clamp-2 max-w-2xl text-sm text-on-surface-variant">' + escapeHtml(description) + '</p>' +
+              '<p class="text-xs text-on-surface-variant">Location: ' + escapeHtml(complaint.location || 'N/A') + '</p>' +
+            '</div>' +
+            '<div class="flex flex-row items-center gap-4 md:min-w-[180px] md:flex-col md:items-end">' +
+              getStatusBadge(complaint.status) +
+              (safeThumb
+                ? '<img class="h-9 w-9 rounded-lg border-2 border-white object-cover shadow" src="' + escapeHtml(safeThumb) + '" alt="Complaint image preview">'
+                : '<div class="rounded-lg border border-slate-200 bg-surface-container-high px-2 py-1 text-[10px] font-bold text-on-surface-variant dark:border-slate-700">No image</div>') +
+            '</div>' +
+            '<div class="flex items-center justify-end">' +
+              '<button type="button" class="view-btn rounded-lg p-2 text-outline transition-colors hover:text-primary" aria-label="View complaint details">' +
+                '<span class="material-symbols-outlined">chevron_right</span>' +
+              '</button>' +
+            '</div>' +
+          '</div>';
+
+        const viewBtn = card.querySelector('.view-btn');
+        if (viewBtn) {
+          viewBtn.addEventListener('click', () => showComplaintDetails(complaint));
+        }
+
+        list.appendChild(card);
+      });
+    }
+
+    function renderPagination() {
+      const nav = document.getElementById('paginationNav');
+      const totalPages = Math.max(1, Math.ceil(filteredComplaints.length / perPage));
+      nav.innerHTML = '';
+
+      const prevBtn = document.createElement('button');
+      prevBtn.className = 'flex h-10 w-10 items-center justify-center rounded-xl bg-surface-container-low text-on-surface-variant transition-all hover:bg-primary hover:text-on-primary';
+      prevBtn.innerHTML = '<span class="material-symbols-outlined">chevron_left</span>';
+      prevBtn.disabled = currentPage === 1;
+      prevBtn.style.opacity = currentPage === 1 ? '0.5' : '1';
+      prevBtn.addEventListener('click', () => {
+        if (currentPage > 1) {
+          currentPage -= 1;
+          renderComplaints();
+          renderPagination();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+      nav.appendChild(prevBtn);
+
+      for (let i = 1; i <= totalPages; i += 1) {
+        const pageBtn = document.createElement('button');
+        const active = i === currentPage;
+        pageBtn.className = active
+          ? 'h-10 w-10 rounded-xl bg-primary font-bold text-on-primary'
+          : 'h-10 w-10 rounded-xl bg-surface-container-low font-bold text-on-surface-variant transition-all hover:bg-surface-container-high';
+        pageBtn.textContent = String(i);
+        pageBtn.addEventListener('click', () => {
+          currentPage = i;
+          renderComplaints();
+          renderPagination();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        nav.appendChild(pageBtn);
+      }
+
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'flex h-10 w-10 items-center justify-center rounded-xl bg-surface-container-low text-on-surface-variant transition-all hover:bg-primary hover:text-on-primary';
+      nextBtn.innerHTML = '<span class="material-symbols-outlined">chevron_right</span>';
+      nextBtn.disabled = currentPage >= totalPages;
+      nextBtn.style.opacity = currentPage >= totalPages ? '0.5' : '1';
+      nextBtn.addEventListener('click', () => {
+        if (currentPage < totalPages) {
+          currentPage += 1;
+          renderComplaints();
+          renderPagination();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+      nav.appendChild(nextBtn);
+    }
+
+    function syncFilterUi() {
+      document.querySelectorAll('.filter-btn').forEach((btn) => {
+        const active = btn.getAttribute('data-filter') === selectedStatus;
+        btn.classList.toggle('bg-primary', active);
+        btn.classList.toggle('text-on-primary', active);
+        btn.classList.toggle('bg-surface-container-low', !active);
+        btn.classList.toggle('text-on-surface-variant', !active);
+      });
+    }
+
+    function showComplaintDetails(complaint) {
+      const modal = document.getElementById('complaintModal');
+      const body = document.getElementById('modalBody');
+      const displayId = complaint.complaint_id || (complaint.id ? ('COMP-' + String(complaint.id).padStart(4, '0')) : 'N/A');
+      const statusBadge = getStatusBadge(complaint.status);
+      const safeImageUrl = sanitizeImageUrl(complaint.image_url);
+
+      let imageHtml = '';
+      if (safeImageUrl) {
+        imageHtml =
+          '<div>' +
+            '<p class="mb-2 text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Attached Image</p>' +
+            '<img src="' + escapeHtml(safeImageUrl) + '" alt="Complaint image" class="complaint-image h-auto max-h-[420px] w-full cursor-pointer rounded-lg border border-slate-300 object-contain shadow dark:border-slate-700" data-image-url="' + escapeHtml(safeImageUrl) + '">' +
+          '</div>';
+      }
+
+      body.innerHTML =
+        '<div class="space-y-3">' +
+          '<div><p class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Complaint ID</p><p class="text-lg font-bold text-primary">' + escapeHtml(displayId) + '</p></div>' +
+          '<div><p class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Category</p><p class="text-on-surface">' + escapeHtml(complaint.category || 'N/A') + '</p></div>' +
+          '<div><p class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Description</p><p class="leading-relaxed text-on-surface">' + escapeHtml(complaint.description || 'No description provided') + '</p></div>' +
+          imageHtml +
+          '<div><p class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Location</p><p class="text-on-surface">' + escapeHtml(complaint.location || 'N/A') + '</p></div>' +
+          '<div><p class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Status</p>' + statusBadge + '</div>' +
+          '<div><p class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Priority</p><p class="text-on-surface">' + escapeHtml(complaint.priority || 'Low') + '</p></div>' +
+          '<div><p class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Date Submitted</p><p class="text-on-surface">' + escapeHtml(formatDate(complaint.created_at || complaint.date)) + '</p></div>' +
+        '</div>';
+
+      const complaintImage = body.querySelector('.complaint-image');
+      if (complaintImage) {
+        complaintImage.addEventListener('click', () => {
+          const imageUrl = complaintImage.getAttribute('data-image-url');
+          if (imageUrl) {
+            window.open(imageUrl, '_blank', 'noopener,noreferrer');
+          }
+        });
+
+        complaintImage.addEventListener('error', () => {
+          complaintImage.style.display = 'none';
+        });
+      }
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeComplaintModal() {
+      const modal = document.getElementById('complaintModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function initializeInteractions() {
+      document.querySelectorAll('.filter-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          selectedStatus = btn.getAttribute('data-filter') || 'all';
+          applyFilters();
+        });
+      });
+
+      document.getElementById('searchInput').addEventListener('input', (event) => {
+        searchTerm = event.target.value || '';
+        applyFilters();
+      });
+
+      document.getElementById('clearFiltersBtn').addEventListener('click', () => {
+        selectedStatus = 'all';
+        searchTerm = '';
+        document.getElementById('searchInput').value = '';
+        applyFilters();
+      });
+
+      document.getElementById('closeModalBtn').addEventListener('click', closeComplaintModal);
+      document.getElementById('complaintModal').addEventListener('click', (event) => {
+        if (event.target.id === 'complaintModal') closeComplaintModal();
+      });
+
+      document.getElementById('sidebarLogout').addEventListener('click', logout);
+      document.getElementById('mobileLogout').addEventListener('click', logout);
+
+      document.getElementById('themeToggleBtn').addEventListener('click', () => {
+        const root = document.documentElement;
+        const isDark = root.classList.toggle('dark');
+        root.classList.toggle('light', !isDark);
+        root.setAttribute('data-theme', isDark ? 'dark' : 'light');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        const icon = document.getElementById('themeToggleIcon');
+        if (icon) {
+          icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      const root = document.documentElement;
+      root.classList.toggle('dark', savedTheme === 'dark');
+      root.classList.toggle('light', savedTheme !== 'dark');
+      root.setAttribute('data-theme', savedTheme);
+      const icon = document.getElementById('themeToggleIcon');
+      if (icon) {
+        icon.textContent = savedTheme === 'dark' ? 'light_mode' : 'dark_mode';
+      }
+      updateSidebarAuth();
+      initializeInteractions();
+      await loadComplaints();
+    });
+  </script>
+</body>
+</html>

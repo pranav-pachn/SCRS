@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Details - Admin Operations - SCRS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-slate-900 text-gray-300 min-h-screen">
+    <div id="notificationContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-slate-800 border-r border-slate-700 p-6 hidden md:flex flex-col fixed h-screen">
+        <div class="mb-8">
+            <div class="flex items-center gap-3">
+                <img src="../assests/Civixa_logo_new.png" alt="SCRS Logo" class="h-10 w-auto object-contain block">
+                <h2 class="text-2xl font-bold leading-none text-white">SCRS</h2>
+            </div>
+            <p class="text-xs text-gray-400 mt-2">Admin Panel</p>
+        </div>
+        <nav class="space-y-2 flex-1">
+            <a href="dashboard-admin.html"
+                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">📊
+                Dashboard</a>
+            <a href="complaint-details-admin.html"
+                class="block px-4 py-2 rounded-lg bg-slate-800 text-indigo-400 font-medium hover:bg-slate-800 transition duration-300">📋
+                Assigned Complaints</a>
+            <a href="admin-analytics.html"
+                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">📈
+                Analytics</a>
+            <a href="admin-profile.html"
+                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">👤
+                Profile & Settings</a>
+            <a href="support.html"
+                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">Support</a>
+        </nav>
+        <div class="border-t border-slate-700 pt-4">
+            <div class="space-y-2">
+                <p class="text-sm text-gray-400 font-medium">Admin:</p>
+                <p class="font-semibold text-white text-sm" id="authName">Admin User</p>
+                <button onclick="logout()"
+                    class="w-full px-3 py-2 rounded-lg bg-red-600/20 text-red-400 hover:bg-red-600/30 transition text-sm font-medium">Logout</button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="md:ml-64 p-6 md:p-8 bg-slate-900">
+        <!-- Header with Back Button -->
+        <div class="mb-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <a href="dashboard-admin.html" 
+                        class="flex items-center text-gray-400 hover:text-white transition">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Back to Dashboard
+                    </a>
+                    <div class="h-6 w-px bg-gray-600"></div>
+                    <h1 class="text-2xl font-bold text-white">Complaint Details</h1>
+                </div>
+                <div class="flex space-x-3">
+                    <button id="exportBtn" class="px-4 py-2 bg-slate-700 text-gray-300 rounded-lg hover:bg-slate-600 transition">
+                        <i class="fas fa-download mr-2"></i>Export
+                    </button>
+                    <button id="printBtn" class="px-4 py-2 bg-slate-700 text-gray-300 rounded-lg hover:bg-slate-600 transition">
+                        <i class="fas fa-print mr-2"></i>Print
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Duplicate Detection Alert -->
+        <div id="duplicateAlert" class="hidden mb-6 bg-yellow-900/30 border border-yellow-600 rounded-lg p-4">
+            <div class="flex items-start space-x-3">
+                <i class="fas fa-exclamation-triangle text-yellow-500 mt-1"></i>
+                <div class="flex-1">
+                    <h3 class="text-yellow-400 font-semibold mb-1">⚠ Similar Complaints Found</h3>
+                    <p class="text-yellow-300 text-sm" id="duplicateMessage">4 similar complaints reported in same location</p>
+                    <button id="viewDuplicatesBtn" class="mt-2 text-yellow-400 hover:text-yellow-300 text-sm underline">
+                        View similar complaints
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Main Complaint Information -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Complaint Basic Info -->
+                <div class="bg-slate-800 rounded-lg border border-slate-700 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-bold text-white">Complaint Information</h2>
+                        <div class="flex items-center space-x-2">
+                            <span class="px-3 py-1 text-sm font-semibold rounded-full bg-indigo-600/20 text-indigo-400" id="complaintId">
+                                #1289
+                            </span>
+                            <span id="priorityBadge" class="px-3 py-1 text-sm font-semibold rounded-full bg-red-600/20 text-red-400">
+                                Critical
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Category</label>
+                            <p class="text-white" id="category">Road Damage</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Location</label>
+                            <p class="text-white" id="location">Sector 12, Block A</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Submitted Date</label>
+                            <p class="text-white" id="submittedDate">2024-03-10 14:30</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Current Status</label>
+                            <select id="statusSelect" class="px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none">
+                                <option value="Submitted">Submitted</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Resolved">Resolved</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <label class="block text-sm font-medium text-gray-400 mb-1">Description</label>
+                        <p class="text-white bg-slate-900/50 p-3 rounded-lg" id="description">
+                            Large pothole on main road causing traffic congestion and potential accidents. The hole is approximately 2 feet wide and 1 foot deep. Multiple vehicles have been damaged.
+                        </p>
+                    </div>
+
+                    <!-- Evidence Image -->
+                    <div class="mt-4">
+                        <label class="block text-sm font-medium text-gray-400 mb-2">Evidence Image</label>
+                        <div class="bg-slate-900/50 rounded-lg p-4">
+                            <img id="evidenceImage" src="https://via.placeholder.com/600x400/475569/ffffff?text=Evidence+Image" 
+                                 alt="Complaint Evidence" class="w-full rounded-lg">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Analysis Panel -->
+                <div class="bg-slate-800 rounded-lg border border-slate-700 p-6">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-brain text-indigo-500 mr-2"></i>
+                        <h2 class="text-xl font-bold text-white">AI Analysis</h2>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">AI Summary</label>
+                            <p class="text-white bg-slate-900/50 p-3 rounded-lg" id="aiSummary">
+                                Critical road infrastructure damage detected. High traffic area with safety implications. Immediate repair recommended to prevent accidents and vehicle damage.
+                            </p>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">AI Tags</label>
+                            <div class="flex flex-wrap gap-2" id="aiTags">
+                                <span class="px-2 py-1 bg-indigo-600/20 text-indigo-400 rounded-full text-xs">Infrastructure</span>
+                                <span class="px-2 py-1 bg-indigo-600/20 text-indigo-400 rounded-full text-xs">Safety Risk</span>
+                                <span class="px-2 py-1 bg-indigo-600/20 text-indigo-400 rounded-full text-xs">High Traffic</span>
+                                <span class="px-2 py-1 bg-indigo-600/20 text-indigo-400 rounded-full text-xs">Urgent</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">AI Suggested Priority</label>
+                            <div class="flex items-center space-x-2">
+                                <span class="px-3 py-1 bg-red-600/20 text-red-400 rounded-full text-sm font-semibold">High Priority</span>
+                                <span class="text-gray-400 text-sm">(Confidence: 94%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Internal Remarks -->
+                <div class="bg-slate-800 rounded-lg border border-slate-700 p-6">
+                    <h2 class="text-xl font-bold text-white mb-4">Internal Remarks</h2>
+                    
+                    <div class="space-y-3 mb-4" id="remarksList">
+                        <div class="bg-slate-900/50 p-3 rounded-lg">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm font-medium text-indigo-400">Admin User</span>
+                                <span class="text-xs text-gray-500">2024-03-10 15:45</span>
+                            </div>
+                            <p class="text-white text-sm">Initial inspection completed. Road repair team notified.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-2">
+                        <textarea id="newRemark" 
+                                  placeholder="Add internal remark (not visible to citizens)..." 
+                                  class="flex-1 px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none resize-none" 
+                                  rows="2"></textarea>
+                        <button id="addRemarkBtn" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
+                            <i class="fas fa-plus mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="space-y-6">
+                <!-- Status Management -->
+                <div class="bg-slate-800 rounded-lg border border-slate-700 p-6">
+                    <h2 class="text-xl font-bold text-white mb-4">Status Management</h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-2">Update Status</label>
+                            <select id="statusUpdate" class="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none">
+                                <option value="Submitted">Submitted</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Resolved">Resolved</option>
+                            </select>
+                        </div>
+
+                        <button id="updateStatusBtn" class="w-full px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
+                            <i class="fas fa-sync mr-2"></i>Update Status
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Resolution Proof -->
+                <div class="bg-slate-800 rounded-lg border border-slate-700 p-6">
+                    <h2 class="text-xl font-bold text-white mb-4">Resolution Proof</h2>
+                    
+                    <div id="proofSection" class="space-y-4">
+                        <div id="noProof" class="text-center py-8">
+                            <i class="fas fa-camera text-gray-500 text-3xl mb-3"></i>
+                            <p class="text-gray-400 text-sm mb-4">Upload resolution proof before marking as resolved</p>
+                            <label for="proofUpload" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition cursor-pointer">
+                                <i class="fas fa-upload mr-2"></i>Upload Proof
+                            </label>
+                            <input type="file" id="proofUpload" accept="image/*" class="hidden">
+                        </div>
+
+                        <div id="proofPreview" class="hidden">
+                            <img id="proofImage" src="" alt="Resolution Proof" class="w-full rounded-lg mb-3">
+                            <div class="flex space-x-2">
+                                <button id="changeProofBtn" class="flex-1 px-3 py-2 bg-slate-700 text-gray-300 rounded-lg hover:bg-slate-600 transition text-sm">
+                                    Change
+                                </button>
+                                <button id="removeProofBtn" class="flex-1 px-3 py-2 bg-red-600/20 text-red-400 rounded-lg hover:bg-red-600/30 transition text-sm">
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mark Resolved -->
+                <div class="bg-slate-800 rounded-lg border border-slate-700 p-6">
+                    <button id="markResolvedBtn" class="w-full px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold" disabled>
+                        <i class="fas fa-check-circle mr-2"></i>Mark as Resolved
+                    </button>
+                    <p class="text-xs text-gray-500 mt-2 text-center">Upload resolution proof to enable</p>
+                </div>
+
+                <!-- Activity Timeline -->
+                <div class="bg-slate-800 rounded-lg border border-slate-700 p-6">
+                    <h2 class="text-xl font-bold text-white mb-4">Activity Timeline</h2>
+                    
+                    <div class="space-y-3" id="timeline">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                            <div class="flex-1">
+                                <p class="text-white text-sm">Complaint submitted</p>
+                                <p class="text-gray-500 text-xs">2024-03-10 14:30</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <div class="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                            <div class="flex-1">
+                                <p class="text-white text-sm">Assigned to admin</p>
+                                <p class="text-gray-500 text-xs">2024-03-10 14:35</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <div class="w-2 h-2 bg-yellow-500 rounded-full mt-2"></div>
+                            <div class="flex-1">
+                                <p class="text-white text-sm">Status changed to In Progress</p>
+                                <p class="text-gray-500 text-xs">2024-03-10 15:45</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="auth.js"></script>
+    <script>
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            const auth = requireAuth(['admin']);
+            if (!auth) return;
+
+            // Get complaint ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const complaintId = urlParams.get('id') || '1289';
+            
+            // Load complaint data
+            loadComplaintDetails(complaintId);
+            
+            // Setup event listeners
+            setupEventListeners();
+        });
+
+        function loadComplaintDetails(complaintId) {
+            // Load complaint data from backend
+            fetch(`http://localhost:3000/api/admin/complaints/${complaintId}`, {
+                headers: getAuthHeaders()
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    populateComplaintData(data.complaint);
+                    checkForDuplicates(data.complaint);
+                } else {
+                    showNotification('Failed to load complaint details', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error loading complaint:', error);
+                showNotification('Connection error', 'error');
+            });
+        }
+
+        function populateComplaintData(complaint) {
+            document.getElementById('complaintId').textContent = `#${complaint.complaint_id}`;
+            document.getElementById('category').textContent = complaint.category;
+            document.getElementById('location').textContent = complaint.location;
+            document.getElementById('submittedDate').textContent = new Date(complaint.created_at).toLocaleString();
+            document.getElementById('description').textContent = complaint.description;
+            
+            // Update status
+            document.getElementById('statusSelect').value = complaint.status;
+            document.getElementById('statusUpdate').value = complaint.status;
+            
+            // Update priority badge
+            const priorityBadge = document.getElementById('priorityBadge');
+            priorityBadge.textContent = complaint.priority;
+            priorityBadge.className = `px-3 py-1 text-sm font-semibold rounded-full ${getPriorityClass(complaint.priority)}`;
+            
+            // Load evidence image if available
+            if (complaint.attachments && complaint.attachments.length > 0) {
+                document.getElementById('evidenceImage').src = complaint.attachments[0].url;
+            }
+            
+            // Load AI analysis if available
+            if (complaint.ai_analysis) {
+                document.getElementById('aiSummary').textContent = complaint.ai_analysis.summary || 'No AI summary available';
+                populateAITags(complaint.ai_analysis.tags || []);
+            }
+            
+            // Load remarks
+            loadRemarks(complaint.id);
+            
+            // Load timeline
+            loadTimeline(complaint.id);
+            
+            // Load resolution proof if available
+            if (complaint.proof_url) {
+                showResolutionProof(complaint.proof_url);
+            }
+        }
+
+        function getPriorityClass(priority) {
+            const classes = {
+                'Low': 'bg-green-600/20 text-green-400',
+                'Medium': 'bg-yellow-600/20 text-yellow-400',
+                'High': 'bg-orange-600/20 text-orange-400',
+                'Critical': 'bg-red-600/20 text-red-400'
+            };
+            return classes[priority] || 'bg-gray-600/20 text-gray-400';
+        }
+
+        function populateAITags(tags) {
+            const tagsContainer = document.getElementById('aiTags');
+            tagsContainer.innerHTML = tags.map(tag => 
+                `<span class="px-2 py-1 bg-indigo-600/20 text-indigo-400 rounded-full text-xs">${tag}</span>`
+            ).join('');
+        }
+
+        function checkForDuplicates(complaint) {
+            // Check for similar complaints
+            fetch(`http://localhost:3000/api/admin/complaints/${complaint.id}/duplicates`, {
+                headers: getAuthHeaders()
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.duplicates.length > 0) {
+                    document.getElementById('duplicateAlert').classList.remove('hidden');
+                    document.getElementById('duplicateMessage').textContent = 
+                        `${data.duplicates.length} similar complaint(s) found in same location`;
+                }
+            })
+            .catch(error => console.error('Error checking duplicates:', error));
+        }
+
+        function setupEventListeners() {
+            // Status update
+            document.getElementById('updateStatusBtn').addEventListener('click', updateStatus);
+            
+            // Add remark
+            document.getElementById('addRemarkBtn').addEventListener('click', addRemark);
+            
+            // Proof upload
+            document.getElementById('proofUpload').addEventListener('change', handleProofUpload);
+            document.getElementById('changeProofBtn').addEventListener('click', () => {
+                document.getElementById('proofUpload').click();
+            });
+            document.getElementById('removeProofBtn').addEventListener('click', removeProof);
+            
+            // Mark resolved
+            document.getElementById('markResolvedBtn').addEventListener('click', markResolved);
+            
+            // Enter key for remark
+            document.getElementById('newRemark').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    addRemark();
+                }
+            });
+        }
+
+        function updateStatus() {
+            const newStatus = document.getElementById('statusUpdate').value;
+            const urlParams = new URLSearchParams(window.location.search);
+            const complaintId = urlParams.get('id');
+            
+            fetch(`http://localhost:3000/api/admin/complaints/${complaintId}/status`, {
+                method: 'PUT',
+                headers: getAuthHeaders(),
+                body: JSON.stringify({ status: newStatus })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Status updated successfully', 'success');
+                    document.getElementById('statusSelect').value = newStatus;
+                    loadTimeline(complaintId);
+                } else {
+                    showNotification('Failed to update status', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating status:', error);
+                showNotification('Connection error', 'error');
+            });
+        }
+
+        function addRemark() {
+            const remarkText = document.getElementById('newRemark').value.trim();
+            if (!remarkText) return;
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const complaintId = urlParams.get('id');
+            
+            fetch(`http://localhost:3000/api/admin/complaints/${complaintId}/remarks`, {
+                method: 'POST',
+                headers: getAuthHeaders(),
+                body: JSON.stringify({ remark: remarkText })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('newRemark').value = '';
+                    loadRemarks(complaintId);
+                    showNotification('Remark added successfully', 'success');
+                } else {
+                    showNotification('Failed to add remark', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error adding remark:', error);
+                showNotification('Connection error', 'error');
+            });
+        }
+
+        function handleProofUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const complaintId = urlParams.get('id');
+            
+            const formData = new FormData();
+            formData.append('proof', file);
+            
+            fetch(`http://localhost:3000/api/admin/complaints/${complaintId}/proof`, {
+                method: 'POST',
+                headers: getAuthHeaders(),
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showResolutionProof(data.proof_url);
+                    showNotification('Proof uploaded successfully', 'success');
+                } else {
+                    showNotification('Failed to upload proof', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error uploading proof:', error);
+                showNotification('Connection error', 'error');
+            });
+        }
+
+        function showResolutionProof(proofUrl) {
+            document.getElementById('noProof').classList.add('hidden');
+            document.getElementById('proofPreview').classList.remove('hidden');
+            document.getElementById('proofImage').src = proofUrl;
+            document.getElementById('markResolvedBtn').disabled = false;
+        }
+
+        function removeProof() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const complaintId = urlParams.get('id');
+            
+            fetch(`http://localhost:3000/api/admin/complaints/${complaintId}/proof`, {
+                method: 'DELETE',
+                headers: getAuthHeaders()
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('noProof').classList.remove('hidden');
+                    document.getElementById('proofPreview').classList.add('hidden');
+                    document.getElementById('markResolvedBtn').disabled = true;
+                    showNotification('Proof removed successfully', 'success');
+                } else {
+                    showNotification('Failed to remove proof', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error removing proof:', error);
+                showNotification('Connection error', 'error');
+            });
+        }
+
+        function markResolved() {
+            if (!confirm('Are you sure you want to mark this complaint as resolved? This action cannot be undone.')) {
+                return;
+            }
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const complaintId = urlParams.get('id');
+            
+            fetch(`http://localhost:3000/api/admin/complaints/${complaintId}/resolve`, {
+                method: 'PUT',
+                headers: getAuthHeaders()
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Complaint marked as resolved successfully', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'dashboard-admin.html';
+                    }, 2000);
+                } else {
+                    showNotification('Failed to mark as resolved', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error marking resolved:', error);
+                showNotification('Connection error', 'error');
+            });
+        }
+
+        function loadRemarks(complaintId) {
+            fetch(`http://localhost:3000/api/admin/complaints/${complaintId}/remarks`, {
+                headers: getAuthHeaders()
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const remarksList = document.getElementById('remarksList');
+                    remarksList.innerHTML = data.remarks.map(remark => `
+                        <div class="bg-slate-900/50 p-3 rounded-lg">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm font-medium text-indigo-400">${remark.admin_name}</span>
+                                <span class="text-xs text-gray-500">${new Date(remark.created_at).toLocaleString()}</span>
+                            </div>
+                            <p class="text-white text-sm">${remark.remark}</p>
+                        </div>
+                    `).join('');
+                }
+            })
+            .catch(error => console.error('Error loading remarks:', error));
+        }
+
+        function loadTimeline(complaintId) {
+            fetch(`http://localhost:3000/api/admin/complaints/${complaintId}/timeline`, {
+                headers: getAuthHeaders()
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const timeline = document.getElementById('timeline');
+                    timeline.innerHTML = data.timeline.map(event => `
+                        <div class="flex items-start space-x-3">
+                            <div class="w-2 h-2 ${getEventColor(event.event_type)} rounded-full mt-2"></div>
+                            <div class="flex-1">
+                                <p class="text-white text-sm">${event.description}</p>
+                                <p class="text-gray-500 text-xs">${new Date(event.timestamp).toLocaleString()}</p>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            })
+            .catch(error => console.error('Error loading timeline:', error));
+        }
+
+        function getEventColor(eventType) {
+            const colors = {
+                'created': 'bg-green-500',
+                'assigned': 'bg-blue-500',
+                'status_changed': 'bg-yellow-500',
+                'resolved': 'bg-purple-500',
+                'remark_added': 'bg-indigo-500'
+            };
+            return colors[eventType] || 'bg-gray-500';
+        }
+
+        function showNotification(message, type) {
+            const container = document.getElementById('notificationContainer');
+            const notification = document.createElement('div');
+            const bgColor = type === 'success' ? 'bg-green-600' : 'bg-red-600';
+            notification.className = `${bgColor} text-white px-4 py-3 rounded-lg shadow-lg`;
+            notification.textContent = message;
+            container.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        function logout() {
+            clearAuth();
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+
+</html>

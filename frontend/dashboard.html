@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Dashboard - SCRS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#6366f1',
+              darkbg: '#0f172a',
+              card: '#1e293b'
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif']
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body { background-color: #0f172a; color: #e2e8f0; }
+      .bg-card { background-color: #1e293b; }
+      .text-primary { color: #6366f1; }
+    </style>
+</head>
+<body class="bg-darkbg text-gray-200" style="background-color: #0f172a;">
+  <div id="notificationContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+  <!-- Sidebar Navigation -->
+  <aside class="w-64 bg-card border-r border-gray-700 p-6 hidden md:flex flex-col fixed h-screen">
+    <div class="mb-8">
+      <div class="flex items-center gap-3">
+        <img src="../assests/Civixa_logo_new.png" alt="SCRS Logo" class="h-10 w-auto object-contain block">
+        <h2 class="text-2xl font-bold leading-none text-white">SCRS</h2>
+      </div>
+      <p class="text-xs text-gray-400 mt-2">Public Insight Portal</p>
+    </div>
+    <nav class="space-y-2 flex-1">
+      <a href="index.html" class="flex items-center gap-3 rounded-xl px-4 py-3 text-gray-300 transition-colors hover:bg-slate-700 hover:text-white">Home</a>
+      <a href="complaint.html" class="flex items-center gap-3 rounded-xl px-4 py-3 text-gray-300 transition-colors hover:bg-slate-700 hover:text-white">Register Complaint</a>
+      <a href="my-complaints.html" class="flex items-center gap-3 rounded-xl px-4 py-3 text-gray-300 transition-colors hover:bg-slate-700 hover:text-white">My Complaints</a>
+      <a href="dashboard-citizen.html" class="flex items-center gap-3 rounded-xl border-l-4 border-primary bg-slate-800 px-4 py-3 font-semibold text-primary">Citizen Dashboard</a>
+      <a id="adminLink" href="dashboard-admin.html" style="display:none;" class="flex items-center gap-3 rounded-xl px-4 py-3 text-gray-300 transition-colors hover:bg-slate-700 hover:text-white">Admin</a>
+      <a id="authorityLink" href="dashboard-authority.html" style="display:none;" class="flex items-center gap-3 rounded-xl px-4 py-3 text-gray-300 transition-colors hover:bg-slate-700 hover:text-white">Authority</a>
+    </nav>
+    <div id="authSection" class="border-t border-gray-700 pt-4">
+      <div id="authProfile" style="display:none;" class="space-y-2">
+        <p class="text-sm text-gray-400">Logged in as:</p>
+        <p class="font-semibold text-white" id="authName"></p>
+        <p class="text-xs bg-primary/20 text-primary px-2 py-1 rounded w-fit" id="authRole"></p>
+        <button onclick="logout()" class="w-full px-3 py-2 rounded-lg bg-red-600/20 text-red-400 hover:bg-red-600/30 transition text-sm font-medium">Logout</button>
+      </div>
+      <div id="authLinks" class="space-y-2">
+        <a href="login.html" class="block w-full rounded-xl bg-primary px-3 py-2 text-center font-semibold text-white transition-opacity hover:opacity-90">Login</a>
+        <a href="register.html" class="block w-full rounded-xl border border-primary px-3 py-2 text-center font-semibold text-primary transition-colors hover:bg-primary hover:text-white">Register</a>
+      </div>
+    </div>
+  </aside>
+
+  <script src="auth.js"></script>
+  <script>
+    function updateSidebarAuth() {
+      const auth = getStoredAuth();
+      const authProfile = document.getElementById('authProfile');
+      const authLinks = document.getElementById('authLinks');
+      const adminLink = document.getElementById('adminLink');
+      const authorityLink = document.getElementById('authorityLink');
+
+      if (auth.token && auth.user) {
+        document.getElementById('authName').textContent = auth.user.name;
+        document.getElementById('authRole').textContent = auth.user.role.toUpperCase();
+        authProfile.style.display = 'block';
+        authLinks.style.display = 'none';
+
+        if (auth.user.role === 'admin') {
+          adminLink.style.display = 'block';
+        }
+        if (auth.user.role === 'authority') {
+          authorityLink.style.display = 'block';
+        }
+      } else {
+        authProfile.style.display = 'none';
+        authLinks.style.display = 'block';
+      }
+    }
+
+    function logout() {
+      if (confirm('Are you sure you want to logout?')) {
+        clearAuth();
+        window.location.href = 'index.html';
+      }
+    }
+
+    window.addEventListener('load', updateSidebarAuth);
+    document.addEventListener('DOMContentLoaded', updateSidebarAuth);
+  </script>
+
+  <!-- Main Content -->
+  <main class="flex-1 md:ml-64 p-8">
+    <div class="max-w-6xl mx-auto">
+      <!-- Page Header -->
+      <div class="mb-8">
+        <h1 class="text-4xl font-bold text-white mb-2">Public Dashboard</h1>
+        <p class="text-gray-400">View statistics and insights about civic complaints in your area. This data helps identify common issues and track resolution progress.</p>
+      </div>
+
+      <!-- Quick Stats Summary -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-card border border-gray-700 p-6 rounded-xl">
+          <h3 class="text-sm text-gray-400 font-medium">Total Issues</h3>
+          <p class="text-4xl font-bold text-white mt-3" id="totalIssues">139</p>
+        </div>
+        <div class="bg-card border border-gray-700 p-6 rounded-xl">
+          <h3 class="text-sm text-gray-400 font-medium">Active Cases</h3>
+          <p class="text-4xl font-bold text-white mt-3" id="activeCases">90</p>
+        </div>
+        <div class="bg-card border border-gray-700 p-6 rounded-xl">
+          <h3 class="text-sm text-gray-400 font-medium">Resolved</h3>
+          <p class="text-4xl font-bold text-white mt-3" id="resolvedCases">49</p>
+        </div>
+        <div class="bg-card border border-gray-700 p-6 rounded-xl">
+          <h3 class="text-sm text-gray-400 font-medium">Resolution Rate</h3>
+          <p class="text-4xl font-bold text-primary mt-3" id="resolutionRate">35%</p>
+        </div>
+      </div>
+
+      <!-- Complaints by Category -->
+      <div class="bg-card border border-gray-700 rounded-xl p-6 mb-8">
+        <h2 class="text-2xl font-bold text-white mb-2">📊 Complaints by Category</h2>
+        <p class="text-gray-400 text-sm mb-6">Breakdown of issues by type to identify common problems in the area.</p>
+        <ul id="categoryStats" class="space-y-3">
+          <!-- Data will be loaded here -->
+        </ul>
+      </div>
+
+      <!-- Complaints by Status -->
+      <div class="bg-card border border-gray-700 rounded-xl p-6 mb-8">
+        <h2 class="text-2xl font-bold text-white mb-2">📈 Complaints by Status</h2>
+        <p class="text-gray-400 text-sm mb-6">Current status distribution showing progress on issue resolution.</p>
+        <ul id="statusStats" class="space-y-3">
+          <!-- Data will be loaded here -->
+        </ul>
+      </div>
+
+      <!-- Recent Escalations -->
+      <div class="bg-card border border-gray-700 rounded-xl p-6">
+        <h2 class="text-2xl font-bold text-white mb-2">🚨 Recent Escalations</h2>
+        <p class="text-gray-400 text-sm mb-6">Issues that were escalated automatically because multiple citizens reported the same problem.</p>
+        <ul id="escalationStats" class="space-y-3">
+          <!-- Escalation events will be loaded here -->
+        </ul>
+      </div>
+    </div>
+  </main>
+
+
+  <!-- Footer -->
+  <footer class="border-t border-gray-700 py-6 px-8 md:ml-64 text-center text-gray-500 text-sm">
+    <p>&copy; 2026 SCRS. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // ── Security helper ───────────────────────────────────────────────────────
+    function escapeHtml(value) {
+      const str = String(value == null ? '' : value);
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#x27;');
+    }
+    // ─────────────────────────────────────────────────────────────────────────
+
+    const API_BASE = 'http://localhost:3000';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCategoryStats();
+      loadStatusStats();
+      loadEscalationHistory();
+    });
+
+    async function loadCategoryStats() {
+      try {
+        const response = await fetch(`${API_BASE}/stats/category`);
+        if (!response.ok) {
+          throw new Error('HTTP error: ' + response.status);
+        }
+        const data = await response.json();
+        const stats = data.stats || {};
+        displayCategoryStats(stats);
+      } catch (error) {
+        console.error('Error loading category stats:', error);
+        const categoryList = document.getElementById('categoryStats');
+        categoryList.innerHTML = '<li class="text-red-400">Error loading data. Is backend server running?</li>';
+      }
+    }
+
+    async function loadStatusStats() {
+      try {
+        const response = await fetch(`${API_BASE}/stats/status`);
+        if (!response.ok) {
+          throw new Error('HTTP error: ' + response.status);
+        }
+        const data = await response.json();
+        const stats = data.stats || {};
+        displayStatusStats(stats);
+      } catch (error) {
+        console.error('Error loading status stats:', error);
+        const statusList = document.getElementById('statusStats');
+        statusList.innerHTML = '<li class="text-red-400">Error loading data. Is backend server running?</li>';
+      }
+    }
+
+    async function loadEscalationHistory() {
+      const escalationList = document.getElementById('escalationStats');
+      escalationList.innerHTML = '';
+
+      try {
+        const response = await fetch(`${API_BASE}/stats/escalations`);
+        if (!response.ok) {
+          throw new Error('HTTP error: ' + response.status);
+        }
+        const data = await response.json();
+        const events = data.events || [];
+
+        if (events.length === 0) {
+          escalationList.innerHTML = '<li class="text-gray-400">No escalations yet.</li>';
+          return;
+        }
+
+        events.forEach((event) => {
+          const li = document.createElement('li');
+          const idText = event.id ? `COMP-${String(event.id).padStart(4, '0')}` : 'N/A';
+          const timeText = event.created_at ? String(event.created_at).replace('T', ' ').replace('Z', '') : '';
+          const noteText = event.note || '';
+          
+          li.className = 'flex justify-between items-center bg-slate-700/30 p-3 rounded border border-gray-700 hover:bg-slate-700/50 transition';
+          li.innerHTML = `
+            <span class="text-gray-300 text-sm">${escapeHtml(timeText)} - <strong>${escapeHtml(idText)}</strong> - ${escapeHtml(event.category)} - ${escapeHtml(event.location)}</span>
+            <span class="text-yellow-400 font-semibold text-sm">${escapeHtml(noteText)}</span>
+          `;
+          escalationList.appendChild(li);
+        });
+      } catch (error) {
+        console.error('Error loading escalation history:', error);
+        escalationList.innerHTML = '<li class="text-red-400">Error loading escalation history. Is backend server running?</li>';
+      }
+    }
+
+    function displayCategoryStats(categoryData) {
+      const categoryList = document.getElementById('categoryStats');
+      categoryList.innerHTML = '';
+
+      for (const [category, count] of Object.entries(categoryData)) {
+        const li = document.createElement('li');
+        li.className = 'flex justify-between items-center bg-slate-700/30 p-3 rounded border border-gray-700 hover:bg-slate-700/50 transition';
+        li.innerHTML = `
+          <span class="text-gray-300 font-medium">${escapeHtml(category)}</span>
+          <span class="text-primary font-bold text-lg">${Number(count) || 0}</span>
+        `;
+        categoryList.appendChild(li);
+      }
+    }
+
+    function displayStatusStats(statusData) {
+      const statusList = document.getElementById('statusStats');
+      statusList.innerHTML = '';
+
+      for (const [status, count] of Object.entries(statusData)) {
+        const li = document.createElement('li');
+        li.className = 'flex justify-between items-center bg-slate-700/30 p-3 rounded border border-gray-700 hover:bg-slate-700/50 transition';
+        
+        let statusBadge = '<span class="px-2 py-1 rounded text-xs font-medium bg-blue-600/20 text-blue-400">Pending</span>';
+        const statusLower = String(status || '').toLowerCase();
+        if (statusLower.includes('resolved') || statusLower.includes('completed')) {
+          statusBadge = '<span class="px-2 py-1 rounded text-xs font-medium bg-green-600/20 text-green-400">Resolved</span>';
+        } else if (statusLower.includes('in-progress')) {
+          statusBadge = '<span class="px-2 py-1 rounded text-xs font-medium bg-yellow-600/20 text-yellow-400">In Progress</span>';
+        }
+
+        li.innerHTML = `
+          <span>${statusBadge}</span>
+          <span class="text-primary font-bold text-lg">${count}</span>
+        `;
+        statusList.appendChild(li);
+      }
+    }
+  </script>
+  <script src="theme-toggle.js"></script>
+</body>
+</html>

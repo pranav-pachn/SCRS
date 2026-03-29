@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SCRS | Smart Complaint Resolution System</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            background: "#f8f9fa",
+            surface: "#ffffff",
+            "surface-soft": "#f3f6fb",
+            primary: "#003b72",
+            "primary-container": "#00529b",
+            accent: "#0ea5e9",
+            "accent-soft": "#dbeafe",
+            "on-surface": "#191c1d",
+            "on-surface-variant": "#52606d",
+            outline: "#c9d4e3",
+            "on-primary": "#ffffff"
+          },
+          fontFamily: {
+            headline: ["Public Sans"],
+            body: ["Inter"]
+          },
+          boxShadow: {
+            civic: "0 24px 70px rgba(0, 59, 114, 0.12)"
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    .material-symbols-outlined { font-variation-settings: "FILL" 0, "wght" 450, "GRAD" 0, "opsz" 24; }
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(165, 199, 255, 0.32), transparent 28%),
+        radial-gradient(circle at top right, rgba(14, 165, 233, 0.14), transparent 24%),
+        linear-gradient(180deg, #f8fbff 0%, #f8f9fa 60%, #eef4fb 100%);
+    }
+    .hero-band {
+      background:
+        linear-gradient(135deg, rgba(0, 59, 114, 0.98) 0%, rgba(0, 82, 155, 0.96) 55%, rgba(14, 165, 233, 0.92) 100%);
+    }
+    .soft-grid::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: radial-gradient(circle at center, black 30%, transparent 82%);
+      pointer-events: none;
+    }
+    .hero-orb {
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(2px);
+      opacity: 0.55;
+      pointer-events: none;
+    }
+    .help-modal {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      background: rgba(15, 23, 42, 0.42);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      z-index: 60;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+    .help-modal--visible { opacity: 1; visibility: visible; pointer-events: auto; }
+    .help-modal__backdrop { position: absolute; inset: 0; }
+    .help-modal__panel {
+      position: relative;
+      z-index: 1;
+      width: min(760px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 1.5rem;
+      background: #ffffff;
+      border: 1px solid #d8e2ef;
+      box-shadow: 0 30px 70px rgba(15, 23, 42, 0.2);
+      padding: 2rem;
+    }
+    .help-modal__panel:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.16), 0 30px 70px rgba(15, 23, 42, 0.2);
+    }
+    .help-modal__close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      border: none;
+      background: transparent;
+      color: #64748b;
+      cursor: pointer;
+    }
+    .help-modal__section + .help-modal__section { margin-top: 1.25rem; }
+    .help-modal__section-title {
+      margin-bottom: 0.45rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #00529b;
+    }
+    .help-modal__list, .help-modal__tips {
+      margin: 0;
+      padding-left: 1.15rem;
+      color: #475569;
+      line-height: 1.65;
+    }
+    .help-modal__roles {
+      width: 100%;
+      margin-top: 0.5rem;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+    .help-modal__roles th, .help-modal__roles td {
+      border: 1px solid #d8e2ef;
+      padding: 0.7rem 0.8rem;
+      text-align: left;
+    }
+    .help-modal__roles th {
+      background: #f3f6fb;
+      color: #00529b;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .help-modal__issues dt {
+      margin-top: 0.75rem;
+      margin-bottom: 0.2rem;
+      font-weight: 700;
+      color: #003b72;
+    }
+    .help-modal__issues dd, .help-modal__section p {
+      color: #475569;
+      line-height: 1.65;
+    }
+    .help-modal__actions { margin-top: 1.5rem; display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    @media (max-width: 640px) {
+      .help-modal__panel { padding: 1.5rem; max-height: 94vh; }
+    }
+  </style>
+</head>
+<body class="min-h-screen overflow-x-hidden font-body text-on-surface">
+  <div class="relative isolate min-h-screen">
+    <header class="sticky top-0 z-40 border-b border-slate-200/80 bg-white/88 backdrop-blur-xl">
+      <div class="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-4">
+        <a href="landing.html" class="flex items-center gap-3">
+          <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary text-on-primary shadow-md shadow-blue-900/15">
+            <span class="material-symbols-outlined">verified</span>
+          </div>
+          <div>
+            <p class="font-headline text-xl font-extrabold tracking-tight text-primary">SCRS</p>
+            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-on-surface-variant">Smart Complaint Resolution</p>
+          </div>
+        </a>
+        <nav class="flex items-center gap-3">
+          <button class="rounded-full border border-outline bg-white px-4 py-2 text-sm font-semibold text-primary transition-colors hover:border-primary hover:bg-slate-50" data-help-trigger="helpModal" type="button">Help</button>
+          <a href="login.html" class="px-4 py-2 text-sm font-semibold text-on-surface-variant transition-colors hover:text-primary">Sign In</a>
+          <a href="register.html" class="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-on-primary shadow-md shadow-blue-900/15 transition-opacity hover:opacity-95">Get Started</a>
+        </nav>
+      </div>
+    </header>
+    <main class="mx-auto flex w-full max-w-7xl flex-col gap-12 px-6 py-10 lg:py-12">
+      <section class="grid items-stretch gap-6 lg:grid-cols-[1.08fr_0.92fr]">
+        <div class="hero-band soft-grid relative overflow-hidden rounded-[2rem] px-8 py-10 text-white shadow-civic sm:px-10 sm:py-12">
+          <div class="hero-orb left-[-5%] top-[-10%] h-48 w-48 bg-sky-300/25"></div>
+          <div class="hero-orb bottom-[-12%] right-[-6%] h-56 w-56 bg-blue-200/20"></div>
+          <div class="relative z-10 max-w-3xl">
+            <span class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-blue-50">
+              <span class="material-symbols-outlined text-base">account_balance</span>
+              Civic Resolution Platform
+            </span>
+            <h1 class="mt-7 max-w-4xl font-headline text-5xl font-black leading-[0.98] tracking-tight sm:text-6xl lg:text-7xl">Report faster. Route smarter. Resolve with clarity.</h1>
+            <p class="mt-6 max-w-2xl text-lg leading-8 text-blue-50/92 sm:text-xl">SCRS gives citizens, admins, and authorities one shared system for structured complaints, transparent progress, and accountable follow-through.</p>
+            <div class="mt-8 flex flex-col items-start gap-4 sm:flex-row">
+              <a href="register.html" class="rounded-full bg-white px-8 py-4 text-sm font-extrabold uppercase tracking-[0.14em] text-primary shadow-lg transition-colors hover:bg-blue-50">Begin Registration</a>
+              <a href="login.html" class="rounded-full border border-white/25 bg-white/10 px-8 py-4 text-sm font-extrabold uppercase tracking-[0.14em] text-white transition-colors hover:bg-white/16">Sign In</a>
+            </div>
+            <div class="mt-8 flex flex-wrap gap-3 text-sm font-medium text-blue-50/90">
+              <span class="rounded-full bg-white/10 px-4 py-2">Role-based access</span>
+              <span class="rounded-full bg-white/10 px-4 py-2">Structured intake</span>
+              <span class="rounded-full bg-white/10 px-4 py-2">Visible status tracking</span>
+            </div>
+          </div>
+        </div>
+        <div class="grid gap-6">
+          <article class="rounded-[2rem] border border-outline bg-surface p-7 shadow-sm">
+            <p class="text-xs font-bold uppercase tracking-[0.24em] text-primary-container">How SCRS works</p>
+            <h2 class="mt-3 font-headline text-2xl font-bold tracking-tight text-primary">Built around the same workflows as the citizen dashboard.</h2>
+            <div class="mt-6 grid gap-4">
+              <div class="rounded-2xl bg-surface-soft p-4"><p class="text-sm font-bold text-primary">1. Submit</p><p class="mt-1 text-sm leading-6 text-on-surface-variant">Capture issue details, location, evidence, and role context from the start.</p></div>
+              <div class="rounded-2xl bg-surface-soft p-4"><p class="text-sm font-bold text-primary">2. Route</p><p class="mt-1 text-sm leading-6 text-on-surface-variant">Send complaints into role-aware queues for citizens, admins, and authorities.</p></div>
+              <div class="rounded-2xl bg-surface-soft p-4"><p class="text-sm font-bold text-primary">3. Resolve</p><p class="mt-1 text-sm leading-6 text-on-surface-variant">Track updates clearly until the case is closed and accountability is visible.</p></div>
+            </div>
+          </article>
+          <article class="rounded-[2rem] border border-outline bg-surface-soft p-7 shadow-sm">
+            <p class="text-xs font-bold uppercase tracking-[0.24em] text-primary-container">Support at a glance</p>
+            <h2 class="mt-3 font-headline text-2xl font-bold tracking-tight text-primary">Start with confidence before you sign in.</h2>
+            <p class="mt-3 text-sm leading-7 text-on-surface-variant">The landing help center explains roles, setup, support contacts, and common account issues so public entry stays simple.</p>
+            <div class="mt-5 flex items-center gap-3 text-sm font-semibold text-primary">
+              <span class="material-symbols-outlined">help</span>
+              Help modal available from the top navigation
+            </div>
+          </article>
+        </div>
+      </section>
+      <section class="grid gap-5 md:grid-cols-3">
+        <article class="rounded-3xl border border-outline bg-surface p-7 shadow-sm"><p class="text-xs font-bold uppercase tracking-[0.24em] text-primary-container">Citizen</p><h2 class="mt-3 font-headline text-2xl font-bold text-primary">Report and follow progress</h2><p class="mt-3 text-sm leading-7 text-on-surface-variant">File complaints quickly, attach supporting details, and keep status updates easy to follow.</p></article>
+        <article class="rounded-3xl border border-outline bg-surface p-7 shadow-sm"><p class="text-xs font-bold uppercase tracking-[0.24em] text-primary-container">Admin</p><h2 class="mt-3 font-headline text-2xl font-bold text-primary">Resolve with clear ownership</h2><p class="mt-3 text-sm leading-7 text-on-surface-variant">Use assigned workflows, resolution queues, and progress updates without switching tools.</p></article>
+        <article class="rounded-3xl border border-outline bg-surface p-7 shadow-sm"><p class="text-xs font-bold uppercase tracking-[0.24em] text-primary-container">Authority</p><h2 class="mt-3 font-headline text-2xl font-bold text-primary">Monitor system-wide outcomes</h2><p class="mt-3 text-sm leading-7 text-on-surface-variant">Track broader health, escalation patterns, and service visibility across the complaint system.</p></article>
+      </section>
+      <section class="grid gap-5 rounded-[2rem] border border-outline bg-white p-7 shadow-sm lg:grid-cols-[1.15fr_0.85fr]">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[0.24em] text-primary-container">Why this feels familiar</p>
+          <h2 class="mt-3 font-headline text-3xl font-bold tracking-tight text-primary">The public experience now matches the rest of SCRS.</h2>
+          <p class="mt-4 max-w-2xl text-sm leading-7 text-on-surface-variant">Same palette, same button language, same card rhythm, and the same product voice used across the citizen dashboard, support page, and complaint flows.</p>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
+          <div class="rounded-2xl bg-accent-soft px-5 py-4"><p class="text-xs uppercase tracking-[0.22em] text-primary-container">Access</p><p class="mt-2 text-2xl font-bold text-primary">3 roles</p><p class="mt-1 text-sm text-on-surface-variant">Citizen, Admin, Authority</p></div>
+          <div class="rounded-2xl bg-surface-soft px-5 py-4"><p class="text-xs uppercase tracking-[0.22em] text-primary-container">Entry</p><p class="mt-2 text-2xl font-bold text-primary">1 public home</p><p class="mt-1 text-sm text-on-surface-variant">Landing page centralizes overview and help</p></div>
+          <div class="rounded-2xl bg-surface-soft px-5 py-4"><p class="text-xs uppercase tracking-[0.22em] text-primary-container">Support</p><p class="mt-2 text-2xl font-bold text-primary">Guided onboarding</p><p class="mt-1 text-sm text-on-surface-variant">Help content without cluttering auth forms</p></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div id="helpModal" class="help-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="helpModalLabel">
+    <div class="help-modal__backdrop" data-help-dismiss></div>
+    <div class="help-modal__panel" role="document" tabindex="-1">
+      <button type="button" class="help-modal__close material-symbols-outlined" data-help-dismiss="true" aria-label="Close help dialog">close</button>
+      <header>
+        <p class="help-modal__section-title">Help Center</p>
+        <h2 id="helpModalLabel" class="font-headline text-3xl font-bold tracking-tight text-primary">Smart Complaint Resolution System</h2>
+        <p class="mt-3">SCRS gives communities and civic teams a shared workflow for reporting issues, routing them to the right role, and keeping progress visible from start to finish.</p>
+      </header>
+      <section class="help-modal__section"><div class="help-modal__section-title">What is SCRS?</div><p>SCRS is a civic platform for reporting complaints, routing them to the right team, and keeping resolution progress transparent.</p></section>
+      <section class="help-modal__section"><div class="help-modal__section-title">Who can use this?</div><ul class="help-modal__list"><li>Citizens can report issues like roads, garbage, and water problems.</li><li>Admins can manage, resolve, and communicate updates on complaints.</li><li>Authorities can monitor analytics, trends, and overall system performance.</li></ul></section>
+      <section class="help-modal__section"><div class="help-modal__section-title">How it works</div><ul class="help-modal__list"><li>Submit a complaint with the right details and evidence.</li><li>SCRS organizes and routes the complaint to the right workflow.</li><li>Priority and progress remain visible throughout resolution.</li><li>Users receive updates until the issue is resolved.</li></ul></section>
+      <section class="help-modal__section"><div class="help-modal__section-title">How to create account</div><ul class="help-modal__list"><li>Enter your name and email address.</li><li>Select the role that matches your responsibilities.</li><li>Create a password and confirm your account.</li><li>Use Get Started to enter the correct workspace.</li></ul></section>
+      <section class="help-modal__section"><div class="help-modal__section-title">Account roles explained</div><table class="help-modal__roles"><thead><tr><th scope="col">Role</th><th scope="col">Access</th></tr></thead><tbody><tr><td>Citizen</td><td>Report complaints and track case updates.</td></tr><tr><td>Admin</td><td>Review, route, and resolve operational complaints.</td></tr><tr><td>Authority</td><td>Monitor analytics and oversee system health.</td></tr></tbody></table></section>
+      <section class="help-modal__section"><div class="help-modal__section-title">Common issues</div><dl class="help-modal__issues"><dt>I did not receive email.</dt><dd>Check your spam folder and confirm that the address was entered correctly during sign-up.</dd><dt>I cannot log in.</dt><dd>Open the support page for recovery help or contact the SCRS support team directly.</dd><dt>Admin access is missing.</dt><dd>Some admin accounts may require approval before full access becomes available.</dd></dl></section>
+      <section class="help-modal__section"><div class="help-modal__section-title">Support</div><p>Email: <a class="font-semibold text-primary" href="mailto:support@scrs.com">support@scrs.com</a></p><p>Phone: +91 XXXXX XXXXX</p></section>
+      <section class="help-modal__section"><div class="help-modal__section-title">Tips</div><ul class="help-modal__tips"><li>Write clear issue descriptions for faster triage.</li><li>Upload supporting photos when they help explain the complaint.</li><li>Avoid duplicate submissions for the same issue unless the situation has changed.</li></ul></section>
+      <div class="help-modal__actions">
+        <a class="rounded-full bg-primary px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-on-primary" href="support.html">Read full help page</a>
+        <button type="button" class="rounded-full border border-outline px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-primary" data-help-dismiss="true">Close</button>
+      </div>
+    </div>
+  </div>
+  <script src="auth.js"></script>
+</body>
+</html>

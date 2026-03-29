@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Complaints - Civixa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#6366f1',
+              darkbg: '#0f172a',
+              card: '#1e293b'
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif']
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body { background-color: #0f172a; color: #e2e8f0; }
+      .bg-card { background-color: #1e293b; }
+      .text-primary { color: #6366f1; }
+    </style>
+</head>
+<body class="bg-darkbg text-gray-200" style="background-color: #0f172a;">
+  <div id="notificationContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+  <!-- Sidebar Navigation -->
+  <aside class="w-64 bg-card border-r border-gray-700 p-6 hidden md:flex flex-col fixed h-screen">
+    <div class="mb-8">
+      <div class="flex items-center gap-3">
+        <img src="../assests/Civixa_logo_new.png" alt="Civixa Logo" class="h-10 w-auto object-contain block">
+        <h2 class="text-2xl font-bold leading-none text-white">Civixa</h2>
+      </div>
+      <p class="text-xs text-gray-400 mt-2">AI-Enhanced Civic Platform</p>
+    </div>
+    <nav class="space-y-3 flex-1">
+      <a href="index.html" class="block px-4 py-2 rounded-lg hover:bg-primary hover:text-white transition text-gray-300">🏠 Home</a>
+      <a href="complaint.html" class="block px-4 py-2 rounded-lg hover:bg-primary hover:text-white transition text-gray-300">📝 Register Complaint</a>
+      <a href="my-complaints.html" class="block px-4 py-2 rounded-lg bg-primary/20 border-l-2 border-primary text-primary font-medium transition">📋 My Complaints</a>
+      <a href="dashboard-citizen.html" class="block px-4 py-2 rounded-lg hover:bg-primary hover:text-white transition text-gray-300">📊 Citizen Dashboard</a>
+      <a id="adminLink" href="dashboard-admin.html" style="display:none;" class="block px-4 py-2 rounded-lg hover:bg-primary hover:text-white transition text-gray-300">⚙️ Admin</a>
+      <a id="authorityLink" href="dashboard-authority.html" style="display:none;" class="block px-4 py-2 rounded-lg hover:bg-primary hover:text-white transition text-gray-300">👮 Authority</a>
+    </nav>
+    <div id="authSection" class="border-t border-gray-700 pt-4">
+      <div id="authProfile" style="display:none;" class="space-y-2">
+        <p class="text-sm text-gray-400">Logged in as:</p>
+        <p class="font-semibold text-white" id="authName"></p>
+        <p class="text-xs bg-primary/20 text-primary px-2 py-1 rounded w-fit" id="authRole"></p>
+        <button onclick="logout()" class="w-full px-3 py-2 rounded-lg bg-red-600/20 text-red-400 hover:bg-red-600/30 transition text-sm font-medium">Logout</button>
+      </div>
+      <div id="authLinks" class="space-y-2">
+        <a href="login.html" class="block w-full px-3 py-2 rounded-lg bg-primary text-white text-center hover:opacity-90 transition font-medium">Login</a>
+        <a href="register.html" class="block w-full px-3 py-2 rounded-lg border border-primary text-primary text-center hover:bg-primary hover:text-white transition font-medium">Register</a>
+      </div>
+    </div>
+  </aside>
+
+  <script src="auth.js"></script>
+  <script>
+    function updateSidebarAuth() {
+      const auth = getStoredAuth();
+      const authProfile = document.getElementById('authProfile');
+      const authLinks = document.getElementById('authLinks');
+      const adminLink = document.getElementById('adminLink');
+      const authorityLink = document.getElementById('authorityLink');
+
+      if (auth.token && auth.user) {
+        document.getElementById('authName').textContent = auth.user.name;
+        document.getElementById('authRole').textContent = auth.user.role.toUpperCase();
+        authProfile.style.display = 'block';
+        authLinks.style.display = 'none';
+
+        if (auth.user.role === 'admin') {
+          adminLink.style.display = 'block';
+        }
+        if (auth.user.role === 'authority') {
+          authorityLink.style.display = 'block';
+        }
+      } else {
+        authProfile.style.display = 'none';
+        authLinks.style.display = 'block';
+      }
+    }
+
+    function logout() {
+      if (confirm('Are you sure you want to logout?')) {
+        clearAuth();
+        window.location.href = 'index.html';
+      }
+    }
+
+    window.addEventListener('load', updateSidebarAuth);
+    document.addEventListener('DOMContentLoaded', updateSidebarAuth);
+  </script>
+
+  <!-- Main Content -->
+  <main class="flex-1 md:ml-64 p-8">
+    <div class="max-w-6xl mx-auto">
+      <!-- Page Header -->
+      <div class="mb-8">
+        <h1 class="text-4xl font-bold text-white mb-2">My Complaints</h1>
+        <p class="text-gray-400">Track the status of all your submitted complaints and monitor their progress.</p>
+      </div>
+
+      <!-- Complaints Table -->
+      <div class="bg-card border border-gray-700 rounded-xl overflow-hidden">
+        <div class="overflow-x-auto">
+          <table id="complaintsTable" class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-gray-700 bg-slate-700/50">
+                <th class="px-6 py-3 text-left text-gray-300 font-semibold">Complaint ID</th>
+                <th class="px-6 py-3 text-left text-gray-300 font-semibold">Category</th>
+                <th class="px-6 py-3 text-left text-gray-300 font-semibold">Description</th>
+                <th class="px-6 py-3 text-left text-gray-300 font-semibold">Location</th>
+                <th class="px-6 py-3 text-left text-gray-300 font-semibold">Status</th>
+                <th class="px-6 py-3 text-left text-gray-300 font-semibold">Priority</th>
+                <th class="px-6 py-3 text-left text-gray-300 font-semibold">Date</th>
+                <th class="px-6 py-3 text-left text-gray-300 font-semibold">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="complaintsBody" class="divide-y divide-gray-700">
+              <!-- Data will be loaded here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div id="noComplaints" style="display:none;" class="text-center py-12">
+        <div class="text-6xl mb-4">📋</div>
+        <h3 class="text-2xl font-bold text-white mb-2">No Complaints Found</h3>
+        <p class="text-gray-400 mb-6">You haven't submitted any complaints yet. Start by reporting a civic issue in your area.</p>
+        <a href="complaint.html" class="inline-block px-6 py-3 bg-primary text-white rounded-lg font-semibold hover:opacity-90 transition">📝 Register Your First Complaint</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Complaint Details Modal -->
+  <div id="complaintModal" style="display: none;" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+    <div class="bg-card border border-gray-700 rounded-xl max-w-2xl w-full max-h-96 overflow-y-auto">
+      <div class="sticky top-0 bg-slate-700/50 border-b border-gray-700 px-6 py-4 flex justify-between items-center">
+        <h3 class="text-xl font-bold text-white">Complaint Details</h3>
+        <button onclick="closeComplaintModal()" class="text-2xl text-gray-400 hover:text-white transition">&times;</button>
+      </div>
+      <div class="p-6 space-y-4" id="modalBody">
+        <!-- Complaint details will be inserted here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-gray-700 py-6 px-8 md:ml-64 text-center text-gray-500 text-sm">
+    <p>&copy; 2026 Civixa - AI-Enhanced Civic Complaint Platform. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // ── Security helpers ────────────────────────────────────────────────────────
+    function escapeHtml(value) {
+      const str = String(value == null ? '' : value);
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#x27;');
+    }
+
+    // Only allow data: URIs for images (base64 from our own backend)
+    function sanitizeImageUrl(url) {
+      if (!url) return null;
+      const s = String(url).trim();
+      if (s.startsWith('data:image/')) return s;
+      if (s.startsWith('https://') || s.startsWith('http://')) return s;
+      return null;
+    }
+    // ────────────────────────────────────────────────────────────────────────────
+
+    // Placeholder data kept only as a fallback if the backend is offline
+    const placeholderComplaints = [
+        {
+            id: 'COMP-1234',
+            complaint_id: 'COMP-1234',
+            category: 'Road',
+            description: 'Large pothole on Main Street causing traffic issues',
+            location: 'Main Street, Sector 5',
+            status: 'Submitted',
+            priority: 'Medium',
+            date: '2026-02-01'
+        }
+    ];
+
+    // Load complaints from backend
+    async function loadComplaints() {
+        const tbody = document.getElementById('complaintsBody');
+        const noComplaints = document.getElementById('noComplaints');
+        const table = tbody.closest('table');
+
+        console.log('🔍 Loading complaints...');
+
+        try {
+            const auth = requireAuth(['citizen', 'admin', 'authority']);
+            if (!auth) {
+                console.log('❌ No auth found, user will be redirected');
+                return;
+            }
+
+            console.log('✅ User authenticated:', auth.user.name);
+            console.log('📡 Fetching complaints from API...');
+
+            const response = await fetch('http://localhost:3000/complaints/my', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...getAuthHeaders()
+                }
+            });
+
+            if (!response.ok) {
+                console.error('Failed to fetch complaints:', response.status, response.statusText);
+                const errorData = await response.json().catch(() => ({}));
+                console.error('Error details:', errorData);
+                throw new Error('HTTP ' + response.status + ': ' + (errorData.message || response.statusText));
+            }
+
+            const data = await response.json();
+            const complaints = data.data || data.complaints || [];
+
+            console.log('✅ Received', complaints.length, 'complaints from server');
+
+            if (complaints.length === 0) {
+                table.style.display = 'none';
+                noComplaints.style.display = 'block';
+                console.log('ℹ️ No complaints found for this user');
+            } else {
+                displayComplaints(complaints);
+            }
+        } catch (error) {
+            console.error('Error loading complaints from backend, using fallback data:', error);
+
+            if (placeholderComplaints.length === 0) {
+                table.style.display = 'none';
+                noComplaints.style.display = 'block';
+            } else {
+                displayComplaints(placeholderComplaints);
+            }
+        }
+    }
+
+    // Render complaint rows into the table body
+    function displayComplaints(complaints) {
+        const tbody = document.getElementById('complaintsBody');
+        tbody.innerHTML = '';
+
+        complaints.forEach(complaint => {
+            const row = document.createElement('tr');
+          row.className = 'hover:bg-slate-700/30 transition';
+            
+            const statusClass = String(complaint.status || '').toLowerCase().replace(/\s+/g, '-');
+            const priorityClass = complaint.priority.toLowerCase();
+            
+            const shortDescription = complaint.description && complaint.description.length > 50 
+                ? complaint.description.substring(0, 50) + '...' 
+                : (complaint.description || 'No description');
+
+            const displayId = complaint.complaint_id || (complaint.id ? `COMP-${complaint.id.toString().padStart(4, '0')}` : 'N/A');
+
+            const rawDate = complaint.created_at || complaint.date || '';
+            const displayDate = rawDate ? String(rawDate).replace('T', ' ').replace('Z', '') : '';
+
+            // Status and priority badges
+            let statusBadge = '<span class="px-2 py-1 rounded text-xs font-medium bg-blue-600/20 text-blue-400">Pending</span>';
+            if (statusClass.includes('resolved') || statusClass.includes('completed')) {
+              statusBadge = '<span class="px-2 py-1 rounded text-xs font-medium bg-green-600/20 text-green-400">Resolved</span>';
+            } else if (statusClass.includes('in-progress')) {
+              statusBadge = '<span class="px-2 py-1 rounded text-xs font-medium bg-yellow-600/20 text-yellow-400">In Progress</span>';
+            }
+
+            let priorityBadge = '<span class="px-2 py-1 rounded text-xs font-medium bg-gray-600/20 text-gray-300">Low</span>';
+            if (priorityClass.includes('medium')) {
+              priorityBadge = '<span class="px-2 py-1 rounded text-xs font-medium bg-yellow-600/20 text-yellow-400">Medium</span>';
+            } else if (priorityClass.includes('high')) {
+              priorityBadge = '<span class="px-2 py-1 rounded text-xs font-medium bg-red-600/20 text-red-400">High</span>';
+            }
+
+            row.innerHTML = `
+                <td class="px-6 py-4 text-gray-300">${escapeHtml(displayId)}</td>
+                <td class="px-6 py-4 text-gray-300">${escapeHtml(complaint.category)}</td>
+                <td class="px-6 py-4 text-gray-400 text-sm" title="${escapeHtml(complaint.description || 'No description')}">${escapeHtml(shortDescription)}</td>
+                <td class="px-6 py-4 text-gray-300">${escapeHtml(complaint.location)}</td>
+                <td class="px-6 py-4">${statusBadge}</td>
+                <td class="px-6 py-4">${priorityBadge}</td>
+                <td class="px-6 py-4 text-gray-400 text-sm">${escapeHtml(displayDate)}</td>
+                <td class="px-6 py-4">
+                  <button type="button" class="view-complaint-btn px-3 py-1.5 rounded-lg bg-primary/20 text-primary border border-primary/40 hover:bg-primary hover:text-white transition text-xs font-semibold">View</button>
+                </td>
+            `;
+
+            const viewButton = row.querySelector('.view-complaint-btn');
+            if (viewButton) {
+              viewButton.addEventListener('click', function(event) {
+                event.stopPropagation();
+                showComplaintDetails(complaint);
+              });
+            }
+            
+            tbody.appendChild(row);
+        });
+    }
+
+    // Show complaint details in modal
+    function showComplaintDetails(complaint) {
+        const modal = document.getElementById('complaintModal');
+        const modalBody = document.getElementById('modalBody');
+        
+        const statusClass = String(complaint.status || '').toLowerCase().replace(/\s+/g, '-');
+        const priorityClass = complaint.priority.toLowerCase();
+        
+        const displayId = complaint.complaint_id || 
+                        (complaint.id ? `COMP-${complaint.id.toString().padStart(4, '0')}` : 'N/A');
+
+        const rawDate = complaint.created_at || complaint.date || '';
+        const displayDate = rawDate ? String(rawDate).replace('T', ' ').replace('Z', '') : 'No Date Available';
+
+        // Status badge
+        let statusBadge = '<span class="px-2 py-1 rounded text-sm font-medium bg-blue-600/20 text-blue-400">Pending</span>';
+        if (statusClass.includes('resolved') || statusClass.includes('completed')) {
+          statusBadge = '<span class="px-2 py-1 rounded text-sm font-medium bg-green-600/20 text-green-400">Resolved</span>';
+        } else if (statusClass.includes('in-progress')) {
+          statusBadge = '<span class="px-2 py-1 rounded text-sm font-medium bg-yellow-600/20 text-yellow-400">In Progress</span>';
+        }
+
+        // Priority badge
+        let priorityBadge = '<span class="px-2 py-1 rounded text-sm font-medium bg-gray-600/20 text-gray-300">Low</span>';
+        if (priorityClass.includes('medium')) {
+          priorityBadge = '<span class="px-2 py-1 rounded text-sm font-medium bg-yellow-600/20 text-yellow-400">Medium</span>';
+        } else if (priorityClass.includes('high')) {
+          priorityBadge = '<span class="px-2 py-1 rounded text-sm font-medium bg-red-600/20 text-red-400">High</span>';
+        }
+
+        // Image display
+        let imageHtml = '';
+        const safeImageUrl = sanitizeImageUrl(complaint.image_url);
+        if (safeImageUrl) {
+          imageHtml = `
+            <div>
+              <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-2">📷 Attached Image</p>
+              <img src="${escapeHtml(safeImageUrl)}" alt="Complaint Image" 
+                   class="complaint-image-modal max-w-full h-auto rounded-lg border border-gray-600 shadow-lg cursor-pointer"
+                   data-image-url="${escapeHtml(safeImageUrl)}"
+                   style="max-height: 400px; object-fit: contain;">
+            </div>
+          `;
+        }
+
+        modalBody.innerHTML = `
+            <div class="space-y-3">
+                <div>
+                    <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Complaint ID</p>
+                    <p class="text-lg font-bold text-primary">${escapeHtml(displayId)}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Category</p>
+                    <p class="text-white">${escapeHtml(complaint.category)}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Description</p>
+                    <p class="text-gray-300 leading-relaxed">${escapeHtml(complaint.description || 'No description provided')}</p>
+                </div>
+                ${imageHtml}
+                <div>
+                    <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Location</p>
+                    <p class="text-white">${escapeHtml(complaint.location)}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Status</p>
+                    ${statusBadge}
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Priority</p>
+                    ${priorityBadge}
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Date Submitted</p>
+                    <p class="text-gray-300">${escapeHtml(displayDate)}</p>
+                </div>
+            </div>
+        `;
+
+        // Attach safe click handler to image (avoids inline onclick with user data)
+        const modalImg = modalBody.querySelector('.complaint-image-modal');
+        if (modalImg) {
+          modalImg.addEventListener('click', () => {
+            const url = modalImg.getAttribute('data-image-url');
+            if (url) window.open(url, '_blank', 'noopener,noreferrer');
+          });
+          modalImg.addEventListener('error', () => {
+            modalImg.style.display = 'none';
+            const wrapper = modalImg.parentElement;
+            if (wrapper) {
+              const errText = document.createElement('p');
+              errText.className = 'text-red-400 text-sm';
+              errText.textContent = 'Image failed to load';
+              wrapper.appendChild(errText);
+            }
+          });
+        }
+
+        modal.style.display = 'flex';
+    }
+
+    // Close complaint modal
+    function closeComplaintModal() {
+        document.getElementById('complaintModal').style.display = 'none';
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('complaintModal').addEventListener('click', function(event) {
+        if (event.target === this) {
+            this.style.display = 'none';
+        }
+    });
+
+    // Load complaints when page opens
+    loadComplaints();
+  </script>
+  <script src="theme-toggle.js"></script>
+</body>
+</html>

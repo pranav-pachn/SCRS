@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Submit Complaint | SCRS Municipal</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-tertiary-container": "#ffb48b",
+            "surface-variant": "#e1e3e4",
+            "tertiary-fixed-dim": "#ffb68e",
+            "surface-container-high": "#e7e8e9",
+            "surface-tint": "#1d5fa8",
+            "background": "#f8f9fa",
+            "on-surface-variant": "#424751",
+            "surface-container-low": "#f3f4f5",
+            "secondary": "#48626e",
+            "error": "#ba1a1a",
+            "on-primary-fixed-variant": "#004787",
+            "on-primary-container": "#a5c7ff",
+            "inverse-on-surface": "#f0f1f2",
+            "on-secondary-fixed": "#021f29",
+            "on-secondary-fixed-variant": "#304a55",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-fixed": "#ffdbca",
+            "on-secondary": "#ffffff",
+            "outline-variant": "#c2c6d3",
+            "on-primary": "#ffffff",
+            "primary-container": "#00529b",
+            "error-container": "#ffdad6",
+            "on-tertiary-fixed": "#331200",
+            "on-surface": "#191c1d",
+            "on-error": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "primary": "#003b72",
+            "on-background": "#191c1d",
+            "primary-fixed-dim": "#a6c8ff",
+            "surface-dim": "#d9dadb",
+            "surface": "#f8f9fa",
+            "on-error-container": "#93000a",
+            "surface-container": "#edeeef",
+            "inverse-surface": "#2e3132",
+            "inverse-primary": "#a6c8ff",
+            "secondary-fixed": "#cbe7f5",
+            "on-primary-fixed": "#001c3b",
+            "tertiary": "#642a00",
+            "tertiary-container": "#883b00",
+            "on-secondary-container": "#4e6874",
+            "outline": "#727782",
+            "surface-container-highest": "#e1e3e4",
+            "secondary-fixed-dim": "#afcbd8",
+            "on-tertiary-fixed-variant": "#773300",
+            "surface-bright": "#f8f9fa",
+            "primary-fixed": "#d5e3ff",
+            "secondary-container": "#cbe7f5"
+          },
+          fontFamily: {
+            "headline": ["Public Sans"],
+            "body": ["Inter"],
+            "label": ["Inter"]
+          },
+          borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"}
+        }
+      }
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .glass-panel {
+      background: rgba(248, 249, 250, 0.72);
+      backdrop-filter: blur(20px);
+    }
+    body { font-family: 'Inter', sans-serif; }
+    h1, h2, h3, h4 { font-family: 'Public Sans', sans-serif; }
+    .dark body {
+      background: #020617;
+      color: #e5e7eb;
+    }
+    .dark .bg-surface,
+    .dark .bg-background,
+    .dark .bg-surface-container-lowest {
+      background-color: #0f172a !important;
+    }
+    .dark .bg-surface-container-low {
+      background-color: #1e293b !important;
+    }
+    .dark .bg-surface-container,
+    .dark .bg-surface-container-high,
+    .dark .bg-surface-container-highest {
+      background-color: #334155 !important;
+    }
+    .dark .text-on-surface { color: #f1f5f9 !important; }
+    .dark .text-on-surface-variant,
+    .dark .text-outline,
+    .dark .text-outline-variant { color: #94a3b8 !important; }
+    .dark .border-outline,
+    .dark .border-outline-variant,
+    .dark .border-surface-variant { border-color: #334155 !important; }
+  </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased">
+  <div id="notificationContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+  <header class="sticky top-0 z-50 bg-slate-50/70 backdrop-blur-xl shadow-sm dark:bg-slate-950/70 dark:shadow-none">
+    <div class="flex w-full items-center justify-between px-6 py-3">
+      <div class="text-xl font-bold tracking-tighter text-blue-900 dark:text-blue-100 font-headline">SCRS Municipal</div>
+      <nav class="hidden items-center space-x-6 lg:flex">
+        <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="index.html">Home</a>
+        <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="dashboard-citizen.html">Dashboard</a>
+        <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="my-complaints.html">My Complaints</a>
+        <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="support.html">Support</a>
+      </nav>
+      <div class="flex items-center space-x-4">
+        <div class="relative hidden sm:block">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+          <input class="rounded-full border-none bg-slate-100 py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary dark:bg-slate-900" placeholder="Search services..." type="text"/>
+        </div>
+        <button id="themeToggleBtn" class="rounded-full p-2 text-slate-500 transition-colors hover:bg-blue-50/50 dark:hover:bg-blue-900/20" type="button">
+          <span id="themeToggleIcon" class="material-symbols-outlined">dark_mode</span>
+        </button>
+        <img id="headerAvatar" alt="User profile avatar" class="h-8 w-8 rounded-full border border-slate-200" src="https://ui-avatars.com/api/?name=User&background=003b72&color=fff"/>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex min-h-screen">
+    <aside class="fixed left-0 top-0 z-40 hidden h-screen w-64 overflow-y-auto bg-slate-100 p-4 pt-20 dark:bg-slate-900 lg:flex lg:flex-col">
+      <div class="mb-6 px-2">
+        <div class="mb-2 flex items-center space-x-3">
+          <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+            <span class="material-symbols-outlined text-sm text-white">account_balance</span>
+          </div>
+          <div>
+            <div class="leading-tight font-black text-blue-900 dark:text-white">City Services</div>
+            <div class="text-[10px] uppercase tracking-widest text-slate-500">Management Portal</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="space-y-1">
+        <a class="flex items-center space-x-3 rounded-xl px-4 py-2 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50" href="index.html">
+          <span class="material-symbols-outlined">home</span>
+          <span class="text-sm font-['Public_Sans'] antialiased">Home</span>
+        </a>
+        <a class="flex items-center space-x-3 rounded-xl px-4 py-2 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50" href="dashboard-citizen.html">
+          <span class="material-symbols-outlined">dashboard</span>
+          <span class="text-sm font-['Public_Sans'] antialiased">Dashboard</span>
+        </a>
+        <a class="flex items-center space-x-3 rounded-xl px-4 py-2 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50" href="my-complaints.html">
+          <span class="material-symbols-outlined">list_alt</span>
+          <span class="text-sm font-['Public_Sans'] antialiased">My Complaints</span>
+        </a>
+        <a class="flex items-center space-x-3 rounded-xl border-l-4 border-blue-800 bg-white px-4 py-2 text-blue-700 shadow-sm transition-transform duration-200 dark:bg-slate-800 dark:text-blue-300" href="complaint.html">
+          <span class="material-symbols-outlined">add_circle</span>
+          <span class="text-sm font-['Public_Sans'] font-bold antialiased">Submit Request</span>
+        </a>
+        <a class="flex items-center space-x-3 rounded-xl px-4 py-2 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50" href="support.html">
+          <span class="material-symbols-outlined">contact_support</span>
+          <span class="text-sm font-['Public_Sans'] antialiased">Support</span>
+        </a>
+        <a id="adminLink" style="display:none;" class="flex items-center space-x-3 rounded-xl px-4 py-2 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50" href="dashboard-admin.html">
+          <span class="material-symbols-outlined">admin_panel_settings</span>
+          <span class="text-sm font-['Public_Sans'] antialiased">Admin</span>
+        </a>
+        <a id="authorityLink" style="display:none;" class="flex items-center space-x-3 rounded-xl px-4 py-2 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50" href="dashboard-authority.html">
+          <span class="material-symbols-outlined">security</span>
+          <span class="text-sm font-['Public_Sans'] antialiased">Authority</span>
+        </a>
+      </nav>
+
+      <div id="authSection" class="mt-auto space-y-1 border-t border-slate-200 pt-6 dark:border-slate-800">
+        <div id="authProfile" style="display:none;" class="space-y-2 px-2">
+          <p class="text-xs text-slate-500 dark:text-slate-400">Logged in as:</p>
+          <p class="text-sm font-semibold text-slate-900 dark:text-white" id="authName"></p>
+          <p class="w-fit rounded bg-primary/15 px-2 py-1 text-xs font-bold uppercase tracking-wider text-primary dark:bg-primary/25 dark:text-blue-300" id="authRole"></p>
+          <button onclick="logout()" class="mt-2 flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-red-50 hover:text-red-600 dark:text-slate-400 dark:hover:bg-red-900/20 dark:hover:text-red-300" type="button">
+            <span class="material-symbols-outlined text-lg">logout</span>Logout
+          </button>
+        </div>
+        <div id="authLinks" class="space-y-2">
+          <a href="login.html" class="block rounded-lg bg-gradient-to-br from-primary to-primary-container px-4 py-2 text-center text-sm font-bold text-white hover:opacity-90">Login</a>
+          <a href="register.html" class="block rounded-lg border border-blue-700 px-4 py-2 text-center text-sm font-bold text-blue-700 hover:bg-blue-50 dark:border-blue-400 dark:text-blue-300 dark:hover:bg-blue-900/20">Register</a>
+        </div>
+      </div>
+    </aside>
+
+    <main class="min-h-screen flex-1 bg-surface p-6 md:p-12 lg:ml-64">
+      <div class="mx-auto max-w-4xl">
+        <header class="mb-12">
+          <h1 class="mb-2 text-4xl font-black tracking-tight text-primary">File a Formal Complaint</h1>
+          <p class="max-w-2xl text-on-surface-variant">Your feedback ensures our city remains efficient and transparent. Every report is tracked through our Architectural Trust System.</p>
+          <div class="mt-10">
+            <div class="mb-4 flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-widest text-primary">Step 2 of 3: Details and Location</span>
+              <span class="text-xs font-medium text-on-surface-variant">65% Complete</span>
+            </div>
+            <div class="h-2 w-full overflow-hidden rounded-full bg-surface-variant">
+              <div class="h-full bg-primary" style="width: 65%"></div>
+            </div>
+          </div>
+        </header>
+
+        <div id="messageArea" class="mb-6"></div>
+
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-12">
+          <div class="space-y-8 lg:col-span-8">
+            <section class="flex items-center justify-between rounded-xl bg-surface-container-low p-6 opacity-60">
+              <div class="flex items-center gap-4">
+                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <span class="material-symbols-outlined">check_circle</span>
+                </div>
+                <div>
+                  <h2 class="text-lg font-bold leading-none">Service Category</h2>
+                  <p class="mt-1 text-xs">Infrastructure and Public Utilities</p>
+                </div>
+              </div>
+              <button class="text-sm font-bold text-primary" type="button">Edit</button>
+            </section>
+
+            <section class="rounded-xl bg-surface-container-lowest p-8 shadow-sm">
+              <div class="mb-2 flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary">description</span>
+                <h2 class="text-xl font-bold">Details and Location</h2>
+              </div>
+              <p class="mb-6 text-sm text-on-surface-variant">Provide a specific description of the issue to help our agents route your request correctly.</p>
+
+              <form id="complaintForm" class="space-y-6">
+                <div class="space-y-1.5">
+                  <label class="text-xs font-bold uppercase tracking-tighter text-on-surface/70" for="category">Category *</label>
+                  <select id="category" name="category" required class="w-full rounded-lg border-none bg-surface-container-low p-3 text-sm focus:ring-2 focus:ring-primary">
+                    <option value="">Select a category</option>
+                    <option value="Road">Road</option>
+                    <option value="Garbage">Garbage</option>
+                    <option value="Water">Water</option>
+                    <option value="Electricity">Electricity</option>
+                    <option value="Streetlight">Streetlight</option>
+                  </select>
+                </div>
+
+                <div class="space-y-1.5">
+                  <label class="text-xs font-bold uppercase tracking-tighter text-on-surface/70" for="description">Description *</label>
+                  <textarea id="description" name="description" class="w-full rounded-lg border-none bg-surface-container-low p-3 text-sm focus:ring-2 focus:ring-primary" placeholder="Describe the situation in detail..." required maxlength="500" rows="5"></textarea>
+                  <div class="mt-2 flex items-center justify-between">
+                    <div class="text-sm text-on-surface-variant" id="descCounter">0 / 500 characters</div>
+                    <small class="text-xs text-on-surface-variant">Detailed descriptions speed up resolution.</small>
+                  </div>
+                </div>
+
+                <div class="space-y-1.5">
+                  <label class="text-xs font-bold uppercase tracking-tighter text-on-surface/70" for="location">Incident Location *</label>
+                  <div class="relative mb-3 h-48 w-full overflow-hidden rounded-xl bg-surface-variant">
+                    <img alt="Map view of incident location" class="h-full w-full object-cover opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1Ajsnmwduudinn75LcoAk5d1DW5RQ-_sKbVahdwExZz1sG845LVlKh4jUlKHN6gCyEkd90oZwRlCi6_SC8cPJ0_uYcDpFxR-BvAZ56o2Cf30FN01LxhXOlGa6zgFx5jkKudqO5gvh4uWjsvhvp6v0d6MynoiqL8WDcs3thgXl5UYmHTk8xlzQ-5QXnLRzYrqFP4COvy8UfkKj0N5RuLq6d4DjPBjo5H1wvvN_FKOGW94vzpPyzFtHYAoocUQXQHkbS6V0-xxeSdQ"/>
+                    <div class="pointer-events-none absolute inset-0 flex items-center justify-center bg-primary/10">
+                      <div class="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 shadow-lg">
+                        <span class="material-symbols-outlined text-error">location_on</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex gap-2">
+                    <input id="location" name="location" class="flex-1 rounded-lg border-none bg-surface-container-low p-3 text-sm focus:ring-2 focus:ring-primary" placeholder="Enter location or landmark" required minlength="3" maxlength="255" type="text"/>
+                    <button id="gpsLocationBtn" class="flex items-center gap-2 rounded-lg bg-surface-container-high px-4 hover:bg-surface-variant" type="button" aria-label="Use current location">
+                      <span class="material-symbols-outlined text-sm">my_location</span>
+                      <span class="text-xs font-bold">GPS</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="space-y-1.5">
+                  <label class="text-xs font-bold uppercase tracking-tighter text-on-surface/70" for="image">Supporting Evidence (Optional)</label>
+                  <input id="image" name="image" class="w-full rounded-lg border-none bg-surface-container-low p-3 text-sm file:mr-3 file:cursor-pointer file:rounded file:border-0 file:bg-primary file:px-3 file:py-1 file:text-sm file:font-semibold file:text-white" accept="image/*" type="file"/>
+                  <div id="imageFeedback" class="text-sm"></div>
+                  <small class="text-xs text-on-surface-variant">Accepted formats: JPG, PNG, GIF. Max size: 5MB.</small>
+                </div>
+
+                <div class="flex items-center justify-between pt-6">
+                  <button class="rounded-xl px-6 py-3 font-bold text-primary transition-colors hover:bg-primary/5" type="button">Save as Draft</button>
+                  <div class="flex gap-4">
+                    <button class="rounded-xl bg-secondary-container px-8 py-3 font-bold text-on-secondary-container hover:opacity-90" type="button">Previous</button>
+                    <button type="submit" class="rounded-xl bg-gradient-to-br from-primary to-primary-container px-10 py-3 font-bold text-white shadow-lg shadow-primary/20 transition-transform hover:scale-[1.02]">Submit Complaint</button>
+                  </div>
+                </div>
+              </form>
+            </section>
+          </div>
+
+          <div class="space-y-6 lg:col-span-4">
+            <div class="glass-panel rounded-2xl border border-white/20 p-6 shadow-xl">
+              <h3 class="mb-4 text-primary font-extrabold">Submission Summary</h3>
+              <div class="space-y-4">
+                <div class="flex items-start justify-between border-b border-outline-variant/20 pb-4">
+                  <div>
+                    <p class="text-[10px] font-bold uppercase text-slate-400">Reference ID</p>
+                    <p class="font-headline text-sm font-bold">SCRS-2026-PEND</p>
+                  </div>
+                  <span class="rounded bg-tertiary-container px-2 py-0.5 text-[10px] font-bold text-white">URGENT</span>
+                </div>
+                <div class="space-y-3">
+                  <div class="flex gap-3">
+                    <span class="material-symbols-outlined text-primary text-lg">info</span>
+                    <p class="text-xs leading-relaxed text-on-surface-variant">Submitting this complaint initiates a 48-hour response window for Municipal Infrastructure Teams.</p>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="material-symbols-outlined text-primary text-lg">verified_user</span>
+                    <p class="text-xs leading-relaxed text-on-surface-variant">Your identity is protected under the SCRS Privacy Shield Framework.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="group relative overflow-hidden rounded-2xl bg-primary p-6 text-white shadow-lg">
+              <div class="absolute right-0 top-0 p-4 opacity-10 transition-transform group-hover:rotate-12">
+                <span class="material-symbols-outlined text-6xl">rocket_launch</span>
+              </div>
+              <h3 class="mb-2 text-lg font-bold">Almost ready!</h3>
+              <p class="mb-4 text-xs opacity-80">Once you attach photos in the next step, your request will be ready for official transmission.</p>
+              <div class="-space-x-2 flex">
+                <div class="h-8 w-8 rounded-full border-2 border-primary bg-slate-300"></div>
+                <div class="h-8 w-8 rounded-full border-2 border-primary bg-slate-400"></div>
+                <div class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-primary bg-white text-[10px] font-bold text-primary">2+</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <footer class="mt-auto w-full border-t border-slate-200 bg-slate-50 py-8 dark:border-slate-800 dark:bg-slate-950">
+    <div class="mx-auto flex max-w-7xl flex-col items-center justify-between space-y-4 px-12 md:flex-row md:space-y-0">
+      <div class="text-xs tracking-wide text-slate-500 dark:text-slate-400">© 2026 Municipal SCRS. Architectural Trust System.</div>
+      <nav class="flex space-x-6">
+        <a class="text-xs tracking-wide text-slate-400 transition-colors hover:text-slate-600" href="privacy.html">Privacy Policy</a>
+        <a class="text-xs tracking-wide text-slate-400 transition-colors hover:text-slate-600" href="terms.html">Terms of Service</a>
+        <a class="text-xs tracking-wide text-slate-400 transition-colors hover:text-slate-600" href="support.html">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="auth.js"></script>
+  <script src="notifications.js"></script>
+  <script>
+    window.addEventListener('load', function() {
+      requireAuth(['citizen', 'admin', 'authority']);
+      initTheme();
+      updateSidebarAuth();
+    });
+
+    function updateSidebarAuth() {
+      const auth = getStoredAuth();
+      const authProfile = document.getElementById('authProfile');
+      const authLinks = document.getElementById('authLinks');
+      const adminLink = document.getElementById('adminLink');
+      const authorityLink = document.getElementById('authorityLink');
+      const avatar = document.getElementById('headerAvatar');
+
+      if (auth.token && auth.user) {
+        document.getElementById('authName').textContent = auth.user.name;
+        document.getElementById('authRole').textContent = auth.user.role.toUpperCase();
+        authProfile.style.display = 'block';
+        authLinks.style.display = 'none';
+
+        if (avatar) {
+          avatar.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(auth.user.name) + '&background=003b72&color=fff';
+        }
+
+        if (auth.user.role === 'admin') {
+          adminLink.style.display = 'flex';
+        }
+        if (auth.user.role === 'authority') {
+          authorityLink.style.display = 'flex';
+        }
+      } else {
+        authProfile.style.display = 'none';
+        authLinks.style.display = 'block';
+      }
+    }
+
+    function logout() {
+      if (confirm('Are you sure you want to logout?')) {
+        clearAuth();
+        window.location.href = 'index.html';
+      }
+    }
+
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      const root = document.documentElement;
+      root.classList.toggle('dark', savedTheme === 'dark');
+      root.classList.toggle('light', savedTheme !== 'dark');
+      root.setAttribute('data-theme', savedTheme);
+      const icon = document.getElementById('themeToggleIcon');
+      if (icon) icon.textContent = savedTheme === 'dark' ? 'light_mode' : 'dark_mode';
+    }
+
+    document.getElementById('themeToggleBtn').addEventListener('click', function() {
+      const root = document.documentElement;
+      const isDark = root.classList.toggle('dark');
+      root.classList.toggle('light', !isDark);
+      root.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      const icon = document.getElementById('themeToggleIcon');
+      if (icon) icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const descriptionField = document.getElementById('description');
+      const charCounter = document.getElementById('descCounter');
+      const locationField = document.getElementById('location');
+      const gpsLocationBtn = document.getElementById('gpsLocationBtn');
+
+      async function reverseGeocode(latitude, longitude) {
+        const endpoint =
+          'https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=' +
+          encodeURIComponent(latitude) +
+          '&longitude=' +
+          encodeURIComponent(longitude) +
+          '&localityLanguage=en';
+
+        const response = await fetch(endpoint);
+        if (!response.ok) {
+          throw new Error('Reverse geocoding failed with status ' + response.status);
+        }
+
+        const data = await response.json();
+        const parts = [
+          data.locality,
+          data.city,
+          data.principalSubdivision,
+          data.countryName
+        ].filter(Boolean);
+
+        if (parts.length > 0) {
+          return parts.join(', ');
+        }
+
+        if (data.localityInfo && Array.isArray(data.localityInfo.administrative)) {
+          const adminParts = data.localityInfo.administrative
+            .slice(0, 3)
+            .map(function(item) {
+              return item && item.name ? item.name : null;
+            })
+            .filter(Boolean);
+
+          if (adminParts.length > 0) {
+            return adminParts.join(', ');
+          }
+        }
+
+        return null;
+      }
+
+      descriptionField.addEventListener('input', function() {
+        const length = this.value.length;
+        const maxLength = this.maxLength;
+        charCounter.textContent = length + ' / ' + maxLength + ' characters';
+      });
+
+      const imageField = document.getElementById('image');
+      const imageFeedback = document.getElementById('imageFeedback');
+
+      imageField.addEventListener('change', function() {
+        const file = this.files[0];
+        imageFeedback.innerHTML = '';
+
+        if (file) {
+          const maxSize = 5 * 1024 * 1024;
+          if (file.size > maxSize) {
+            imageFeedback.innerHTML = '<div class="text-sm text-red-500">File size exceeds 5MB limit</div>';
+            this.value = '';
+            return;
+          }
+
+          const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+          if (!allowedTypes.includes(file.type)) {
+            imageFeedback.innerHTML = '<div class="text-sm text-red-500">Invalid file type. Use JPG, PNG, or GIF only.</div>';
+            this.value = '';
+            return;
+          }
+
+          imageFeedback.innerHTML = '<div class="text-sm text-green-600">Image selected and validated</div>';
+        }
+      });
+
+      if (gpsLocationBtn && locationField) {
+        gpsLocationBtn.addEventListener('click', function() {
+          if (!navigator.geolocation) {
+            showNotification('Geolocation is not supported by this browser. Enter location manually.', 'error');
+            return;
+          }
+
+          const icon = gpsLocationBtn.querySelector('.material-symbols-outlined');
+          const label = gpsLocationBtn.querySelector('.text-xs');
+          const originalIcon = icon ? icon.textContent : '';
+          const originalLabel = label ? label.textContent : '';
+
+          gpsLocationBtn.disabled = true;
+          if (icon) {
+            icon.textContent = 'progress_activity';
+            icon.classList.add('animate-spin');
+          }
+          if (label) {
+            label.textContent = 'Locating...';
+          }
+
+          navigator.geolocation.getCurrentPosition(
+            async function(position) {
+              const lat = position.coords.latitude.toFixed(6);
+              const lng = position.coords.longitude.toFixed(6);
+
+              let resolvedLocation = null;
+              try {
+                resolvedLocation = await reverseGeocode(lat, lng);
+              } catch (geocodeError) {
+                console.warn('Reverse geocoding failed:', geocodeError);
+              }
+
+              if (resolvedLocation) {
+                locationField.value = resolvedLocation;
+                showNotification('Current location added as address. You can edit it before submitting.', 'success');
+              } else {
+                locationField.value = 'Lat ' + lat + ', Lng ' + lng;
+                showNotification('GPS location added as coordinates. You can edit it before submitting.', 'warning');
+              }
+
+              gpsLocationBtn.disabled = false;
+              if (icon) {
+                icon.textContent = originalIcon;
+                icon.classList.remove('animate-spin');
+              }
+              if (label) {
+                label.textContent = originalLabel;
+              }
+            },
+            function(error) {
+              let message = 'Unable to fetch your location. Please enter location manually.';
+              if (error.code === error.PERMISSION_DENIED) {
+                message = 'Location permission denied. Please allow location access or enter manually.';
+              } else if (error.code === error.TIMEOUT) {
+                message = 'Location request timed out. Please try again or enter manually.';
+              }
+              showNotification(message, 'error');
+
+              gpsLocationBtn.disabled = false;
+              if (icon) {
+                icon.textContent = originalIcon;
+                icon.classList.remove('animate-spin');
+              }
+              if (label) {
+                label.textContent = originalLabel;
+              }
+            },
+            {
+              enableHighAccuracy: true,
+              timeout: 12000,
+              maximumAge: 0
+            }
+          );
+        });
+      }
+    });
+
+    document.getElementById('complaintForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const category = document.getElementById('category').value;
+      const description = document.getElementById('description').value;
+      const location = document.getElementById('location').value.trim();
+      const imageFile = document.getElementById('image').files[0];
+
+      if (!location) {
+        showNotification('Please provide incident location.', 'error');
+        return;
+      }
+
+      const submitButton = e.target.querySelector('button[type="submit"]');
+      submitButton.disabled = true;
+      submitButton.textContent = 'Submitting...';
+
+      try {
+        let requestBody;
+        let headers = { 'Content-Type': 'application/json' };
+
+        if (imageFile) {
+          const base64Image = await convertToBase64(imageFile);
+          requestBody = JSON.stringify({
+            category: category,
+            description: description,
+            location: location,
+            image: base64Image,
+            imageName: imageFile.name
+          });
+        } else {
+          requestBody = JSON.stringify({
+            category: category,
+            description: description,
+            location: location
+          });
+        }
+
+        const token = localStorage.getItem('token');
+        if (!token) {
+          showNotification('Please login first to submit a complaint', 'error');
+          window.location.href = 'login.html';
+          return;
+        }
+
+        headers['Authorization'] = 'Bearer ' + token;
+
+        const response = await fetch('http://localhost:3000/complaints', {
+          method: 'POST',
+          headers: headers,
+          body: requestBody
+        });
+
+        if (!response.ok) {
+          throw new Error('HTTP error! status: ' + response.status);
+        }
+
+        const data = await response.json();
+
+        if (data.success || data.complaintId) {
+          const complaintId = data.complaintId || data.id || 'N/A';
+          const reportsCount = data.reportsCount || 1;
+          const message = 'Complaint submitted successfully! Complaint ID: ' + complaintId + '. Total reports for this location: ' + reportsCount + '.';
+
+          showNotification(message, data.escalated ? 'warning' : 'success');
+          document.getElementById('complaintForm').reset();
+          document.getElementById('descCounter').textContent = '0 / 500 characters';
+          document.getElementById('imageFeedback').innerHTML = '';
+        } else {
+          const errorMsg = data.message || data.error || 'Failed to submit complaint';
+          showNotification('Submission Failed: ' + errorMsg, 'error');
+        }
+      } catch (error) {
+        console.error('Error submitting complaint:', error);
+        showNotification('Error submitting complaint. Please check the console for details.', 'error');
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Submit Complaint';
+      }
+    });
+
+    function convertToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = function() {
+          const result = reader.result;
+          const base64String = result.split(',')[1];
+          resolve(base64String);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function showNotification(message, type) {
+      const container = document.getElementById('notificationContainer');
+      const notification = document.createElement('div');
+
+      let bgColor = 'bg-red-600';
+      if (type === 'success') {
+        bgColor = 'bg-green-600';
+      } else if (type === 'warning') {
+        bgColor = 'bg-yellow-600';
+      }
+
+      notification.className = bgColor + ' max-w-md rounded-lg px-4 py-3 text-sm font-medium text-white shadow-lg';
+      notification.textContent = message;
+      container.appendChild(notification);
+
+      setTimeout(function() {
+        notification.remove();
+      }, 5000);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Profile & Settings - SCRS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-slate-900 text-gray-300 min-h-screen">
+    <div id="notificationContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-slate-800 border-r border-slate-700 p-6 hidden md:flex flex-col fixed h-screen">
+        <div class="mb-8">
+            <div class="flex items-center gap-3">
+                <img src="../assests/Civixa_logo_new.png" alt="SCRS Logo" class="h-10 w-auto object-contain block">
+                <h2 class="text-2xl font-bold leading-none text-white">SCRS</h2>
+            </div>
+            <p class="text-xs text-gray-400 mt-2">Admin Panel</p>
+        </div>
+        <nav class="space-y-2 flex-1">
+            <a href="dashboard-admin.html"
+                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">📊
+                Dashboard</a>
+            <a href="complaint-details-admin.html"
+                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">📋
+                Assigned Complaints</a>
+            <a href="admin-analytics.html"
+                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">📈
+                Analytics</a>
+            <a href="admin-profile.html"
+                class="block px-4 py-2 rounded-lg bg-slate-800 text-indigo-400 font-medium hover:bg-slate-800 transition duration-300">👤
+                Profile & Settings</a>
+            <a href="support.html"
+                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">Support</a>
+        </nav>
+        <div class="border-t border-slate-700 pt-4">
+            <div class="space-y-2">
+                <p class="text-sm text-gray-400 font-medium">Admin:</p>
+                <p class="font-semibold text-white text-sm" id="authName">Admin User</p>
+                <button onclick="logout()"
+                    class="w-full px-3 py-2 rounded-lg bg-red-600/20 text-red-400 hover:bg-red-600/30 transition text-sm font-medium">Logout</button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="md:ml-64 p-6 md:p-8 bg-slate-900">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-white mb-2">Profile & Settings</h1>
+            <p class="text-gray-400">Manage your admin account and preferences.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Profile Information -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Personal Information -->
+                <div class="bg-slate-800 rounded-lg border border-slate-700 p-6">
+                    <h2 class="text-xl font-bold text-white mb-6">Personal Information</h2>
+                    
+                    <form id="profileForm" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-2">Full Name</label>
+                                <input type="text" id="fullName" value="Admin User" 
+                                    class="w-full px-4 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-2">Email Address</label>
+                                <input type="email" id="email" value="admin@civixa.com" 
+                                    class="w-full px-4 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-2">Phone Number</label>
+                                <input type="tel" id="phone" value="+91 98765 43210" 
+                                    class="w-full px-4 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-2">Department</label>
+                                <select id="department" class="w-full px-4 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none">
+                                    <option value="municipal">Municipal Services</option>
+                                    <option value="water">Water Supply</option>
+                                    <option value="roads">Road Maintenance</option>
+                                    <option value="sanitation">Sanitation</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-2">Bio</label>
+                            <textarea id="bio" rows="3" 
+                                class="w-full px-4 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none resize-none"
+                                placeholder="Tell us about yourself...">Experienced municipal administrator with expertise in civic complaint management and public service delivery.</textarea>
+                        </div>
+                        
+                        <div class="flex justify-end">
+                            <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
+                                <i class="fas fa-save mr-2"></i>Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Security Settings -->
+                <div class="bg-slate-800 rounded-lg border border-slate-700 p-6">
+                    <h2 class="text-xl font-bold text-white mb-6">Security Settings</h2>
+                    
+                    <form id="securityForm" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-2">Current Password</label>
+                            <input type="password" id="currentPassword" 
+                                class="w-full px-4 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none">
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-2">New Password</label>
+                                <input type="password" id="newPassword" 
+                                    class="w-full px-4 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-2">Confirm New Password</label>
+                                <input type="password" id="confirmPassword" 
+                                    class="w-full px-4 py-2 bg-slate-700 border border-slate-600 text-white rounded-lg focus:border-indigo-400 focus:outline-none">
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-end">
+                            <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
+                                <i class="fas fa-lock mr-2"></i>Update Password
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Notification Preferences -->
+                <div class="bg-slate-800 rounded-lg border border-slate-700 p-6">
+                    <h2 class="text-xl font-bold text-white mb-6">Notification Preferences</h2>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-white font-medium">Email Notifications</h3>
+                                <p class="text-gray-400 text-sm">Receive email updates about new complaints and status changes</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="emailNotifications" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                            </label>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-white font-medium">Push Notifications</h3>
+                                <p class="text-gray-400 text-sm">Get instant browser notifications for urgent matters</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="pushNotifications" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                            </label>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-white font-medium">Critical Priority Alerts</h3>
+                                <p class="text-gray-400 text-sm">Immediate alerts for critical priority complaints</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="criticalAlerts" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                            </label>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-white font-medium">Weekly Summary</h3>
+                                <p class="text-gray-400 text-sm">Receive weekly performance summary reports</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="weeklySummary" class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="space-y-6">
+                <!-- Profile Card -->
+                <div class="bg-slate-800 rounded-lg border border-slate-700 p-6">
+                    <div class="text-center">
+                        <div class="relative inline-block mb-4">
+                            <img src="https://ui-avatars.com/api/?name=Admin+User&background=4f46e5&color=fff&size=128" 
+                                 alt="Profile Avatar" class="w-32 h-32 rounded-full mx-auto">
+                            <button class="absolute bottom-0 right-0 bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition">
+                                <i class="fas fa-camera text-sm"></i>
+                            </button>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-1">Admin User</h3>
+                        <p class="text-gray-400 mb-4">admin@civixa.com</p>
+                        
+                        <div class="space-y-2 text-left">
+                            <div class="flex items-center text-sm">
+                                <i class="fas fa-briefcase text-gray-400 mr-2 w-4"></i>
+                                <span class="text-gray-300">Municipal Services</span>
+                            </div>
+                            <div class="flex items-center text-sm">
+                                <i class="fas fa-phone text-gray-400 mr-2 w-4"></i>
+                                <span class="text-gray-300">+91 98765 43210</span>
+                            </div>
+                            <div class="flex items-center text-sm">
+                                <i class="fas fa-calendar text-gray-400 mr-2 w-4"></i>
+                                <span class="text-gray-300">Joined March 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Role Information -->
+                <div class="bg-slate-800 rounded-lg border border-slate-700 p-6">
+                    <h3 class="text-lg font-bold text-white mb-4">Role Information</h3>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-400">Role</span>
+                            <span class="px-2 py-1 bg-indigo-600/20 text-indigo-400 rounded-full text-sm font-semibold">Admin</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-400">Access Level</span>
+                            <span class="text-white">Full Access</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-400">Last Login</span>
+                            <span class="text-white">2 hours ago</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-400">Account Status</span>
+                            <span class="px-2 py-1 bg-green-600/20 text-green-400 rounded-full text-sm font-semibold">Active</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="bg-slate-800 rounded-lg border border-slate-700 p-6">
+                    <h3 class="text-lg font-bold text-white mb-4">Quick Actions</h3>
+                    
+                    <div class="space-y-2">
+                        <button class="w-full px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 transition text-left">
+                            <i class="fas fa-download mr-2"></i>Export My Data
+                        </button>
+                        <button class="w-full px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 transition text-left">
+                            <i class="fas fa-history mr-2"></i>View Login History
+                        </button>
+                        <button class="w-full px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 transition text-left">
+                            <i class="fas fa-shield-alt mr-2"></i>Privacy Settings
+                        </button>
+                        <button class="w-full px-4 py-2 bg-red-600/20 text-red-400 rounded-lg hover:bg-red-600/30 transition text-left">
+                            <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="auth.js"></script>
+    <script>
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            const auth = requireAuth(['admin']);
+            if (!auth) return;
+
+            // Load profile data
+            loadProfileData();
+            
+            // Setup event listeners
+            setupEventListeners();
+        });
+
+        function loadProfileData() {
+            fetch('http://localhost:3000/api/admin/profile', {
+                headers: getAuthHeaders()
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    populateProfileForm(data.profile);
+                } else {
+                    showNotification('Failed to load profile data', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error loading profile:', error);
+                showNotification('Connection error', 'error');
+            });
+        }
+
+        function populateProfileForm(profile) {
+            document.getElementById('fullName').value = profile.name || 'Admin User';
+            document.getElementById('email').value = profile.email || 'admin@civixa.com';
+            document.getElementById('phone').value = profile.phone || '+91 98765 43210';
+            document.getElementById('department').value = profile.department || 'municipal';
+            document.getElementById('bio').value = profile.bio || '';
+            document.getElementById('authName').textContent = profile.name || 'Admin User';
+        }
+
+        function setupEventListeners() {
+            // Profile form submission
+            document.getElementById('profileForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                updateProfile();
+            });
+
+            // Security form submission
+            document.getElementById('securityForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                updatePassword();
+            });
+
+            // Notification preferences
+            const notificationCheckboxes = ['emailNotifications', 'pushNotifications', 'criticalAlerts', 'weeklySummary'];
+            notificationCheckboxes.forEach(id => {
+                document.getElementById(id).addEventListener('change', updateNotificationPreferences);
+            });
+        }
+
+        function updateProfile() {
+            const formData = {
+                name: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                department: document.getElementById('department').value,
+                bio: document.getElementById('bio').value
+            };
+
+            fetch('http://localhost:3000/api/admin/profile', {
+                method: 'PUT',
+                headers: getAuthHeaders(),
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Profile updated successfully', 'success');
+                    document.getElementById('authName').textContent = formData.name;
+                } else {
+                    showNotification('Failed to update profile', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating profile:', error);
+                showNotification('Connection error', 'error');
+            });
+        }
+
+        function updatePassword() {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                showNotification('Please fill in all password fields', 'error');
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                showNotification('New passwords do not match', 'error');
+                return;
+            }
+
+            if (newPassword.length < 8) {
+                showNotification('Password must be at least 8 characters long', 'error');
+                return;
+            }
+
+            fetch('http://localhost:3000/api/admin/password', {
+                method: 'PUT',
+                headers: getAuthHeaders(),
+                body: JSON.stringify({
+                    current_password: currentPassword,
+                    new_password: newPassword
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Password updated successfully', 'success');
+                    // Clear password fields
+                    document.getElementById('currentPassword').value = '';
+                    document.getElementById('newPassword').value = '';
+                    document.getElementById('confirmPassword').value = '';
+                } else {
+                    showNotification(data.message || 'Failed to update password', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating password:', error);
+                showNotification('Connection error', 'error');
+            });
+        }
+
+        function updateNotificationPreferences() {
+            const preferences = {
+                email_notifications: document.getElementById('emailNotifications').checked,
+                push_notifications: document.getElementById('pushNotifications').checked,
+                critical_alerts: document.getElementById('criticalAlerts').checked,
+                weekly_summary: document.getElementById('weeklySummary').checked
+            };
+
+            fetch('http://localhost:3000/api/admin/notifications/preferences', {
+                method: 'PUT',
+                headers: getAuthHeaders(),
+                body: JSON.stringify(preferences)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Notification preferences updated', 'success');
+                } else {
+                    showNotification('Failed to update preferences', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating preferences:', error);
+                showNotification('Connection error', 'error');
+            });
+        }
+
+        function showNotification(message, type) {
+            const container = document.getElementById('notificationContainer');
+            const notification = document.createElement('div');
+            const bgColor = type === 'success' ? 'bg-green-600' : 'bg-red-600';
+            notification.className = `${bgColor} text-white px-4 py-3 rounded-lg shadow-lg`;
+            notification.textContent = message;
+            container.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        function logout() {
+            clearAuth();
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+
+</html>

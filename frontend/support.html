@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Support | SCRS Municipal</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "outline-variant": "#c2c6d3",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#00529b",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#331200",
+                        "on-surface": "#191c1d",
+                        "on-primary-container": "#a5c7ff",
+                        "inverse-on-surface": "#f0f1f2",
+                        "on-secondary-fixed": "#021f29",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#304a55",
+                        "tertiary-fixed": "#ffdbca",
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#424751",
+                        "surface-container-low": "#f3f4f5",
+                        "secondary": "#48626e",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed-variant": "#004787",
+                        "on-tertiary-container": "#ffb48b",
+                        "surface-variant": "#e1e3e4",
+                        "tertiary-fixed-dim": "#ffb68e",
+                        "surface-tint": "#1d5fa8",
+                        "surface-container-high": "#e7e8e9",
+                        "background": "#f8f9fa",
+                        "secondary-fixed-dim": "#afcbd8",
+                        "on-tertiary-fixed-variant": "#773300",
+                        "surface-bright": "#f8f9fa",
+                        "primary-fixed": "#d5e3ff",
+                        "secondary-container": "#cbe7f5",
+                        "outline": "#727782",
+                        "on-secondary-container": "#4e6874",
+                        "surface-container-highest": "#e1e3e4",
+                        "surface-dim": "#d9dadb",
+                        "surface": "#f8f9fa",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#edeeef",
+                        "inverse-surface": "#2e3132",
+                        "secondary-fixed": "#cbe7f5",
+                        "inverse-primary": "#a6c8ff",
+                        "on-primary-fixed": "#001c3b",
+                        "tertiary-container": "#883b00",
+                        "tertiary": "#642a00",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#003b72",
+                        "on-background": "#191c1d",
+                        "primary-fixed-dim": "#a6c8ff"
+                    },
+                    fontFamily: {
+                        "headline": ["Public Sans"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"}
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4 { font-family: 'Public Sans', sans-serif; }
+        .dark body {
+            background: #020617;
+            color: #e5e7eb;
+        }
+        .dark .bg-surface,
+        .dark .bg-background,
+        .dark .bg-surface-container-lowest {
+            background-color: #0f172a !important;
+        }
+        .dark .bg-surface-container-low {
+            background-color: #1e293b !important;
+        }
+        .dark .bg-surface-container,
+        .dark .bg-surface-container-high,
+        .dark .bg-surface-container-highest {
+            background-color: #334155 !important;
+        }
+        .dark .text-on-surface {
+            color: #f1f5f9 !important;
+        }
+        .dark .text-on-surface-variant,
+        .dark .text-outline,
+        .dark .text-outline-variant {
+            color: #94a3b8 !important;
+        }
+        .dark .border-surface-variant,
+        .dark .border-outline,
+        .dark .border-outline-variant {
+            border-color: #334155 !important;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased dark:bg-slate-950 dark:text-slate-100">
+    <header class="sticky top-0 z-40 flex w-full items-center justify-between bg-slate-50/70 px-6 py-3 font-['Public_Sans'] font-medium tracking-tight shadow-sm backdrop-blur-xl dark:bg-slate-950/70 md:pl-72">
+        <div class="flex items-center gap-8">
+            <span class="text-xl font-bold tracking-tighter text-blue-900 dark:text-blue-100 md:hidden">SCRS</span>
+            <nav class="hidden items-center space-x-6 lg:flex">
+                <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="index.html">Home</a>
+                <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="dashboard-citizen.html">Dashboard</a>
+                <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="my-complaints.html">My Complaints</a>
+                <a class="border-b-2 border-blue-700 py-1 font-bold text-blue-700 dark:text-blue-300" href="support.html">Support</a>
+            </nav>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="relative hidden sm:block">
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+                <label class="sr-only" for="topSearchInput">Search knowledge base resources</label>
+                <input id="topSearchInput" class="w-64 rounded-full border-none bg-surface-container py-2 pl-10 pr-4 text-sm text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary" placeholder="Search resources..." type="text" aria-label="Search knowledge base resources"/>
+            </div>
+            <button id="themeToggleBtn" class="rounded-full p-2 text-slate-500 transition-colors hover:bg-blue-50/50 dark:hover:bg-blue-900/20" type="button">
+                <span id="themeToggleIcon" class="material-symbols-outlined">dark_mode</span>
+            </button>
+            <button class="rounded-full p-1 transition-colors hover:bg-blue-50/50 dark:hover:bg-blue-900/20" type="button">
+                <img id="headerAvatar" alt="User profile avatar" class="h-8 w-8 rounded-full border border-slate-300" src="https://ui-avatars.com/api/?name=Citizen+User&background=4f46e5&color=fff"/>
+            </button>
+        </div>
+    </header>
+
+    <div class="flex min-h-screen">
+        <aside class="fixed left-0 top-0 z-50 hidden h-screen w-64 overflow-y-auto bg-slate-100 p-4 font-['Public_Sans'] text-sm antialiased dark:bg-slate-900 md:flex md:flex-col">
+            <div class="mb-8 px-2">
+                <h1 class="text-xl font-black tracking-tighter text-blue-900 dark:text-white">City Services</h1>
+                <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Management Portal</p>
+            </div>
+            <nav class="flex-1 space-y-1">
+                <a class="flex items-center px-4 py-3 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50" href="index.html">
+                    <span class="material-symbols-outlined mr-3">home</span><span class="font-medium">Home</span>
+                </a>
+                <a class="flex items-center px-4 py-3 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50" href="dashboard-citizen.html">
+                    <span class="material-symbols-outlined mr-3">dashboard</span><span class="font-medium">Dashboard</span>
+                </a>
+                <a class="flex items-center px-4 py-3 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50" href="my-complaints.html">
+                    <span class="material-symbols-outlined mr-3">list_alt</span><span class="font-medium">My Complaints</span>
+                </a>
+                <a class="flex items-center px-4 py-3 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50" href="complaint.html">
+                    <span class="material-symbols-outlined mr-3">add_circle</span><span class="font-medium">Submit Request</span>
+                </a>
+                <a class="flex items-center rounded-r-lg border-l-4 border-blue-800 bg-white px-4 py-3 text-blue-700 shadow-sm transition-transform duration-200 hover:translate-x-1 dark:bg-slate-800 dark:text-blue-300" href="support.html">
+                    <span class="material-symbols-outlined mr-3">contact_support</span><span class="font-medium">Support</span>
+                </a>
+            </nav>
+            <div class="mt-auto space-y-1 border-t border-slate-200 pt-6 dark:border-slate-800">
+                <a href="complaint.html" class="mb-4 flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 font-bold text-white shadow-lg transition-opacity hover:opacity-90">
+                    <span class="material-symbols-outlined">add</span>New Complaint
+                </a>
+                <a class="flex items-center px-4 py-2 text-slate-500 transition-colors hover:text-blue-600" href="support.html">
+                    <span class="material-symbols-outlined mr-3">dns</span><span class="text-xs">System Status</span>
+                </a>
+                <button id="sidebarLogout" class="flex w-full items-center px-4 py-2 text-left text-slate-500 transition-colors hover:text-error" type="button">
+                    <span class="material-symbols-outlined mr-3">logout</span><span class="text-xs">Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <main class="mx-auto max-w-7xl flex-1 p-6 md:ml-64 lg:p-12">
+            <section id="kb-hero" class="relative mb-12 overflow-hidden rounded-3xl bg-primary-container p-12 text-white">
+                <div class="pointer-events-none absolute inset-0 opacity-10">
+                    <img alt="Cityscape" class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_n9NOia7V7eSnvKAWczSIDYqoxkwLv3dsRC-vnyN7QmaQR_2X6gV1Xn8GmHKxLjTrEzh8IZOiocEX2uMd7ucHMJN9WRlKuYqhvYQ2EMnz2wzRD-z8BsJeyANL-I-DcXfL5q6Anv6D9M6S0PcQEoTMOT4kTkCnhNzW3EAWLBCcsZZxTRhy1QXJrFy6XwdPcH9B3epJyRiklUGWDhIuITHg-SmI5rYdT1qYvndf682OEzDqAkbv-VQ--4Xp6ccZ0SBgZZu7KTcXwow"/>
+                </div>
+                <div class="relative z-10 max-w-2xl">
+                    <h1 class="mb-4 text-4xl font-extrabold tracking-tight lg:text-5xl">How can we help you today?</h1>
+                    <p class="mb-8 text-lg text-on-primary-container">Access official guidelines, department details, and resolution timelines for all city services.</p>
+                    <form id="heroSearchForm" class="relative z-20 flex flex-col gap-2 rounded-2xl bg-white p-2 shadow-xl sm:flex-row" role="search">
+                        <label class="sr-only" for="heroSearchInput">Search knowledge base</label>
+                        <input id="heroSearchInput" class="w-full min-w-0 flex-1 rounded-xl border-2 border-transparent bg-surface-container-low px-4 py-3 text-on-surface placeholder:text-outline caret-primary pointer-events-auto focus:border-primary focus:ring-2 focus:ring-primary/20" placeholder="Describe your issue (e.g. 'How to report a streetlight failure')" type="search" name="q" autocomplete="off" aria-label="Search knowledge base"/>
+                        <button id="heroSearchBtn" class="flex items-center gap-2 rounded-xl bg-primary px-6 py-3 font-bold text-white transition-all hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-white/70 active:scale-[0.98]" type="button" aria-label="Run knowledge base search">
+                            <span class="material-symbols-outlined">search</span> Search
+                        </button>
+                    </form>
+                    <p id="searchResultsStatus" class="mt-2 text-sm text-on-primary-container" role="status" aria-live="polite"></p>
+                    <div class="mt-4 flex gap-4 text-sm text-on-primary-container">
+                        <span>Popular:</span>
+                        <button class="underline underline-offset-4 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/70 rounded px-1" type="button" data-search-chip="pothole repair">Pothole Repair</button>
+                        <button class="underline underline-offset-4 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/70 rounded px-1" type="button" data-search-chip="trash pickup">Trash Pickup</button>
+                        <button class="underline underline-offset-4 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/70 rounded px-1" type="button" data-search-chip="permit timeline">Permit Timeline</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="kbApiResults" class="mb-10 hidden">
+                <div class="rounded-2xl border border-outline-variant bg-surface-container-low p-6">
+                    <div class="mb-4 flex items-center justify-between gap-3">
+                        <h2 class="text-xl font-bold text-primary">Search Results</h2>
+                        <span id="kbApiSource" class="rounded-full bg-secondary-container px-3 py-1 text-xs font-semibold text-on-secondary-container"></span>
+                    </div>
+                    <ul id="kbApiResultsList" class="space-y-3"></ul>
+                </div>
+            </section>
+
+            <section id="kb-categories" class="mb-16">
+                <div class="mb-8 flex items-end justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-primary">Browse by Category</h2>
+                        <p class="text-on-surface-variant">Find resources organized by city sectors</p>
+                    </div>
+                    <a class="flex items-center gap-1 font-semibold text-primary hover:underline" href="#kb-faq">
+                        View all topics <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </a>
+                </div>
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+                    <a href="complaint.html" data-search-item data-keywords="reporting guidelines complaint filing submission process" class="group block cursor-pointer rounded-3xl bg-surface-container-low p-8 transition-all duration-300 hover:bg-primary-container hover:text-white">
+                        <div class="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-secondary-container group-hover:bg-white/20">
+                            <span class="material-symbols-outlined text-primary group-hover:text-white">gavel</span>
+                        </div>
+                        <h3 class="mb-2 text-xl font-bold">Reporting Guidelines</h3>
+                        <p class="mb-6 text-sm leading-relaxed text-on-surface-variant group-hover:text-white/80">Learn the essential steps to file a valid complaint and ensure swift resolution by our teams.</p>
+                        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest opacity-0 transition-opacity group-hover:opacity-100">
+                            Explore <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        </div>
+                    </a>
+                    <a href="#kb-timelines" data-search-item data-keywords="city infrastructure roads streetlight utility bridges" class="group block cursor-pointer rounded-3xl bg-surface-container-low p-8 transition-all duration-300 hover:bg-primary-container hover:text-white">
+                        <div class="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-secondary-container group-hover:bg-white/20">
+                            <span class="material-symbols-outlined text-primary group-hover:text-white">engineering</span>
+                        </div>
+                        <h3 class="mb-2 text-xl font-bold">City Infrastructure</h3>
+                        <p class="mb-6 text-sm leading-relaxed text-on-surface-variant group-hover:text-white/80">Information regarding road maintenance, public lighting, bridges, and major utility works.</p>
+                        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest opacity-0 transition-opacity group-hover:opacity-100">
+                            Explore <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        </div>
+                    </a>
+                    <a href="#kb-timelines" data-search-item data-keywords="public safety emergency hazards neighborhood patrol" class="group block cursor-pointer rounded-3xl bg-surface-container-low p-8 transition-all duration-300 hover:bg-primary-container hover:text-white">
+                        <div class="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-secondary-container group-hover:bg-white/20">
+                            <span class="material-symbols-outlined text-primary group-hover:text-white">security</span>
+                        </div>
+                        <h3 class="mb-2 text-xl font-bold">Public Safety</h3>
+                        <p class="mb-6 text-sm leading-relaxed text-on-surface-variant group-hover:text-white/80">Guidelines on emergency reporting, neighborhood patrols, and local safety protocols.</p>
+                        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest opacity-0 transition-opacity group-hover:opacity-100">
+                            Explore <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <section id="kb-featured" class="mb-20 grid grid-cols-1 gap-12 xl:grid-cols-3">
+                <div class="xl:col-span-2">
+                    <h2 class="mb-8 text-2xl font-bold text-primary">Featured Help Articles</h2>
+                    <div class="space-y-4">
+                        <a href="#kb-timelines" data-search-item data-keywords="resolution process triage assignment stages" class="group flex cursor-pointer items-start gap-6 rounded-3xl bg-surface-container-lowest p-6 transition-transform hover:-translate-y-1">
+                            <div class="hidden h-24 w-32 flex-shrink-0 overflow-hidden rounded-2xl sm:block">
+                                <img alt="Service Worker" class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDf04g7vmA8D4HqXPzMlOR9qseIW4Q3Lz0WAcI6Y3Foz0q6SVGVG0SQUZHtJH04ReL8Af63Si_Q6yjT_ZeEHGscLJf6zw99hpDHjt6fqPZMa9Nc1Xf2jkmAc8P0PJSWriRlGm4XmGTOJEk9XsXtz9Nsm_1VJDR4CjcaJ3_CjkZ-_9JR2kevrfSqE2Z0IcruvrJsYNKYw6rPbRSfa09hX3t-W9UpWSEE2cYB_UV7pp0jUBmcleULZuZ2pZrbHsVysAnFoTUfc3fyBiE"/>
+                            </div>
+                            <div class="flex-1">
+                                <div class="mb-2 flex items-center gap-2">
+                                    <span class="rounded-full bg-secondary-container px-2 py-1 text-[10px] font-bold uppercase tracking-widest text-on-secondary-container">New Update</span>
+                                    <span class="text-xs text-outline">5 min read</span>
+                                </div>
+                                <h4 class="text-lg font-bold transition-colors group-hover:text-primary">Understanding the 3-Stage Resolution Process</h4>
+                                <p class="mt-2 line-clamp-2 text-sm text-on-surface-variant">A comprehensive guide on how your reports are triaged, assigned to departments, and verified upon completion.</p>
+                            </div>
+                        </a>
+                        <a href="#kb-faq" data-search-item data-keywords="documentation property issues photos residence proof" class="group flex cursor-pointer items-start gap-6 rounded-3xl bg-surface-container-lowest p-6 transition-transform hover:-translate-y-1">
+                            <div class="hidden h-24 w-32 flex-shrink-0 overflow-hidden rounded-2xl sm:block">
+                                <img alt="Documents" class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0rfYZtSf5DaMSnUUWC8CbH4QM6QYCop9GGGLl-mgLlBImb-DbZ-AffF2dng6UGUUSlMzoc1bDFB6KXjIFDAyIKXSiZbPC16D1Ezla9EUOUL7VDHo6wG-79wPMYak3mUOREre6tozWTYhbOr5jA3rIduLHellg1xcCoGSzp21o2OWdjseF21Nl5r7Y4r3SjKvZ3kJzQjeIQyeakz6rUKf9WbTTGwZhXZi-OXy3XDtNNH-gZHIUe1gPE24A9rACPBy0hf2XD0r0brs"/>
+                            </div>
+                            <div class="flex-1">
+                                <div class="mb-2 flex items-center gap-2">
+                                    <span class="rounded-full bg-surface-container-highest px-2 py-1 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Essentials</span>
+                                    <span class="text-xs text-outline">8 min read</span>
+                                </div>
+                                <h4 class="text-lg font-bold transition-colors group-hover:text-primary">Documentation Required for Property Issues</h4>
+                                <p class="mt-2 line-clamp-2 text-sm text-on-surface-variant">What photos and proof of residence you need to provide when reporting structural or zoning concerns.</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="kb-timelines" data-search-item data-keywords="timelines wait times safety streetlight pothole zoning permit" class="flex h-full flex-col rounded-3xl bg-surface-container p-8">
+                    <h2 class="mb-6 text-xl font-bold text-primary">Resolution Timelines</h2>
+                    <p class="mb-8 text-sm text-on-surface-variant">Average wait times based on the last 30 days of city operations.</p>
+                    <div class="flex-1 space-y-6">
+                        <div class="space-y-2"><div class="flex justify-between text-sm"><span class="font-medium">Public Safety Hazards</span><span class="font-bold text-primary">2-4 Hours</span></div><div class="h-2 w-full overflow-hidden rounded-full bg-white"><div class="h-full w-[15%] bg-tertiary-container"></div></div></div>
+                        <div class="space-y-2"><div class="flex justify-between text-sm"><span class="font-medium">Streetlight &amp; Utility</span><span class="font-bold text-primary">24-48 Hours</span></div><div class="h-2 w-full overflow-hidden rounded-full bg-white"><div class="h-full w-[45%] bg-primary"></div></div></div>
+                        <div class="space-y-2"><div class="flex justify-between text-sm"><span class="font-medium">Potholes &amp; Road Repair</span><span class="font-bold text-primary">3-5 Days</span></div><div class="h-2 w-full overflow-hidden rounded-full bg-white"><div class="h-full w-[70%] bg-primary"></div></div></div>
+                        <div class="space-y-2"><div class="flex justify-between text-sm"><span class="font-medium">Zoning &amp; Permitting</span><span class="font-bold text-primary">14+ Days</span></div><div class="h-2 w-full overflow-hidden rounded-full bg-white"><div class="h-full w-full bg-primary"></div></div></div>
+                    </div>
+                    <div class="mt-8 flex items-start gap-3 rounded-2xl border border-white/20 bg-white/50 p-4 text-xs text-on-surface-variant">
+                        <span class="material-symbols-outlined text-primary">info</span>
+                        <span>Timelines are estimates. Severe weather or emergencies may cause temporary delays.</span>
+                    </div>
+                </div>
+            </section>
+
+            <section id="kb-faq" class="mb-24">
+                <h2 class="mb-12 text-center text-2xl font-bold text-primary">Frequently Asked Questions</h2>
+                <div class="mx-auto grid max-w-5xl grid-cols-1 gap-x-12 gap-y-8 md:grid-cols-2">
+                    <div data-search-item data-keywords="anonymous report identity"><h4 class="mb-2 text-lg font-bold">Can I report issues anonymously?</h4><p class="text-sm leading-relaxed text-on-surface-variant">Yes, most reports can be filed without identifying yourself. However, providing contact info helps us follow up if more detail is needed.</p></div>
+                    <div data-search-item data-keywords="track report status case id"><h4 class="mb-2 text-lg font-bold">How do I track my report's progress?</h4><p class="text-sm leading-relaxed text-on-surface-variant">Use your Case ID on the dashboard or open the My Complaints tab for real-time updates.</p></div>
+                    <div data-search-item data-keywords="priority urgency triage"><h4 class="mb-2 text-lg font-bold">Who determines the priority of my issue?</h4><p class="text-sm leading-relaxed text-on-surface-variant">Automated triage and city-approved severity rules categorize each issue by urgency and public impact.</p></div>
+                    <div data-search-item data-keywords="general inquiry support"><h4 class="mb-2 text-lg font-bold">What if my issue is not in the list?</h4><p class="text-sm leading-relaxed text-on-surface-variant">Use the General Inquiry category under reporting, or contact Support directly from this page.</p></div>
+                </div>
+            </section>
+
+            <section id="kbNoResults" class="mb-16 hidden">
+                <div class="rounded-2xl border border-outline-variant bg-surface-container-low p-8 text-center">
+                    <h3 class="text-xl font-bold text-primary">No matching resources found</h3>
+                    <p class="mt-2 text-on-surface-variant">Try broader terms like complaint, safety, timeline, or documentation.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <nav class="fixed bottom-0 left-0 z-50 flex w-full items-center justify-around rounded-t-2xl bg-white/80 px-4 pb-6 pt-2 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] backdrop-blur-xl dark:bg-slate-950/85 lg:hidden">
+        <a class="flex flex-col items-center justify-center px-5 py-2 text-slate-400 transition-all active:scale-90 dark:text-slate-500" href="index.html"><span class="material-symbols-outlined">home</span><span class="text-[11px] font-['Public_Sans'] font-semibold">Home</span></a>
+        <a class="flex flex-col items-center justify-center px-5 py-2 text-slate-400 transition-all active:scale-90 dark:text-slate-500" href="dashboard-citizen.html"><span class="material-symbols-outlined">dashboard</span><span class="text-[11px] font-['Public_Sans'] font-semibold">Dashboard</span></a>
+        <a class="flex flex-col items-center justify-center px-5 py-2 text-slate-400 transition-all active:scale-90 dark:text-slate-500" href="my-complaints.html"><span class="material-symbols-outlined">history</span><span class="text-[11px] font-['Public_Sans'] font-semibold">Complaints</span></a>
+        <div class="flex flex-col items-center justify-center rounded-2xl bg-blue-50 px-5 py-2 text-blue-800 transition-all active:scale-90 dark:bg-blue-900/30 dark:text-blue-200"><span class="material-symbols-outlined">help</span><span class="text-[11px] font-['Public_Sans'] font-semibold">Support</span></div>
+    </nav>
+
+    <script src="auth.js"></script>
+    <script>
+        let runKnowledgeSearch = null;
+        const KB_API_BASE_URL = 'http://localhost:3000';
+
+        function escapeHtml(value) {
+            return String(value || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                clearAuth();
+                window.location.href = 'index.html';
+            }
+        }
+
+        function initKnowledgeBaseSearch() {
+            const topInput = document.getElementById('topSearchInput');
+            const heroInput = document.getElementById('heroSearchInput');
+            const heroButton = document.getElementById('heroSearchBtn');
+            const heroForm = document.getElementById('heroSearchForm');
+            const noResults = document.getElementById('kbNoResults');
+            const searchResultsStatus = document.getElementById('searchResultsStatus');
+            const searchItems = Array.from(document.querySelectorAll('[data-search-item]'));
+            const searchChips = Array.from(document.querySelectorAll('[data-search-chip]'));
+            const apiResultsSection = document.getElementById('kbApiResults');
+            const apiResultsList = document.getElementById('kbApiResultsList');
+            const apiSourceBadge = document.getElementById('kbApiSource');
+
+            function renderApiResults(results, sourceLabel) {
+                if (!apiResultsSection || !apiResultsList || !apiSourceBadge) {
+                    return;
+                }
+
+                if (!Array.isArray(results) || results.length === 0) {
+                    apiResultsSection.classList.add('hidden');
+                    apiResultsList.innerHTML = '';
+                    apiSourceBadge.textContent = '';
+                    return;
+                }
+
+                apiResultsSection.classList.remove('hidden');
+                apiSourceBadge.textContent = sourceLabel;
+                apiResultsList.innerHTML = results.map((item) => {
+                    const typeLabel = item.type === 'complaint' ? 'Case Insight' : 'Article';
+                    const title = escapeHtml(item.title || 'Untitled');
+                    const snippet = escapeHtml(item.snippet || 'No details available.');
+                    const targetUrl = escapeHtml(item.url || 'support.html');
+                    return `
+                        <li>
+                            <a href="${targetUrl}" class="block rounded-xl border border-outline-variant bg-surface-container-lowest p-4 transition-all hover:border-primary hover:shadow-sm">
+                                <div class="mb-1 text-xs font-semibold uppercase tracking-wider text-on-surface-variant">${typeLabel}</div>
+                                <h3 class="text-base font-bold text-on-surface">${title}</h3>
+                                <p class="mt-1 text-sm text-on-surface-variant">${snippet}</p>
+                            </a>
+                        </li>
+                    `;
+                }).join('');
+            }
+
+            async function fetchKnowledgeResults(queryText) {
+                const url = `${KB_API_BASE_URL}/search/knowledge-base?q=${encodeURIComponent(queryText)}&limit=8&type=all`;
+                const response = await fetch(url);
+                const payload = await response.json();
+
+                if (!response.ok || !payload.success) {
+                    throw new Error(payload.message || `Search failed with status ${response.status}`);
+                }
+
+                return payload;
+            }
+
+            function runLocalSearch(queryText) {
+                const query = (queryText || '').trim().toLowerCase();
+                let visibleCount = 0;
+
+                searchItems.forEach((item) => {
+                    const text = (item.textContent || '').toLowerCase();
+                    const keywords = (item.dataset.keywords || '').toLowerCase();
+                    const visible = !query || text.includes(query) || keywords.includes(query);
+                    item.classList.toggle('hidden', !visible);
+                    if (visible) visibleCount += 1;
+                });
+
+                if (noResults) {
+                    noResults.classList.toggle('hidden', query === '' || visibleCount > 0);
+                }
+
+                return { query, visibleCount };
+            }
+
+            runKnowledgeSearch = async function (queryText) {
+                const { query, visibleCount } = runLocalSearch(queryText);
+
+                if (!query) {
+                    renderApiResults([], '');
+                    if (searchResultsStatus) {
+                        searchResultsStatus.textContent = '';
+                    }
+                    return;
+                }
+
+                if (searchResultsStatus) {
+                    searchResultsStatus.textContent = `Searching for "${queryText}"...`;
+                }
+
+                try {
+                    const payload = await fetchKnowledgeResults(queryText);
+                    const sourceLabel = payload.source === 'ai-ranked' ? 'AI Ranked' : 'Keyword Ranked';
+                    renderApiResults(payload.results || [], sourceLabel);
+
+                    if (searchResultsStatus) {
+                        const count = Number(payload.total || (payload.results || []).length || 0);
+                        searchResultsStatus.textContent = `Showing ${count} API result${count === 1 ? '' : 's'} (${sourceLabel}).`;
+                    }
+
+                    if (noResults && Array.isArray(payload.results) && payload.results.length > 0) {
+                        noResults.classList.add('hidden');
+                    }
+                } catch (error) {
+                    console.warn('Knowledge API search failed, falling back to local filtering:', error.message);
+                    renderApiResults([], '');
+                    if (searchResultsStatus) {
+                        if (visibleCount > 0) {
+                            searchResultsStatus.textContent = `API unavailable. Showing ${visibleCount} local result${visibleCount === 1 ? '' : 's'} for "${queryText}".`;
+                        } else {
+                            searchResultsStatus.textContent = `No results for "${queryText}".`;
+                        }
+                    }
+                }
+            };
+
+            function syncAndSearch(sourceInput, forcedValue) {
+                const value = typeof forcedValue === 'string' ? forcedValue : (sourceInput ? sourceInput.value : '');
+                if (topInput && sourceInput !== topInput) topInput.value = value;
+                if (heroInput && sourceInput !== heroInput) heroInput.value = value;
+                runKnowledgeSearch(value);
+            }
+
+            if (topInput) {
+                topInput.addEventListener('input', () => syncAndSearch(topInput));
+                topInput.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        syncAndSearch(topInput);
+                    }
+                });
+            } else {
+                console.warn('Knowledge base top search input not found');
+            }
+
+            if (heroInput) {
+                heroInput.addEventListener('input', () => syncAndSearch(heroInput));
+                heroInput.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        syncAndSearch(heroInput);
+                    }
+                });
+            } else {
+                console.warn('Knowledge base hero search input not found');
+            }
+
+            if (heroForm) {
+                heroForm.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    if (heroInput) {
+                        syncAndSearch(heroInput);
+                    }
+                });
+            }
+
+            if (heroButton) {
+                heroButton.addEventListener('click', () => {
+                    const currentHeroInput = document.getElementById('heroSearchInput');
+                    if (!currentHeroInput) {
+                        console.warn('Knowledge base hero search button clicked without an input element');
+                        return;
+                    }
+                    syncAndSearch(currentHeroInput);
+                });
+            } else {
+                console.warn('Knowledge base hero search button not found');
+            }
+
+            searchChips.forEach((chip) => {
+                chip.addEventListener('click', () => {
+                    const term = chip.dataset.searchChip || chip.textContent || '';
+                    syncAndSearch(null, term.trim());
+                });
+            });
+
+            runKnowledgeSearch('');
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            const root = document.documentElement;
+            root.classList.toggle('dark', savedTheme === 'dark');
+            root.classList.toggle('light', savedTheme !== 'dark');
+            root.setAttribute('data-theme', savedTheme);
+            const icon = document.getElementById('themeToggleIcon');
+            if (icon) icon.textContent = savedTheme === 'dark' ? 'light_mode' : 'dark_mode';
+        }
+
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', function () {
+                const root = document.documentElement;
+                const isDark = root.classList.toggle('dark');
+                root.classList.toggle('light', !isDark);
+                root.setAttribute('data-theme', isDark ? 'dark' : 'light');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                const icon = document.getElementById('themeToggleIcon');
+                if (icon) icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+            });
+        }
+
+        const sidebarLogoutBtn = document.getElementById('sidebarLogout');
+        if (sidebarLogoutBtn) {
+            sidebarLogoutBtn.addEventListener('click', logout);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            initTheme();
+            initKnowledgeBaseSearch();
+        });
+    </script>
+</body>
+</html>
