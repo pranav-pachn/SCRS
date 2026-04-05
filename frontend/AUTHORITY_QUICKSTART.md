@@ -32,7 +32,7 @@ Login: authority@scrs.gov | password
 ## 🎯 Navigation Updates
 
 All pages now have proper authority navigation:
-- ✅ index.html
+- ✅ home.html
 - ✅ dashboard.html
 - ✅ admin.html
 - ✅ complaint.html

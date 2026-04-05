@@ -58,7 +58,7 @@
 
 | File | Changes |
 |------|---------|
-| index.html | Added Authority Dashboard link |
+| home.html | Added Authority Dashboard link |
 | dashboard.html | Added Authority Dashboard link |
 | admin.html | Added Authority Dashboard link, restricted to admin only |
 | complaint.html | Added Authority Dashboard link |
@@ -87,7 +87,7 @@
 // admin.html - admin only
 const auth = getStoredAuth();
 if (auth.user.role !== 'admin') {
-  window.location.href = 'index.html';
+  window.location.href = 'home.html';
 }
 
 // authority.html - authority only
@@ -146,7 +146,7 @@ const auth = requireAuth(['authority']);
 frontend/
 ├── authority.html            ← NEW: Authority dashboard
 ├── authority.js              ← NEW: Authority API client
-├── index.html               ← UPDATED: Navigation
+├── home.html               ← UPDATED: Navigation
 ├── dashboard.html           ← UPDATED: Navigation
 ├── admin.html               ← UPDATED: Navigation + role check
 ├── complaint.html           ← UPDATED: Navigation
@@ -174,7 +174,7 @@ User logs in → auth.js stores JWT token & user data
 User clicks "Authority Dashboard" → authority.html loads
 requireAuth(['authority']) → Validates user role
 If authorized → Page loads, dashboard initializes
-If not authorized → Redirects to index.html
+If not authorized → Redirects to home.html
 ```
 
 ### 3. Data Loading

@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>My Complaints | Civixa</title>
-  <link rel="icon" type="image/png" href="../assests/Civixa_logo_new.png">
+  <link rel="icon" type="image/png" href="assests/Civixa_logo_new.png">
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   <script id="tailwind-config">
@@ -142,7 +142,7 @@
     </div>
 
     <nav class="flex-1 space-y-1">
-      <a class="flex items-center px-4 py-3 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50" href="index.html">
+      <a class="flex items-center px-4 py-3 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50" href="home.html">
         <span class="material-symbols-outlined mr-3">home</span><span class="font-medium">Home</span>
       </a>
       <a class="flex items-center px-4 py-3 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50" href="dashboard-citizen.html">
@@ -195,7 +195,7 @@
       <div class="flex items-center gap-8">
         <span class="text-xl font-bold tracking-tighter text-blue-900 dark:text-blue-100 md:hidden">Civixa</span>
         <nav class="hidden items-center space-x-6 lg:flex">
-          <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="index.html">Home</a>
+          <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="home.html">Home</a>
           <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="dashboard-citizen.html">Dashboard</a>
           <a class="border-b-2 border-blue-700 py-1 font-bold text-blue-700 dark:text-blue-300" href="my-complaints.html">My Complaints</a>
           <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="support.html">Support</a>
@@ -266,7 +266,7 @@
   </main>
 
   <nav class="fixed bottom-0 left-0 z-40 flex w-full items-center justify-around rounded-t-2xl border-t border-slate-100 bg-white/80 px-4 pb-6 pt-2 text-[11px] font-semibold backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/80 lg:hidden">
-    <a class="flex flex-col items-center justify-center px-5 py-2 text-slate-400 transition-all hover:text-blue-600 active:scale-90 dark:text-slate-500" href="index.html">
+    <a class="flex flex-col items-center justify-center px-5 py-2 text-slate-400 transition-all hover:text-blue-600 active:scale-90 dark:text-slate-500" href="home.html">
       <span class="material-symbols-outlined">home</span>
       <span>Home</span>
     </a>
@@ -374,7 +374,7 @@
     function logout() {
       if (confirm('Are you sure you want to logout?')) {
         clearAuth();
-        window.location.href = 'index.html';
+        window.location.href = 'home.html';
       }
     }
 

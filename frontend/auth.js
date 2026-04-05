@@ -55,7 +55,7 @@ function requireAuth(allowedRoles) {
     const userRole = String(auth.user.role || '').toLowerCase();
     const allowed = normalizedAllowedRoles.map((role) => String(role).toLowerCase());
     if (!allowed.includes(userRole)) {
-      window.location.href = 'index.html';
+      window.location.href = 'home.html';
       return null;
     }
   }
@@ -70,7 +70,7 @@ function requireAuth(allowedRoles) {
 // This creates proper architectural separation between user types
 function redirectToDashboard(user) {
   if (!user || !user.role) {
-    window.location.href = 'index.html';
+    window.location.href = 'home.html';
     return;
   }
 
@@ -80,7 +80,7 @@ function redirectToDashboard(user) {
     'authority': 'dashboard-authority.html'
   };
 
-  const targetPage = dashboardRoutes[user.role.toLowerCase()] || 'index.html';
+  const targetPage = dashboardRoutes[user.role.toLowerCase()] || 'home.html';
   window.location.href = targetPage;
 }
 
@@ -88,7 +88,7 @@ function redirectToDashboard(user) {
 function getDashboardUrl() {
   const auth = getStoredAuth();
   if (!auth.user || !auth.user.role) {
-    return 'index.html';
+    return 'home.html';
   }
 
   const dashboardRoutes = {
@@ -97,7 +97,7 @@ function getDashboardUrl() {
     'authority': 'dashboard-authority.html'
   };
 
-  return dashboardRoutes[auth.user.role.toLowerCase()] || 'index.html';
+  return dashboardRoutes[auth.user.role.toLowerCase()] || 'home.html';
 }
 
 const HELP_MODAL_ID = 'helpModal';

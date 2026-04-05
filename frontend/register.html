@@ -36,7 +36,7 @@
   <script>if (window.tailwind && typeof window.tailwind.refresh === "function") { window.tailwind.refresh(); }</script>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script async src="https://accounts.google.com/gsi/client"></script>
-  <link rel="icon" type="image/png" href="../assests/Civixa_logo_new.png">
+  <link rel="icon" type="image/png" href="assests/Civixa_logo_new.png">
   <style>
     :root { color-scheme: light dark; }
     .material-symbols-outlined { font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24; }
@@ -242,7 +242,7 @@
   <div id="notificationContainer" class="fixed bottom-4 right-4 z-50 space-y-2"></div>
   <div class="auth-grid min-h-screen">
     <header class="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-6">
-      <a href="landing.html" class="flex items-center gap-3">
+      <a href="index.html" class="flex items-center gap-3">
         <div class="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5"><span class="material-symbols-outlined text-auth-accent">campaign</span></div>
         <div><p class="font-headline text-lg font-extrabold tracking-tight">Civixa</p><p class="text-xs uppercase tracking-[0.24em] text-auth-muted">Create Access</p></div>
       </a>
@@ -250,7 +250,7 @@
         <button id="themeToggleBtn" class="rounded-full border border-white/10 p-2 text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent" type="button" aria-label="Toggle theme">
           <span id="themeToggleIcon" class="material-symbols-outlined">dark_mode</span>
         </button>
-        <a href="landing.html" class="hidden rounded-full border border-white/10 px-4 py-2 text-sm font-semibold text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent sm:inline-flex">Back Home</a>
+        <a href="index.html" class="hidden rounded-full border border-white/10 px-4 py-2 text-sm font-semibold text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent sm:inline-flex">Back Home</a>
         <a href="login.html" class="rounded-full border border-white/10 px-4 py-2 text-sm font-semibold text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent">Sign In</a>
         <a href="support.html" class="hidden rounded-full border border-white/10 px-4 py-2 text-sm font-semibold text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent sm:inline-flex" data-help-trigger>Help</a>
       </div>
@@ -436,7 +436,7 @@
           if (data.success && data.token) {
             storeAuth(data.token, data.user);
             showNotification("Registration successful!", "success");
-            setTimeout(() => window.location.href = "index.html", 1500);
+            setTimeout(() => window.location.href = "home.html", 1500);
           } else {
             showNotification(data.message || "Registration failed", "error");
           }
@@ -511,7 +511,7 @@
           if (data.success && data.token) {
             storeAuth(data.token, data.user);
             showNotification("Account created!", "success");
-            setTimeout(() => window.location.href = "index.html", 1500);
+            setTimeout(() => window.location.href = "home.html", 1500);
           } else {
             showNotification(data.message || "Sign up failed", "error");
           }

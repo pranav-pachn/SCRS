@@ -19,7 +19,7 @@ The Authority Frontend has been fully integrated into the SCRS application. Auth
 - **frontend/authority.js** - Authority API client and UI logic
 
 ### Updated Files (Navigation)
-- **frontend/index.html** - Added Authority Dashboard link
+- **frontend/home.html** - Added Authority Dashboard link
 - **frontend/dashboard.html** - Added Authority Dashboard link
 - **frontend/admin.html** - Restricted to admin role only, added Authority link
 - **frontend/complaint.html** - Added Authority Dashboard link
