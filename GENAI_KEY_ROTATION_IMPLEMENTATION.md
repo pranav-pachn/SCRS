@@ -111,7 +111,7 @@ GEMINI_API_KEY=key1,key2,key3,key4,key5
 
 Example with actual key format:
 ```ini
-GEMINI_API_KEY=AIzaSyBgBqZkXKvBxBEl8s-dYSdyifbHfP6jqbI,AIzaSyDpvReINvMz5oFQb5v-CKjsSyN0wCUgmoY,AIzaSyDvS3pGIvP78aEYUZXpBtCiux8hYXo7-6g,AIzaSyBB2f6VckD-nu4uOp7eAUJrXhge6Zx-xbI,AIzaSyBPs8qVdunbW9fYKQI_xQB9RiYhIKrGcp8
+GEMINI_API_KEY=key1,key2,key3
 ```
 
 **Note**: Your .env already has 5 Gemini keys configured.
