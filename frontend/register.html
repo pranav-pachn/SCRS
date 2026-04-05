@@ -1,101 +1,201 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html class="light" lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Register - Smart Complaint Resolution System</title>
-  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Register - Civixa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   <script id="tailwind-config">
-    tailwind.config = {
+    window.tailwind = window.tailwind || {};
+        window.tailwind.config = {
       darkMode: "class",
       theme: {
         extend: {
           colors: {
-            surface: "#ffffff",
-            "surface-soft": "#f3f6fb",
-            primary: "#003b72",
-            "primary-container": "#00529b",
-            "on-surface": "#191c1d",
-            "on-surface-variant": "#52606d",
-            outline: "#c9d4e3",
-            "on-primary": "#ffffff"
+            "auth-background": "#04070f",
+            "auth-card": "#0f172a",
+            "auth-card-alt": "#111932",
+            "auth-border": "#1e293b",
+            "auth-text": "#f8fafc",
+            "auth-muted": "#cbd2ff",
+            "auth-outline": "#94a8d9",
+            "auth-primary": "#67e8f9",
+            "auth-secondary": "#7c3aed",
+            "auth-accent": "#38bdf8",
+            "auth-on-primary": "#01020a"
           },
           fontFamily: {
-            headline: ["Public Sans"],
-            body: ["Inter"]
+            "headline": ["Public Sans"],
+            "body": ["Inter"]
           }
         }
       }
     }
   </script>
-  <script async src="https://accounts.google.com/gsi/client"></script>
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script>if (window.tailwind && typeof window.tailwind.refresh === "function") { window.tailwind.refresh(); }</script>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script async src="https://accounts.google.com/gsi/client"></script>
+  <link rel="icon" type="image/png" href="../assests/Civixa_logo_new.png">
   <style>
+    :root { color-scheme: light dark; }
     .material-symbols-outlined { font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24; }
-    body {
+    .auth-shell {
       background:
-        radial-gradient(circle at top left, rgba(165, 199, 255, 0.3), transparent 28%),
-        radial-gradient(circle at top right, rgba(14, 165, 233, 0.12), transparent 24%),
-        linear-gradient(180deg, #f8fbff 0%, #f8f9fa 62%, #eef4fb 100%);
+        radial-gradient(circle at 10% 0%, rgba(56, 189, 248, 0.2), transparent 28%),
+        radial-gradient(circle at 90% 0%, rgba(124, 58, 237, 0.22), transparent 28%),
+        linear-gradient(180deg, #04070f 0%, #06111f 55%, #08111e 100%);
     }
-    .auth-card { background: rgba(255, 255, 255, 0.97); border: 1px solid #d8e2ef; box-shadow: 0 26px 65px rgba(15, 23, 42, 0.12); }
-    .hero-band { background: linear-gradient(145deg, rgba(0, 59, 114, 0.98) 0%, rgba(0, 82, 155, 0.96) 56%, rgba(14, 165, 233, 0.92) 100%); }
+    html.light .auth-shell {
+      background:
+        radial-gradient(circle at 10% 0%, rgba(56, 189, 248, 0.17), transparent 30%),
+        radial-gradient(circle at 90% 0%, rgba(124, 58, 237, 0.1), transparent 32%),
+        linear-gradient(180deg, #f8fbff 0%, #f2f7ff 58%, #edf3ff 100%);
+      color: #0f172a;
+    }
+    .auth-grid { position: relative; }
+    .auth-grid::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(148, 163, 184, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: radial-gradient(circle at center, black 40%, transparent 88%);
+      pointer-events: none;
+    }
+    .auth-card {
+      background: rgba(9, 18, 40, 0.86);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 30px 80px rgba(2, 6, 23, 0.68);
+      backdrop-filter: blur(26px);
+    }
+    html.light .auth-card {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid #dbe3ef;
+      box-shadow: 0 22px 55px rgba(15, 23, 42, 0.14);
+    }
     .floating-field { position: relative; }
     .floating-field + .floating-field { margin-top: 1rem; }
-    .floating-icon { position: absolute; top: 50%; left: 0.9rem; transform: translateY(-50%); color: #64748b; font-size: 1.15rem; }
+    .floating-icon {
+      position: absolute; top: 50%; left: 0.9rem; transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.6); font-size: 1.15rem;
+    }
     .floating-input {
-      width: 100%; border-radius: 1rem; background: #f3f6fb; border: 1px solid #d8e2ef; padding: 0.95rem 1.25rem 0.9rem 3.2rem;
-      color: #191c1d; font-size: 1rem; outline: none; transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      width: 100%; border-radius: 1rem; background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12); padding: 0.95rem 1.25rem 0.9rem 3.2rem;
+      color: inherit; font-size: 1rem; outline: none; transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
-    .floating-input:focus { border-color: #003b72; box-shadow: 0 0 0 2px rgba(0, 59, 114, 0.12); }
+    .floating-input:focus { border-color: rgba(103, 232, 249, 0.8); box-shadow: 0 0 0 2px rgba(103, 232, 249, 0.15); }
     .floating-label {
-      position: absolute; left: 3.2rem; top: 0.95rem; font-size: 0.85rem; letter-spacing: 0.04em; text-transform: uppercase;
-      color: #64748b; pointer-events: none; transition: transform 0.2s ease, font-size 0.2s ease, color 0.2s ease;
+      position: absolute; left: 3.2rem; top: 0.95rem; font-size: 0.85rem; letter-spacing: 0.04em;
+      text-transform: uppercase; color: rgba(255, 255, 255, 0.7); pointer-events: none;
+      transition: transform 0.2s ease, font-size 0.2s ease, color 0.2s ease;
     }
-    .floating-field.floating-active .floating-label, .floating-field:focus-within .floating-label { transform: translateY(-1.6rem) scale(0.82); color: #003b72; }
-    .field-hint, .field-status { margin-top: 0.45rem; font-size: 0.74rem; color: #64748b; }
-    .info-tooltip { position: absolute; top: 0.8rem; right: 1rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: #64748b; border-bottom: 1px dotted #94a3b8; cursor: help; }
+    .floating-field.floating-active .floating-label, .floating-field:focus-within .floating-label {
+      transform: translateY(-1.6rem) scale(0.82); color: #67e8f9;
+    }
+    .field-hint, .field-status { margin-top: 0.45rem; font-size: 0.74rem; color: rgba(255, 255, 255, 0.68); }
+    .info-tooltip {
+      position: absolute; top: 0.8rem; right: 1rem; font-size: 0.7rem; text-transform: uppercase;
+      letter-spacing: 0.08em; color: rgba(255, 255, 255, 0.6); border-bottom: 1px dotted rgba(255, 255, 255, 0.5); cursor: help;
+    }
     .role-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(132px, 1fr)); gap: 0.75rem; }
     .role-card {
-      border-radius: 1rem; border: 1px solid #d8e2ef; background: #f8fbff; padding: 0.7rem; cursor: pointer;
-      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+      border-radius: 1rem; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(15, 23, 42, 0.7);
+      padding: 0.7rem; cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
     }
-    .role-card:hover, .role-card input:checked + .role-card-body { border-color: rgba(0, 59, 114, 0.55); background: #eef4fb; transform: translateY(-2px); }
+    .role-card:hover, .role-card input:checked + .role-card-body {
+      border-color: rgba(103, 232, 249, 0.55); background: rgba(103, 232, 249, 0.05); transform: translateY(-2px);
+    }
     .role-card-body { display: flex; align-items: center; gap: 0.75rem; padding: 0.2rem 0.25rem; }
-    .role-title { margin: 0; font-size: 0.95rem; font-weight: 600; color: #003b72; }
-    .role-desc { margin: 0; font-size: 0.76rem; color: #64748b; }
-    .role-hint { margin-top: 0.7rem; font-size: 0.82rem; color: #52606d; }
-    .admin-note { margin-top: 0.3rem; max-height: 0; opacity: 0; overflow: hidden; font-size: 0.72rem; color: #dc2626; transition: opacity 0.2s ease, max-height 0.2s ease; }
+    .role-title { margin: 0; font-size: 0.95rem; font-weight: 600; }
+    .role-desc { margin: 0; font-size: 0.76rem; color: rgba(255, 255, 255, 0.62); }
+    .role-hint { margin-top: 0.7rem; font-size: 0.82rem; color: rgba(255, 255, 255, 0.72); }
+    .admin-note {
+      margin-top: 0.3rem; max-height: 0; opacity: 0; overflow: hidden; font-size: 0.72rem;
+      color: rgba(251, 113, 133, 0.95); transition: opacity 0.2s ease, max-height 0.2s ease;
+    }
     .admin-note.visible { max-height: 4rem; opacity: 1; }
-    .show-password { position: absolute; right: 1rem; top: 0.95rem; border: none; background: transparent; color: #64748b; cursor: pointer; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; }
-    .strength-meter { margin-top: 0.85rem; height: 4px; overflow: hidden; border-radius: 999px; background: #dbe5f1; }
+    .show-password {
+      position: absolute; right: 1rem; top: 0.95rem; border: none; background: transparent; color: rgba(255, 255, 255, 0.7);
+      cursor: pointer; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .strength-meter { margin-top: 0.85rem; height: 4px; overflow: hidden; border-radius: 999px; background: rgba(255, 255, 255, 0.1); }
     .strength-fill { display: block; height: 100%; width: 0; background: #fb7185; transition: width 0.3s ease, background 0.3s ease; }
-    .strength-text { margin-top: 0.35rem; font-size: 0.72rem; color: #64748b; }
+    .strength-text { margin-top: 0.35rem; font-size: 0.72rem; color: rgba(255, 255, 255, 0.62); }
     .help-modal {
-      position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
-      background: rgba(15, 23, 42, 0.42); padding: 1.5rem; opacity: 0; pointer-events: none; transition: opacity 0.24s ease; z-index: 60;
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(2, 6, 23, 0.8);
+      padding: 1.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.24s ease;
+      z-index: 60;
     }
-    .help-modal--visible { opacity: 1; pointer-events: auto; }
+    .help-modal--visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
     .help-modal__panel {
-      width: min(680px, 100%); max-height: 90vh; display: flex; flex-direction: column; gap: 1rem; padding: 1.75rem;
-      border-radius: 1.5rem; background: #ffffff; box-shadow: 0 30px 70px rgba(15, 23, 42, 0.2); border: 1px solid #d8e2ef; overflow: hidden;
+      width: min(640px, 100%);
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1.75rem;
+      border-radius: 1.25rem;
+      background: #020617;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
     }
-    .help-modal__header { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; }
-    .help-modal__header button { background: transparent; border: none; color: #64748b; font-size: 1.35rem; cursor: pointer; }
-    .help-modal__content { display: flex; flex-direction: column; gap: 1rem; overflow-y: auto; padding-right: 0.25rem; }
+    .help-modal__header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+    .help-modal__header button {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 1.35rem;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+    .help-modal__header button:hover { color: #67e8f9; }
+    .help-modal__content {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      overflow-y: auto;
+      padding-right: 0.25rem;
+    }
     .help-modal__section { display: flex; flex-direction: column; gap: 0.35rem; }
-    .help-modal__section h4 { font-size: 1rem; font-weight: 700; color: #003b72; }
-    .help-modal__section p, .help-modal__section ul { font-size: 0.92rem; line-height: 1.6; color: #475569; }
+    .help-modal__section h4 { font-size: 1rem; font-weight: 700; color: #67e8f9; }
+    .help-modal__section p, .help-modal__section ul { font-size: 0.9rem; line-height: 1.6; color: #e2e8f0; }
     .help-modal__list { display: grid; gap: 0.35rem; }
     .help-modal__list li { padding-left: 0.5rem; }
     .help-modal__roles { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.5rem; }
-    .help-modal__roles article { padding: 0.8rem; border-radius: 1rem; background: #f3f6fb; border: 1px solid #d8e2ef; }
+    .help-modal__roles article { padding: 0.65rem 0.75rem; border-radius: 0.85rem; background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(255, 255, 255, 0.08); }
     .help-modal__footer { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: flex-end; }
-    .help-modal__footer a { font-size: 0.85rem; font-weight: 700; color: #00529b; }
-    .help-modal__footer button { background: #003b72; color: white; border: none; padding: 0.6rem 1rem; border-radius: 999px; font-weight: 700; cursor: pointer; }
-    .text-help-link { color: #00529b; font-weight: 700; }
+    .help-modal__footer a { font-size: 0.85rem; font-weight: 600; color: #38bdf8; }
+    .help-modal__footer button {
+      background: #0ea5e9;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .text-help-link { color: #67e8f9; font-weight: 600; }
     #registerButton .btn-spinner {
       width: 1rem; height: 1rem; border-radius: 999px; border: 2px solid rgba(255, 255, 255, 0.4);
       border-top-color: #ffffff; opacity: 0.4; transition: opacity 0.2s ease;
@@ -103,68 +203,105 @@
     #registerButton.loading { cursor: progress; }
     #registerButton.loading .btn-spinner { opacity: 1; animation: spinner 0.8s linear infinite; }
     @keyframes spinner { to { transform: rotate(360deg); } }
+    html.light .text-auth-text { color: #0f172a !important; }
+    html.light .text-auth-muted { color: #475569 !important; }
+    html.light .border-white\/10 { border-color: #cbd5e1 !important; }
+    html.light .auth-grid::before {
+      background-image:
+        linear-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+    }
+    html.light .floating-input {
+      background: #f4f7fb;
+      border-color: #cbd5e1;
+      color: #0f172a;
+    }
+    html.light .floating-icon,
+    html.light .floating-label,
+    html.light .field-hint,
+    html.light .field-status,
+    html.light .role-desc,
+    html.light .role-hint,
+    html.light .show-password,
+    html.light .strength-text { color: #64748b; }
+    html.light .role-card {
+      border-color: #cbd5e1;
+      background: #ffffff;
+    }
+    html.light .help-modal { background: rgba(15, 23, 42, 0.35); }
+    html.light .help-modal__panel {
+      background: #ffffff;
+      border-color: #dbe3ef;
+      box-shadow: 0 22px 55px rgba(15, 23, 42, 0.2);
+    }
+    html.light .help-modal__section p,
+    html.light .help-modal__section ul { color: #334155; }
   </style>
 </head>
-<body class="min-h-screen font-body text-on-surface">
+<body class="auth-shell min-h-screen font-body text-auth-text">
   <div id="notificationContainer" class="fixed bottom-4 right-4 z-50 space-y-2"></div>
-  <div class="min-h-screen">
-    <header class="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-6">
+  <div class="auth-grid min-h-screen">
+    <header class="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-6">
       <a href="landing.html" class="flex items-center gap-3">
-        <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary text-on-primary shadow-md shadow-blue-900/15"><span class="material-symbols-outlined">campaign</span></div>
-        <div><p class="font-headline text-lg font-extrabold tracking-tight text-primary">SCRS</p><p class="text-xs uppercase tracking-[0.24em] text-on-surface-variant">Create Access</p></div>
+        <div class="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5"><span class="material-symbols-outlined text-auth-accent">campaign</span></div>
+        <div><p class="font-headline text-lg font-extrabold tracking-tight">Civixa</p><p class="text-xs uppercase tracking-[0.24em] text-auth-muted">Create Access</p></div>
       </a>
       <div class="flex items-center gap-3">
-        <a href="landing.html" class="hidden rounded-full border border-outline bg-white px-4 py-2 text-sm font-semibold text-primary transition-colors hover:border-primary hover:bg-slate-50 sm:inline-flex">Back Home</a>
-        <a href="login.html" class="rounded-full border border-outline bg-white px-4 py-2 text-sm font-semibold text-primary transition-colors hover:border-primary hover:bg-slate-50">Sign In</a>
-        <a href="support.html" class="hidden rounded-full border border-outline bg-white px-4 py-2 text-sm font-semibold text-primary transition-colors hover:border-primary hover:bg-slate-50 sm:inline-flex" data-help-trigger>Help</a>
+        <button id="themeToggleBtn" class="rounded-full border border-white/10 p-2 text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent" type="button" aria-label="Toggle theme">
+          <span id="themeToggleIcon" class="material-symbols-outlined">dark_mode</span>
+        </button>
+        <a href="landing.html" class="hidden rounded-full border border-white/10 px-4 py-2 text-sm font-semibold text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent sm:inline-flex">Back Home</a>
+        <a href="login.html" class="rounded-full border border-white/10 px-4 py-2 text-sm font-semibold text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent">Sign In</a>
+        <a href="support.html" class="hidden rounded-full border border-white/10 px-4 py-2 text-sm font-semibold text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent sm:inline-flex" data-help-trigger>Help</a>
       </div>
     </header>
-    <main class="mx-auto flex min-h-[calc(100vh-88px)] w-full max-w-6xl items-center px-6 pb-12">
+    <main class="relative z-10 mx-auto flex min-h-[calc(100vh-88px)] w-full max-w-6xl items-center px-6 pb-10">
       <div class="grid w-full gap-8 lg:grid-cols-[0.92fr_1.08fr]">
-        <section class="hero-band hidden rounded-[2rem] p-10 text-white shadow-[0_26px_65px_rgba(0,59,114,0.18)] lg:flex lg:flex-col lg:justify-between">
-          <div>
-            <span class="inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-blue-50"><span class="material-symbols-outlined text-base">person_add</span>Join SCRS</span>
-            <h1 class="mt-7 max-w-lg font-headline text-5xl font-extrabold leading-[1.05] tracking-tight">Create your account and enter the civic workflow.</h1>
-            <p class="mt-5 max-w-xl text-lg leading-8 text-blue-50/90">Choose the role that matches your responsibilities and continue into the same complaint, support, and dashboard system used across SCRS.</p>
-          </div>
-          <div class="grid gap-4">
-            <div class="rounded-2xl bg-white/12 p-5"><p class="font-semibold text-white">One role-aware account</p><p class="mt-1 text-sm text-blue-50/85">Citizen, Admin, and Authority accounts each route to the right workspace.</p></div>
-            <div class="rounded-2xl bg-white/12 p-5"><p class="font-semibold text-white">Fast onboarding</p><p class="mt-1 text-sm text-blue-50/85">Use email registration or Google sign-up without leaving the flow.</p></div>
+        <section class="hidden flex-col justify-center lg:flex">
+          <span class="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-fuchsia-400/20 bg-fuchsia-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-fuchsia-100">
+            <span class="material-symbols-outlined text-base">person_add</span>
+            Join Civixa
+          </span>
+          <h1 class="max-w-lg font-headline text-5xl font-extrabold leading-[1.05] tracking-tight">Create your account and enter the complaint workflow.</h1>
+          <p class="mt-5 max-w-xl text-lg leading-8 text-auth-muted">Choose the role that matches your responsibilities and get immediate access to the tools you need for reporting, resolving, or supervising civic issues.</p>
+          <div class="mt-8 space-y-4 text-sm text-auth-muted">
+            <div class="rounded-2xl border border-white/10 bg-white/5 px-5 py-4"><p class="font-semibold text-auth-text">One account, role-aware access</p><p class="mt-1">Citizen, Admin, and Authority accounts each route into their own workspace.</p></div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 px-5 py-4"><p class="font-semibold text-auth-text">Fast onboarding</p><p class="mt-1">Use email registration or Google sign-up without leaving the flow.</p></div>
           </div>
         </section>
-        <section class="auth-card rounded-[2rem] p-8 md:p-10">
+        <section class="auth-card rounded-[28px] p-8 md:p-10">
           <div class="mb-10">
-            <p class="text-sm font-semibold uppercase tracking-[0.28em] text-primary-container">Registration</p>
-            <h2 class="mt-3 font-headline text-3xl font-bold tracking-tight text-primary">Create an account</h2>
-            <p class="mt-2 max-w-lg text-sm leading-6 text-on-surface-variant">Register to start submitting complaints, tracking updates, or managing resolution queues.</p>
+            <p class="text-sm font-semibold uppercase tracking-[0.28em] text-auth-muted">Registration</p>
+            <h2 class="mt-3 font-headline text-3xl font-bold tracking-tight">Create an account</h2>
+            <p class="mt-2 max-w-lg text-sm leading-6 text-auth-muted">Register to start submitting complaints, tracking updates, or managing resolution queues.</p>
           </div>
           <form id="registerForm" class="space-y-6" onsubmit="handleRegister(event)">
             <div class="floating-field">
               <span class="material-symbols-outlined floating-icon">person</span>
-              <input id="name" name="name" type="text" required class="floating-input" placeholder=" ">
+              <input id="name" name="name" type="text" required class="floating-input" placeholder=" " />
               <label for="name" class="floating-label">Full Name</label>
               <p class="field-hint">Use the name your agency or community recognizes.</p>
             </div>
             <div class="floating-field">
               <span class="material-symbols-outlined floating-icon">mail</span>
-              <input id="registerEmail" name="email" type="email" required class="floating-input" placeholder=" ">
+              <input id="registerEmail" name="email" type="email" required class="floating-input" placeholder=" " />
               <label for="registerEmail" class="floating-label">Email Address</label>
               <span class="info-tooltip" title="We use this email for status updates and security verification.">Why we need this?</span>
-              <p id="emailStatus" class="field-status">A valid email keeps you informed.</p>
+              <p id="emailStatus" class="field-status">Valid email keeps you informed.</p>
             </div>
             <div>
-              <p class="mb-2 text-sm font-semibold text-on-surface-variant">Register As</p>
+              <p class="mb-2 text-sm font-semibold text-auth-muted">Register As</p>
               <div class="role-cards">
-                <label class="role-card"><input checked class="sr-only" name="role" type="radio" value="citizen"><div class="role-card-body"><span class="material-symbols-outlined text-primary">groups</span><div><p class="role-title">Citizen</p><p class="role-desc">Report issues and track status.</p></div></div></label>
-                <label class="role-card"><input class="sr-only" name="role" type="radio" value="admin"><div class="role-card-body"><span class="material-symbols-outlined text-primary">admin_panel_settings</span><div><p class="role-title">Admin</p><p class="role-desc">Manage and resolve complaints.</p></div></div></label>
-                <label class="role-card"><input class="sr-only" name="role" type="radio" value="authority"><div class="role-card-body"><span class="material-symbols-outlined text-primary">account_balance</span><div><p class="role-title">Authority</p><p class="role-desc">Monitor analytics and resources.</p></div></div></label>
+                <label class="role-card"><input checked class="sr-only" name="role" type="radio" value="citizen" /><div class="role-card-body"><span class="material-symbols-outlined">groups</span><div><p class="role-title">Citizen</p><p class="role-desc">Report issues and track status.</p></div></div></label>
+                <label class="role-card"><input class="sr-only" name="role" type="radio" value="admin" /><div class="role-card-body"><span class="material-symbols-outlined">admin_panel_settings</span><div><p class="role-title">Admin</p><p class="role-desc">Manage and resolve complaints.</p></div></div></label>
+                <label class="role-card"><input class="sr-only" name="role" type="radio" value="authority" /><div class="role-card-body"><span class="material-symbols-outlined">account_balance</span><div><p class="role-title">Authority</p><p class="role-desc">Monitor analytics and resources.</p></div></div></label>
               </div>
               <p id="roleHint" class="role-hint">Citizen: Track every emergency and message.</p>
               <p id="adminNote" class="admin-note">Admin accounts require approval and verification.</p>
             </div>
             <div class="floating-field password-field">
               <span class="material-symbols-outlined floating-icon">lock</span>
-              <input id="password" name="password" type="password" required class="floating-input" placeholder=" ">
+              <input id="password" name="password" type="password" required class="floating-input" placeholder=" " />
               <label for="password" class="floating-label">Password</label>
               <button type="button" id="toggleShowPassword" class="show-password">Show</button>
               <div class="strength-meter"><span id="passwordStrength" class="strength-fill"></span></div>
@@ -172,23 +309,23 @@
             </div>
             <div class="floating-field">
               <span class="material-symbols-outlined floating-icon">lock_reset</span>
-              <input id="confirmPassword" name="confirmPassword" type="password" required class="floating-input" placeholder=" ">
+              <input id="confirmPassword" name="confirmPassword" type="password" required class="floating-input" placeholder=" " />
               <label for="confirmPassword" class="floating-label">Confirm Password</label>
             </div>
             <div class="flex items-start gap-3 py-1">
-              <input id="terms" type="checkbox" required class="mt-1 h-5 w-5 rounded border-outline text-primary focus:ring-primary">
-              <label class="text-xs leading-relaxed text-on-surface-variant" for="terms">I agree to the <a class="font-bold text-primary underline" href="terms.html">Terms of Service</a> and <a class="font-bold text-primary underline" href="privacy.html">Privacy Policy</a>.</label>
+              <input id="terms" type="checkbox" required class="mt-1 h-5 w-5 rounded border-auth-border bg-auth-card-alt text-auth-accent focus:ring-auth-accent" />
+              <label class="text-xs leading-relaxed text-auth-muted" for="terms">I agree to the <a class="font-bold text-auth-accent underline" href="terms.html">Terms of Service</a> and <a class="font-bold text-auth-accent underline" href="privacy.html">Privacy Policy</a>.</label>
             </div>
-            <button id="registerButton" type="submit" class="flex w-full items-center justify-center gap-2 rounded-full bg-primary py-4 font-headline font-bold text-on-primary shadow-[0_20px_45px_rgba(0,59,114,0.18)] transition-all hover:opacity-95 active:scale-[0.98]">
+            <button id="registerButton" type="submit" class="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-auth-primary to-auth-secondary py-4 font-headline font-bold text-auth-on-primary shadow-[0_24px_55px_rgba(5,7,15,0.55)] transition-all hover:opacity-95 active:scale-[0.98]">
               <span class="btn-spinner" aria-hidden="true"></span>
-              <span class="btn-label">Create SCRS Account</span>
+              <span class="btn-label">Create Civixa Account</span>
             </button>
             <div class="relative my-3">
-              <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-outline"></div></div>
-              <div class="relative flex justify-center text-sm"><span class="bg-white px-4 font-medium text-on-surface-variant">Or sign up with</span></div>
+              <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
+              <div class="relative flex justify-center text-sm"><span class="bg-auth-background px-4 font-medium text-auth-muted">Or sign up with</span></div>
             </div>
             <div id="google-signup-button" class="flex justify-center"></div>
-            <div class="pt-2 text-center text-sm text-on-surface-variant">Already have an account? <a class="font-bold text-primary transition-all hover:underline" href="login.html">Sign in</a></div>
+            <div class="text-center pt-2 text-sm text-auth-muted">Already have an account? <a class="font-bold text-auth-accent transition-all hover:underline" href="login.html">Sign in</a></div>
           </form>
         </section>
       </div>
@@ -197,17 +334,69 @@
   <div id="helpModal" class="help-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="helpModalTitle">
     <div class="help-modal__panel" tabindex="-1">
       <div class="help-modal__header">
-        <div><p class="text-xs uppercase tracking-[0.3em] text-primary-container">SCRS Help Center</p><h3 id="helpModalTitle" class="font-headline text-2xl font-bold text-primary">Need a hand with SCRS?</h3></div>
+        <div>
+          <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Civixa Help Center</p>
+          <h3 id="helpModalTitle" class="text-2xl font-bold text-white">Need a hand with Civixa?</h3>
+        </div>
         <button type="button" aria-label="Close help" data-help-dismiss>&times;</button>
       </div>
       <div class="help-modal__content">
-        <section class="help-modal__section"><h4>What is SCRS?</h4><p>SCRS is the Smart Complaint Resolution System that guides citizens, administrators, and authority teams through reporting, triaging, and resolving civic issues.</p></section>
-        <section class="help-modal__section"><h4>Who can use it?</h4><div class="help-modal__roles"><article><p class="font-semibold text-primary">Citizen</p><p>Submit complaints, attach photos, and track updates until resolution.</p></article><article><p class="font-semibold text-primary">Admin</p><p>Coordinate workflows, assign investigations, and resolve cases.</p></article><article><p class="font-semibold text-primary">Authority</p><p>Monitor KPIs, approve escalations, and visualize impact citywide.</p></article></div></section>
-        <section class="help-modal__section"><h4>How it works</h4><ul class="help-modal__list"><li>Register with your role to unlock the matching workspace.</li><li>Log in, file a complaint, attach evidence, and assign it to the right team.</li><li>Monitor updates, request clarifications, and close the case once resolved.</li></ul></section>
-        <section class="help-modal__section"><h4>Common issues</h4><ul class="help-modal__list"><li>Forgot password? Request a reset from the login flow or contact support.</li><li>Seeing stale data? Refresh the dashboard or log out and back in.</li><li>Need special permissions? Ask your administrator to elevate your account.</li></ul></section>
-        <section class="help-modal__section"><h4>Support and escalation</h4><p>Email: <a class="text-help-link" href="mailto:help@scrs.gov">help@scrs.gov</a></p><p>Phone: (555) 010-SCRS (7277)</p><p>Live chat is available once you are logged in. Look for the chat bubble on the dashboard.</p></section>
+        <section class="help-modal__section">
+          <h4>What is Civixa?</h4>
+          <p>Civixa is the Civixa that guides citizens, administrators, and authority partners through reporting, triaging, and resolving civic issues with real-time insights and AI assistance.</p>
+        </section>
+        <section class="help-modal__section">
+          <h4>Who can use it?</h4>
+          <div class="help-modal__roles">
+            <article>
+              <p class="font-semibold text-white">Citizen</p>
+              <p>Submit complaints, attach photos, and track updates until resolution.</p>
+            </article>
+            <article>
+              <p class="font-semibold text-white">Admin</p>
+              <p>Coordinate workflows, assign investigations, and collaborate across teams.</p>
+            </article>
+            <article>
+              <p class="font-semibold text-white">Authority</p>
+              <p>Monitor KPIs, approve escalations, and visualize impact citywide.</p>
+            </article>
+          </div>
+        </section>
+        <section class="help-modal__section">
+          <h4>How it works</h4>
+          <ul class="help-modal__list">
+            <li>Register with your role (citizen, admin, authority) to unlock the matching workspace.</li>
+            <li>Log in, file a complaint, attach evidence, and assign it to the right team or authority.</li>
+            <li>Monitor automated updates, request clarifications, and close the case once resolved.</li>
+          </ul>
+        </section>
+        <section class="help-modal__section">
+          <h4>Common issues</h4>
+          <ul class="help-modal__list">
+            <li>Forgot password? Request a reset from the login form or contact support.</li>
+            <li>Seeing stale data? Refresh the dashboard or log out and back in to sync.</li>
+            <li>Need special permissions? Ask your administrator to elevate your account.</li>
+          </ul>
+        </section>
+        <section class="help-modal__section">
+          <h4>Support &amp; escalation</h4>
+          <p>Email: <a class="text-help-link" href="mailto:help@civixa.gov">help@civixa.gov</a></p>
+          <p>Phone: (555) 010-Civixa (7277)</p>
+          <p>Live chat is available once you are logged inâ€”look for the cascading chat bubble on the dashboard.</p>
+        </section>
+        <section class="help-modal__section">
+          <h4>Tips to get unstuck</h4>
+          <ul class="help-modal__list">
+            <li>Use the quick filters on the dashboard to surface urgent complaints.</li>
+            <li>Upload photos before filing so investigators get immediate context.</li>
+            <li>Bookmark this login/register page to return faster when traveling.</li>
+          </ul>
+        </section>
       </div>
-      <div class="help-modal__footer"><a href="support.html">Read the full support guide</a><button type="button" data-help-dismiss>Done</button></div>
+      <div class="help-modal__footer">
+        <a href="support.html">Read the full support guide</a>
+        <button type="button" data-help-dismiss>Done</button>
+      </div>
     </div>
   </div>
   <script src="auth.js"></script>
@@ -354,5 +543,14 @@
         .catch(err => { console.error("Error fetching OAuth config:", err); });
     });
   </script>
+  <script src="theme-toggle.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+

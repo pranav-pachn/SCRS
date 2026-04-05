@@ -1,15 +1,16 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html class="light" lang="en">
 <head>
+  <link rel="icon" type="image/png" href="../assests/Civixa_logo_new.png">
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Authority Intelligence | SCRS Municipal</title>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <title>Authority Intelligence | Civixa</title>
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script id="tailwind-config">
-    tailwind.config = {
+    window.tailwind = window.tailwind || {};
+        window.tailwind.config = {
       darkMode: "class",
       theme: {
         extend: {
@@ -66,7 +67,9 @@
       }
     };
   </script>
-  <style>
+  <script>if (window.tailwind && typeof window.tailwind.refresh === "function") { window.tailwind.refresh(); }</script>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
     .material-symbols-outlined {
       font-variation-settings: 'FILL' 0, 'wght' 450, 'GRAD' 0, 'opsz' 24;
     }
@@ -123,7 +126,7 @@
   <header class="sticky top-0 z-50 bg-slate-50/70 dark:bg-slate-950/70 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800">
     <div class="mx-auto flex w-full max-w-[1700px] items-center justify-between px-6 py-3">
       <div class="flex items-center gap-8">
-        <span class="text-xl font-bold tracking-tight text-blue-900 dark:text-blue-100 headline-font">SCRS Municipal</span>
+        <span class="text-xl font-bold tracking-tight text-blue-900 dark:text-blue-100 headline-font">Civixa</span>
         <nav class="hidden items-center space-x-6 lg:flex">
           <a class="border-b-2 border-blue-700 py-1 font-bold text-blue-700 dark:text-blue-300" href="dashboard-authority.html">Dashboard</a>
           <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="my-complaints.html">My Complaints</a>
@@ -171,8 +174,8 @@
   <div class="flex min-h-screen">
     <aside class="fixed left-0 top-0 z-40 hidden h-screen w-64 flex-col bg-slate-100 dark:bg-slate-900 lg:flex">
       <div class="px-6 pb-4 pt-20">
-        <h2 class="text-lg font-black text-blue-900 dark:text-blue-100 headline-font">City Services</h2>
-        <p class="text-xs text-on-surface-variant">Management Portal</p>
+        <h2 class="text-lg font-black text-blue-900 dark:text-blue-100 headline-font">Civixa</h2>
+        <p class="text-xs text-on-surface-variant">Civixa</p>
       </div>
 
       <nav class="space-y-1 px-4">
@@ -375,7 +378,7 @@
 
   <footer class="border-t border-slate-200 bg-slate-50 py-6 text-xs text-slate-500 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-400">
     <div class="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-3 px-6 md:flex-row">
-      <p>© 2026 Municipal SCRS. Architectural Trust System.</p>
+      <p>Â© 2026 Municipal Civixa. Architectural Trust System.</p>
       <div class="flex gap-5">
         <a href="privacy.html" class="hover:text-blue-600">Privacy Policy</a>
         <a href="terms.html" class="hover:text-blue-600">Terms of Service</a>
@@ -433,7 +436,7 @@
         <img id="profileAvatar" src="https://ui-avatars.com/api/?name=Authority+Admin&background=1d5fa8&color=fff" alt="Profile avatar" class="h-16 w-16 rounded-full" />
         <p id="profileName" class="font-semibold">Authority Admin</p>
         <p id="profileRole" class="text-sm text-on-surface-variant">AUTHORITY</p>
-        <p id="profileEmail" class="text-sm text-on-surface-variant">authority@scrs.local</p>
+        <p id="profileEmail" class="text-sm text-on-surface-variant">authority@civixa.local</p>
         <p id="profileUserId" class="text-sm text-on-surface-variant">#-</p>
         <p id="profileCreatedAt" class="text-sm text-on-surface-variant">-</p>
         <input id="updateName" class="w-full rounded-lg border-outline-variant bg-surface-container-low" placeholder="Full name" />
@@ -570,3 +573,11 @@
   <script src="authority.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+

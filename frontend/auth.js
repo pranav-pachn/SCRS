@@ -44,8 +44,17 @@ function requireAuth(allowedRoles) {
     return null;
   }
 
-  if (Array.isArray(allowedRoles) && allowedRoles.length > 0) {
-    if (!allowedRoles.includes(auth.user.role)) {
+  const normalizedAllowedRoles =
+    typeof allowedRoles === 'string'
+      ? [allowedRoles]
+      : Array.isArray(allowedRoles)
+        ? allowedRoles
+        : [];
+
+  if (normalizedAllowedRoles.length > 0) {
+    const userRole = String(auth.user.role || '').toLowerCase();
+    const allowed = normalizedAllowedRoles.map((role) => String(role).toLowerCase());
+    if (!allowed.includes(userRole)) {
       window.location.href = 'index.html';
       return null;
     }

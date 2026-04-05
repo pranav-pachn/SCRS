@@ -1,14 +1,16 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
+  <link rel="icon" type="image/png" href="../assests/Civixa_logo_new.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy - SCRS</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Privacy Policy - Civixa</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <script>
-        tailwind.config = {
+        window.tailwind = window.tailwind || {};
+        window.tailwind.config = {
+            darkMode: "class",
             theme: {
                 extend: {
                     colors: {
@@ -23,9 +25,15 @@
             }
         }
     </script>
+  <script>if (window.tailwind && typeof window.tailwind.refresh === "function") { window.tailwind.refresh(); }</script>
+  <script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="scrs-unified.css">
 </head>
 
-<body class="bg-darkbg text-gray-200 font-sans min-h-screen flex flex-col">
+<body class="scrs-legal bg-darkbg text-gray-200 font-sans min-h-screen flex flex-col">
+    <button id="themeToggleBtn" type="button" class="fixed right-4 top-4 z-50 rounded-full border border-slate-300 bg-white/90 px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm transition-colors hover:bg-white dark:border-slate-600 dark:bg-slate-900/90 dark:text-slate-100" aria-label="Toggle theme">
+        <span id="themeToggleIcon">dark_mode</span>
+    </button>
     <div class="flex-grow container mx-auto px-4 py-12 max-w-4xl">
         <div class="mb-8">
             <a href="landing.html" class="text-primary hover:underline font-semibold">Back to Landing</a>
@@ -37,7 +45,7 @@
             <div class="space-y-6 text-gray-300">
                 <section>
                     <h2 class="text-2xl font-semibold text-white mb-3">1. Introduction</h2>
-                    <p>Welcome to SCRS. We respect your privacy and are committed to protecting your personal data.
+                    <p>Welcome to Civixa. We respect your privacy and are committed to protecting your personal data.
                         This privacy policy will inform you as to how we look after your personal data when you visit
                         our website (regardless of where you visit it from) and tell you about your privacy rights and
                         how the law protects you.</p>
@@ -76,8 +84,17 @@
     </div>
 
     <footer class="border-t border-gray-700 py-6 text-center text-gray-500 text-sm">
-        <p>&copy; 2026 SCRS. All rights reserved.</p>
+        <p>&copy; 2026 Civixa. All rights reserved.</p>
     </footer>
+    <script src="theme-toggle.js"></script>
 </body>
 
 </html>
+
+
+
+
+
+
+
+

@@ -1,12 +1,24 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="icon" type="image/png" href="../assests/Civixa_logo_new.png">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Complaint Details - SCRS Admin</title>
+  <title>Complaint Details - Civixa Admin</title>
+  <script>
+    window.tailwind = window.tailwind || {};
+        window.tailwind.config = {
+      darkMode: 'class'
+    };
+  </script>
+  <script>if (window.tailwind && typeof window.tailwind.refresh === "function") { window.tailwind.refresh(); }</script>
   <script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="scrs-unified.css">
 </head>
-<body class="bg-slate-900 text-gray-200 min-h-screen">
+<body class="scrs-shell bg-slate-900 text-gray-200 min-h-screen">
+  <button id="themeToggleBtn" type="button" class="fixed right-4 top-4 z-50 rounded-full border border-slate-300 bg-white/90 px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm transition-colors hover:bg-white dark:border-slate-600 dark:bg-slate-900/90 dark:text-slate-100" aria-label="Toggle theme">
+    <span id="themeToggleIcon">dark_mode</span>
+  </button>
   <main class="max-w-5xl mx-auto px-4 py-8">
     <div class="flex items-center justify-between mb-6">
       <h1 class="text-2xl font-bold text-white">Complaint Details</h1>
@@ -175,5 +187,14 @@
 
     loadComplaintDetail();
   </script>
+  <script src="theme-toggle.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+

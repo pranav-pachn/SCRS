@@ -1,38 +1,50 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
+  <link rel="icon" type="image/png" href="../assests/Civixa_logo_new.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Complaint Details - Admin Operations - SCRS</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>Complaint Details - Admin Operations - Civixa</title>
+    <script>
+        window.tailwind = window.tailwind || {};
+        window.tailwind.config = {
+            darkMode: 'class'
+        };
+    </script>
+  <script>if (window.tailwind && typeof window.tailwind.refresh === "function") { window.tailwind.refresh(); }</script>
+  <script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="scrs-unified.css">
 </head>
 
-<body class="bg-slate-900 text-gray-300 min-h-screen">
+<body class="scrs-shell bg-slate-900 text-gray-300 min-h-screen">
     <div id="notificationContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
+    <button id="themeToggleBtn" type="button" class="fixed right-4 top-16 z-50 rounded-full border border-slate-300 bg-white/90 px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm transition-colors hover:bg-white dark:border-slate-600 dark:bg-slate-900/90 dark:text-slate-100" aria-label="Toggle theme">
+        <span id="themeToggleIcon">dark_mode</span>
+    </button>
 
     <!-- Sidebar Navigation -->
     <aside class="w-64 bg-slate-800 border-r border-slate-700 p-6 hidden md:flex flex-col fixed h-screen">
         <div class="mb-8">
             <div class="flex items-center gap-3">
-                <img src="../assests/Civixa_logo_new.png" alt="SCRS Logo" class="h-10 w-auto object-contain block">
-                <h2 class="text-2xl font-bold leading-none text-white">SCRS</h2>
+                <img src="../assests/Civixa_logo_new.png" alt="Civixa Logo" class="h-10 w-auto object-contain block">
+                <h2 class="text-2xl font-bold leading-none text-white">Civixa</h2>
             </div>
-            <p class="text-xs text-gray-400 mt-2">Admin Panel</p>
+            <p class="text-xs text-gray-400 mt-2">Civixa</p>
         </div>
         <nav class="space-y-2 flex-1">
             <a href="dashboard-admin.html"
-                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">📊
+                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">
                 Dashboard</a>
             <a href="complaint-details-admin.html"
-                class="block px-4 py-2 rounded-lg bg-slate-800 text-indigo-400 font-medium hover:bg-slate-800 transition duration-300">📋
+                class="block px-4 py-2 rounded-lg bg-slate-800 text-indigo-400 font-medium hover:bg-slate-800 transition duration-300">
                 Assigned Complaints</a>
             <a href="admin-analytics.html"
-                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">📈
+                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">
                 Analytics</a>
             <a href="admin-profile.html"
-                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">👤
+                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">
                 Profile & Settings</a>
             <a href="support.html"
                 class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">Support</a>
@@ -77,7 +89,7 @@
             <div class="flex items-start space-x-3">
                 <i class="fas fa-exclamation-triangle text-yellow-500 mt-1"></i>
                 <div class="flex-1">
-                    <h3 class="text-yellow-400 font-semibold mb-1">⚠ Similar Complaints Found</h3>
+                    <h3 class="text-yellow-400 font-semibold mb-1">âš  Similar Complaints Found</h3>
                     <p class="text-yellow-300 text-sm" id="duplicateMessage">4 similar complaints reported in same location</p>
                     <button id="viewDuplicatesBtn" class="mt-2 text-yellow-400 hover:text-yellow-300 text-sm underline">
                         View similar complaints
@@ -137,7 +149,7 @@
                     <div class="mt-4">
                         <label class="block text-sm font-medium text-gray-400 mb-2">Evidence Image</label>
                         <div class="bg-slate-900/50 rounded-lg p-4">
-                            <img id="evidenceImage" src="https://via.placeholder.com/600x400/475569/ffffff?text=Evidence+Image" 
+                               <img id="evidenceImage" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%23334155'/%3E%3Ctext x='300' y='205' font-family='Arial' font-size='24' fill='%23e2e8f0' text-anchor='middle'%3EEvidence Image%3C/text%3E%3C/svg%3E" 
                                  alt="Complaint Evidence" class="w-full rounded-lg">
                         </div>
                     </div>
@@ -180,18 +192,13 @@
 
                 <!-- Internal Remarks -->
                 <div class="bg-slate-800 rounded-lg border border-slate-700 p-6">
-                    <h2 class="text-xl font-bold text-white mb-4">Internal Remarks</h2>
-                    
-                    <div class="space-y-3 mb-4" id="remarksList">
-                        <div class="bg-slate-900/50 p-3 rounded-lg">
-                            <div class="flex items-center justify-between mb-1">
-                                <span class="text-sm font-medium text-indigo-400">Admin User</span>
-                                <span class="text-xs text-gray-500">2024-03-10 15:45</span>
-                            </div>
-                            <p class="text-white text-sm">Initial inspection completed. Road repair team notified.</p>
-                        </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-bold text-white">Internal Remarks</h2>
+                        <button id="viewRemarksBtn" class="px-3 py-1 bg-indigo-600 text-white rounded text-sm hover:bg-indigo-700 transition">
+                            <i class="fas fa-eye mr-1"></i>View
+                        </button>
                     </div>
-
+                    
                     <div class="flex space-x-2">
                         <textarea id="newRemark" 
                                   placeholder="Add internal remark (not visible to citizens)..." 
@@ -294,43 +301,173 @@
         </div>
     </main>
 
+    <!-- Remarks Modal -->
+    <div id="remarksModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div class="bg-slate-800 rounded-xl border border-slate-700 shadow-2xl max-w-2xl w-full">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-slate-700 flex items-center justify-between">
+                <h3 class="text-xl font-bold text-white">
+                    <i class="fas fa-comments mr-2 text-indigo-400"></i>Internal Remarks
+                </h3>
+                <button id="closeRemarksModalBtn" class="text-gray-400 hover:text-white transition text-xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="px-6 py-5 max-h-[60vh] overflow-y-auto">
+                <div id="remarksModalList" class="space-y-3">
+                    <p class="text-gray-400 text-sm text-center py-8">No remarks yet</p>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-6 py-4 border-t border-slate-700 flex justify-end">
+                <button id="closeRemarksBtn" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-semibold transition">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="auth.js"></script>
     <script>
+        const ADMIN_API_BASES = ['http://localhost:3000/api/admin', 'http://localhost:3000/admin'];
+        let resolvedAdminApiBase = null;
+
+        async function resolveAdminApiBase() {
+            if (resolvedAdminApiBase) return resolvedAdminApiBase;
+
+            for (const base of ADMIN_API_BASES) {
+                try {
+                    const probeResponse = await fetch(`${base}/complaints?page=1&perPage=1`, {
+                        headers: getAuthHeaders()
+                    });
+                    if (probeResponse.status !== 404) {
+                        resolvedAdminApiBase = base;
+                        return resolvedAdminApiBase;
+                    }
+                } catch (_error) {
+                    // Try next base.
+                }
+            }
+
+            resolvedAdminApiBase = ADMIN_API_BASES[0];
+            return resolvedAdminApiBase;
+        }
+
+        async function adminApiRequest(path, options = {}) {
+            const base = await resolveAdminApiBase();
+            return fetch(`${base}${path}`, options);
+        }
+
+        async function resolveInitialComplaintId() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const idFromUrl = urlParams.get('id');
+            if (idFromUrl) return idFromUrl;
+
+            const response = await adminApiRequest('/complaints?page=1&perPage=1', {
+                headers: getAuthHeaders()
+            });
+            const data = await parseJsonSafe(response);
+            const firstComplaint = Array.isArray(data.complaints) ? data.complaints[0] : null;
+
+            if (!response.ok || !data.success || !firstComplaint) {
+                return null;
+            }
+
+            return String(firstComplaint.id);
+        }
+
+        function fileToDataUrl(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = () => reject(new Error('Failed to read file as data URL'));
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function parseJsonSafe(response) {
+            const text = await response.text();
+            try {
+                return JSON.parse(text);
+            } catch (_error) {
+                return {
+                    success: false,
+                    status: response.status,
+                    message: text && text.trim() ? text.trim() : `Non-JSON response (status ${response.status})`
+                };
+            }
+        }
+
+        function buildEvidenceImageUrl(complaint) {
+            const attachmentUrl = Array.isArray(complaint.attachments) && complaint.attachments[0] && complaint.attachments[0].url
+                ? complaint.attachments[0].url
+                : null;
+            const candidate = complaint.image_url || attachmentUrl;
+
+            if (!candidate || typeof candidate !== 'string') return null;
+
+            const normalized = candidate.trim();
+            if (!normalized) return null;
+            if (normalized.startsWith('data:image/')) return normalized;
+            if (/^https?:\/\//i.test(normalized)) return normalized;
+            if (normalized.startsWith('/uploads/')) return `http://localhost:3000${normalized}`;
+            if (normalized.startsWith('uploads/')) return `http://localhost:3000/${normalized}`;
+
+            const compactBase64 = normalized.replace(/\s+/g, '');
+            if (/^[A-Za-z0-9+/=]+$/.test(compactBase64)) {
+                return `data:image/jpeg;base64,${compactBase64}`;
+            }
+
+            return null;
+        }
+
         // Initialize page
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             // Check authentication
             const auth = requireAuth(['admin']);
             if (!auth) return;
 
-            // Get complaint ID from URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const complaintId = urlParams.get('id') || '1289';
-            
-            // Load complaint data
-            loadComplaintDetails(complaintId);
-            
-            // Setup event listeners
-            setupEventListeners();
+            try {
+                const complaintId = await resolveInitialComplaintId();
+                setupEventListeners();
+
+                if (!complaintId) {
+                    showNotification('No assigned complaints found for this admin.', 'error');
+                    return;
+                }
+
+                const nextUrl = `complaint-details-admin.html?id=${encodeURIComponent(complaintId)}`;
+                if (window.location.search !== `?id=${encodeURIComponent(complaintId)}`) {
+                    window.history.replaceState(null, '', nextUrl);
+                }
+
+                loadComplaintDetails(complaintId);
+            } catch (error) {
+                console.error('Error initializing complaint details page:', error);
+                showNotification('Failed to initialize complaint details.', 'error');
+            }
         });
 
-        function loadComplaintDetails(complaintId) {
-            // Load complaint data from backend
-            fetch(`http://localhost:3000/api/admin/complaints/${complaintId}`, {
-                headers: getAuthHeaders()
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
+        async function loadComplaintDetails(complaintId) {
+            try {
+                const response = await adminApiRequest(`/complaints/${complaintId}`, {
+                    headers: getAuthHeaders()
+                });
+                const data = await parseJsonSafe(response);
+
+                if (response.ok && data.success) {
                     populateComplaintData(data.complaint);
                     checkForDuplicates(data.complaint);
                 } else {
-                    showNotification('Failed to load complaint details', 'error');
+                    showNotification(data.message || 'Failed to load complaint details', 'error');
                 }
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error loading complaint:', error);
-                showNotification('Connection error', 'error');
-            });
+                showNotification('Connection error while loading complaint details', 'error');
+            }
         }
 
         function populateComplaintData(complaint) {
@@ -350,8 +487,9 @@
             priorityBadge.className = `px-3 py-1 text-sm font-semibold rounded-full ${getPriorityClass(complaint.priority)}`;
             
             // Load evidence image if available
-            if (complaint.attachments && complaint.attachments.length > 0) {
-                document.getElementById('evidenceImage').src = complaint.attachments[0].url;
+            const evidenceUrl = buildEvidenceImageUrl(complaint);
+            if (evidenceUrl) {
+                document.getElementById('evidenceImage').src = evidenceUrl;
             }
             
             // Load AI analysis if available
@@ -390,19 +528,12 @@
         }
 
         function checkForDuplicates(complaint) {
-            // Check for similar complaints
-            fetch(`http://localhost:3000/api/admin/complaints/${complaint.id}/duplicates`, {
-                headers: getAuthHeaders()
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success && data.duplicates.length > 0) {
-                    document.getElementById('duplicateAlert').classList.remove('hidden');
-                    document.getElementById('duplicateMessage').textContent = 
-                        `${data.duplicates.length} similar complaint(s) found in same location`;
-                }
-            })
-            .catch(error => console.error('Error checking duplicates:', error));
+            const similarCount = Number(complaint && complaint.similar_count) || 0;
+            if (similarCount > 0) {
+                document.getElementById('duplicateAlert').classList.remove('hidden');
+                document.getElementById('duplicateMessage').textContent =
+                    `${similarCount} similar complaint(s) found in same location`;
+            }
         }
 
         function setupEventListeners() {
@@ -422,6 +553,18 @@
             // Mark resolved
             document.getElementById('markResolvedBtn').addEventListener('click', markResolved);
             
+            // View remarks modal
+            document.getElementById('viewRemarksBtn').addEventListener('click', openRemarksModal);
+            document.getElementById('closeRemarksModalBtn').addEventListener('click', closeRemarksModal);
+            document.getElementById('closeRemarksBtn').addEventListener('click', closeRemarksModal);
+            document.getElementById('remarksModal').addEventListener('click', function(e) {
+                if (e.target === this) closeRemarksModal();
+            });
+            
+            // Export and Print buttons
+            document.getElementById('exportBtn').addEventListener('click', exportComplaint);
+            document.getElementById('printBtn').addEventListener('click', printComplaint);
+            
             // Enter key for remark
             document.getElementById('newRemark').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter' && !e.shiftKey) {
@@ -436,12 +579,12 @@
             const urlParams = new URLSearchParams(window.location.search);
             const complaintId = urlParams.get('id');
             
-            fetch(`http://localhost:3000/api/admin/complaints/${complaintId}/status`, {
+            adminApiRequest(`/complaints/${complaintId}/status`, {
                 method: 'PUT',
                 headers: getAuthHeaders(),
                 body: JSON.stringify({ status: newStatus })
             })
-            .then(response => response.json())
+            .then(parseJsonSafe)
             .then(data => {
                 if (data.success) {
                     showNotification('Status updated successfully', 'success');
@@ -464,12 +607,12 @@
             const urlParams = new URLSearchParams(window.location.search);
             const complaintId = urlParams.get('id');
             
-            fetch(`http://localhost:3000/api/admin/complaints/${complaintId}/remarks`, {
+            adminApiRequest(`/complaints/${complaintId}/remark`, {
                 method: 'POST',
-                headers: getAuthHeaders(),
-                body: JSON.stringify({ remark: remarkText })
+                headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
+                body: JSON.stringify({ remark_text: remarkText })
             })
-            .then(response => response.json())
+            .then(parseJsonSafe)
             .then(data => {
                 if (data.success) {
                     document.getElementById('newRemark').value = '';
@@ -485,34 +628,45 @@
             });
         }
 
-        function handleProofUpload(event) {
+        async function handleProofUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
             
             const urlParams = new URLSearchParams(window.location.search);
             const complaintId = urlParams.get('id');
-            
-            const formData = new FormData();
-            formData.append('proof', file);
-            
-            fetch(`http://localhost:3000/api/admin/complaints/${complaintId}/proof`, {
-                method: 'POST',
-                headers: getAuthHeaders(),
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    showResolutionProof(data.proof_url);
+
+            try {
+                const formData = new FormData();
+                formData.append('proof', file);
+
+                let response = await adminApiRequest(`/complaints/${complaintId}/proof`, {
+                    method: 'POST',
+                    headers: getAuthHeaders(),
+                    body: formData
+                });
+                let data = await parseJsonSafe(response);
+
+                if (response.status === 404 || !response.ok || !data.success) {
+                    const proofDataUrl = await fileToDataUrl(file);
+                    response = await adminApiRequest(`/complaints/${complaintId}/resolve-proof`, {
+                        method: 'POST',
+                        headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
+                        body: JSON.stringify({ proof_url: proofDataUrl })
+                    });
+                    data = await parseJsonSafe(response);
+                }
+
+                if (response.ok && data.success) {
+                    const proofUrl = data.proof_url || (data.complaint && data.complaint.proof_url);
+                    showResolutionProof(proofUrl);
                     showNotification('Proof uploaded successfully', 'success');
                 } else {
-                    showNotification('Failed to upload proof', 'error');
+                    showNotification(data.message || 'Failed to upload proof', 'error');
                 }
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error uploading proof:', error);
                 showNotification('Connection error', 'error');
-            });
+            }
         }
 
         function showResolutionProof(proofUrl) {
@@ -522,99 +676,430 @@
             document.getElementById('markResolvedBtn').disabled = false;
         }
 
-        function removeProof() {
+        async function removeProof() {
             const urlParams = new URLSearchParams(window.location.search);
             const complaintId = urlParams.get('id');
-            
-            fetch(`http://localhost:3000/api/admin/complaints/${complaintId}/proof`, {
-                method: 'DELETE',
-                headers: getAuthHeaders()
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
+
+            try {
+                let response = await adminApiRequest(`/complaints/${complaintId}/proof`, {
+                    method: 'DELETE',
+                    headers: getAuthHeaders()
+                });
+                let data = await parseJsonSafe(response);
+
+                if (response.status === 404 || !response.ok || !data.success) {
+                    response = await adminApiRequest(`/complaints/${complaintId}/resolve-proof`, {
+                        method: 'DELETE',
+                        headers: getAuthHeaders()
+                    });
+                    data = await parseJsonSafe(response);
+                }
+
+                if ((response.ok && data.success) || response.status === 404) {
                     document.getElementById('noProof').classList.remove('hidden');
                     document.getElementById('proofPreview').classList.add('hidden');
                     document.getElementById('markResolvedBtn').disabled = true;
                     showNotification('Proof removed successfully', 'success');
                 } else {
-                    showNotification('Failed to remove proof', 'error');
+                    showNotification(data.message || 'Failed to remove proof', 'error');
                 }
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error removing proof:', error);
                 showNotification('Connection error', 'error');
-            });
+            }
         }
 
-        function markResolved() {
+        async function markResolved() {
             if (!confirm('Are you sure you want to mark this complaint as resolved? This action cannot be undone.')) {
                 return;
             }
             
             const urlParams = new URLSearchParams(window.location.search);
             const complaintId = urlParams.get('id');
-            
-            fetch(`http://localhost:3000/api/admin/complaints/${complaintId}/resolve`, {
-                method: 'PUT',
-                headers: getAuthHeaders()
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
+
+            const updateStatusRequest = async (status) => {
+                const response = await adminApiRequest(`/complaints/${complaintId}/status`, {
+                    method: 'PUT',
+                    headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
+                    body: JSON.stringify({ status })
+                });
+                const data = await parseJsonSafe(response);
+                return { response, data };
+            };
+
+            try {
+                const currentStatus = document.getElementById('statusUpdate').value;
+
+                if (currentStatus === 'Submitted') {
+                    const inProgressResult = await updateStatusRequest('In Progress');
+                    if (!inProgressResult.response.ok || !inProgressResult.data.success) {
+                        showNotification(inProgressResult.data.message || 'Failed to move complaint to In Progress', 'error');
+                        return;
+                    }
+                    document.getElementById('statusUpdate').value = 'In Progress';
+                    document.getElementById('statusSelect').value = 'In Progress';
+                }
+
+                const resolvedResult = await updateStatusRequest('Resolved');
+                if (resolvedResult.response.ok && resolvedResult.data.success) {
                     showNotification('Complaint marked as resolved successfully', 'success');
                     setTimeout(() => {
                         window.location.href = 'dashboard-admin.html';
                     }, 2000);
-                } else {
-                    showNotification('Failed to mark as resolved', 'error');
+                    return;
                 }
-            })
-            .catch(error => {
+
+                showNotification(resolvedResult.data.message || 'Failed to mark as resolved', 'error');
+            } catch (error) {
                 console.error('Error marking resolved:', error);
                 showNotification('Connection error', 'error');
-            });
+            }
         }
 
         function loadRemarks(complaintId) {
-            fetch(`http://localhost:3000/api/admin/complaints/${complaintId}/remarks`, {
+            adminApiRequest(`/complaints/${complaintId}/remarks`, {
                 headers: getAuthHeaders()
             })
-            .then(response => response.json())
+            .then(parseJsonSafe)
             .then(data => {
                 if (data.success) {
-                    const remarksList = document.getElementById('remarksList');
-                    remarksList.innerHTML = data.remarks.map(remark => `
-                        <div class="bg-slate-900/50 p-3 rounded-lg">
-                            <div class="flex items-center justify-between mb-1">
-                                <span class="text-sm font-medium text-indigo-400">${remark.admin_name}</span>
-                                <span class="text-xs text-gray-500">${new Date(remark.created_at).toLocaleString()}</span>
-                            </div>
-                            <p class="text-white text-sm">${remark.remark}</p>
-                        </div>
-                    `).join('');
+                    // Store remarks for modal view
+                    window.currentRemarks = data.remarks || [];
+                    // Update modal list
+                    updateRemarksModal();
                 }
             })
             .catch(error => console.error('Error loading remarks:', error));
         }
 
+        function updateRemarksModal() {
+            const modalList = document.getElementById('remarksModalList');
+            const remarks = window.currentRemarks || [];
+
+            if (remarks.length === 0) {
+                modalList.innerHTML = '<p class="text-gray-400 text-sm text-center py-8">No remarks yet</p>';
+                return;
+            }
+
+            modalList.innerHTML = remarks.map(remark => `
+                <div class="bg-slate-900/50 border border-slate-700 p-4 rounded-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-semibold text-indigo-400">${remark.admin_name || 'Admin'}</span>
+                        <span class="text-xs text-gray-500">${new Date(remark.created_at).toLocaleString()}</span>
+                    </div>
+                    <p class="text-white text-sm leading-relaxed">${remark.remark_text || remark.remark || ''}</p>
+                </div>
+            `).join('');
+        }
+
+        function openRemarksModal() {
+            updateRemarksModal();
+            document.getElementById('remarksModal').classList.remove('hidden');
+        }
+
+        function closeRemarksModal() {
+            document.getElementById('remarksModal').classList.add('hidden');
+        }
+
+        function exportComplaint() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const complaintId = urlParams.get('id');
+            
+            if (!complaintId) {
+                showNotification('No complaint loaded', 'error');
+                return;
+            }
+
+            try {
+                // Gather all complaint data
+                const complaintIdDisplay = document.getElementById('complaintId').textContent.replace('#', '');
+                const category = document.getElementById('category').textContent;
+                const location = document.getElementById('location').textContent;
+                const priority = document.getElementById('priorityBadge').textContent;
+                const status = document.getElementById('statusSelect').value;
+                const submittedDate = document.getElementById('submittedDate').textContent;
+                const description = document.getElementById('description').textContent;
+                const aiSummary = document.getElementById('aiSummary').textContent;
+                const remarks = window.currentRemarks || [];
+
+                // Generate CSV content
+                let csv = 'Complaint Export Report\n';
+                csv += `Export Date: ${new Date().toLocaleString()}\n\n`;
+                csv += 'COMPLAINT DETAILS\n';
+                csv += '================\n';
+                csv += `Complaint ID,${complaintIdDisplay}\n`;
+                csv += `Category,${category}\n`;
+                csv += `Location,${location}\n`;
+                csv += `Priority,${priority}\n`;
+                csv += `Status,${status}\n`;
+                csv += `Submitted Date,${submittedDate}\n`;
+                csv += `\nDESCRIPTION\n`;
+                csv += `"${description.replace(/"/g, '""')}"\n`;
+                csv += `\nAI ANALYSIS\n`;
+                csv += `"${aiSummary.replace(/"/g, '""')}"\n`;
+                
+                if (remarks.length > 0) {
+                    csv += `\nINTERNAL REMARKS\n`;
+                    csv += `Count,${remarks.length}\n`;
+                    remarks.forEach((remark, idx) => {
+                        csv += `\n"${idx + 1}",Admin,Date,Text\n`;
+                        csv += `"${idx + 1}","${remark.admin_name || 'Admin'}","${new Date(remark.created_at).toLocaleString()}","${(remark.remark_text || remark.remark || '').replace(/"/g, '""')}"\n`;
+                    });
+                }
+
+                // Create and download file
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                const filename = `complaint-${complaintIdDisplay}-${new Date().toISOString().split('T')[0]}.csv`;
+                
+                link.setAttribute('href', url);
+                link.setAttribute('download', filename);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                showNotification('Complaint exported successfully', 'success');
+            } catch (error) {
+                console.error('Error exporting complaint:', error);
+                showNotification('Failed to export complaint', 'error');
+            }
+        }
+
+        function printComplaint() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const complaintId = urlParams.get('id');
+            
+            if (!complaintId) {
+                showNotification('No complaint loaded', 'error');
+                return;
+            }
+
+            try {
+                // Gather complaint data
+                const complaintIdDisplay = document.getElementById('complaintId').textContent.replace('#', '');
+                const category = document.getElementById('category').textContent;
+                const location = document.getElementById('location').textContent;
+                const priority = document.getElementById('priorityBadge').textContent;
+                const status = document.getElementById('statusSelect').value;
+                const submittedDate = document.getElementById('submittedDate').textContent;
+                const description = document.getElementById('description').textContent;
+                const aiSummary = document.getElementById('aiSummary').textContent;
+                const remarks = window.currentRemarks || [];
+
+                // Create print window content
+                let printContent = `
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Complaint #${complaintIdDisplay}</title>
+                        <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                color: #333;
+                                line-height: 1.6;
+                                padding: 20px;
+                                background: white;
+                            }
+                            .header {
+                                text-align: center;
+                                margin-bottom: 30px;
+                                border-bottom: 2px solid #333;
+                                padding-bottom: 10px;
+                            }
+                            h1 {
+                                margin: 0;
+                                font-size: 24px;
+                            }
+                            .print-date {
+                                font-size: 12px;
+                                color: #666;
+                                margin-top: 5px;
+                            }
+                            .section {
+                                margin-bottom: 25px;
+                                page-break-inside: avoid;
+                            }
+                            .section-title {
+                                font-size: 14px;
+                                font-weight: bold;
+                                color: #333;
+                                border-bottom: 1px solid #999;
+                                padding-bottom: 5px;
+                                margin-bottom: 10px;
+                            }
+                            .field {
+                                margin-bottom: 8px;
+                                display: flex;
+                            }
+                            .field-label {
+                                font-weight: bold;
+                                width: 150px;
+                                color: #666;
+                            }
+                            .field-value {
+                                flex: 1;
+                                color: #333;
+                            }
+                            .badge {
+                                display: inline-block;
+                                padding: 3px 8px;
+                                border-radius: 4px;
+                                font-size: 12px;
+                                font-weight: bold;
+                            }
+                            .badge-critical { background: #fee2e2; color: #991b1b; }
+                            .badge-high { background: #fef3c7; color: #92400e; }
+                            .badge-medium { background: #dbeafe; color: #1e40af; }
+                            .badge-low { background: #dcfce7; color: #166534; }
+                            .badge-resolved { background: #dcfce7; color: #166534; }
+                            .badge-submitted { background: #dbeafe; color: #1e40af; }
+                            .badge-in-progress { background: #fef3c7; color: #92400e; }
+                            .description-text {
+                                background: #f5f5f5;
+                                padding: 10px;
+                                border-left: 3px solid #999;
+                                margin: 10px 0;
+                                white-space: pre-wrap;
+                                word-wrap: break-word;
+                            }
+                            .remark {
+                                background: #f9f9f9;
+                                padding: 10px;
+                                margin-bottom: 10px;
+                                border-left: 3px solid #0066cc;
+                                border-radius: 2px;
+                            }
+                            .remark-meta {
+                                font-size: 11px;
+                                color: #666;
+                                margin-bottom: 5px;
+                                font-weight: bold;
+                            }
+                            .remark-text {
+                                font-size: 12px;
+                                color: #333;
+                            }
+                            @media print {
+                                body { margin: 0; padding: 10px; }
+                                .section { page-break-inside: avoid; }
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="header">
+                            <h1>Complaint Report #${complaintIdDisplay}</h1>
+                            <div class="print-date">Printed on ${new Date().toLocaleString()}</div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Complaint Details</div>
+                            <div class="field">
+                                <div class="field-label">Complaint ID:</div>
+                                <div class="field-value">#${complaintIdDisplay}</div>
+                            </div>
+                            <div class="field">
+                                <div class="field-label">Category:</div>
+                                <div class="field-value">${category}</div>
+                            </div>
+                            <div class="field">
+                                <div class="field-label">Location:</div>
+                                <div class="field-value">${location}</div>
+                            </div>
+                            <div class="field">
+                                <div class="field-label">Priority:</div>
+                                <div class="field-value">
+                                    <span class="badge badge-${priority.toLowerCase()}">${priority}</span>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="field-label">Status:</div>
+                                <div class="field-value">
+                                    <span class="badge badge-${status.toLowerCase()}">${status}</span>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="field-label">Submitted Date:</div>
+                                <div class="field-value">${submittedDate}</div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Description</div>
+                            <div class="description-text">${escapeHtml(description)}</div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">AI Analysis</div>
+                            <div class="description-text">${escapeHtml(aiSummary)}</div>
+                        </div>
+
+                        ${remarks.length > 0 ? `
+                        <div class="section">
+                            <div class="section-title">Internal Remarks (${remarks.length})</div>
+                            ${remarks.map(remark => `
+                                <div class="remark">
+                                    <div class="remark-meta">${remark.admin_name || 'Admin'} - ${new Date(remark.created_at).toLocaleString()}</div>
+                                    <div class="remark-text">${escapeHtml(remark.remark_text || remark.remark)}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        ` : ''}
+                    </body>
+                    </html>
+                `;
+
+                // Open print window
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(printContent);
+                printWindow.document.close();
+                printWindow.focus();
+                setTimeout(() => {
+                    printWindow.print();
+                }, 250);
+            } catch (error) {
+                console.error('Error printing complaint:', error);
+                showNotification('Failed to print complaint', 'error');
+            }
+        }
+
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
         function loadTimeline(complaintId) {
-            fetch(`http://localhost:3000/api/admin/complaints/${complaintId}/timeline`, {
+            adminApiRequest(`/complaints/${complaintId}/history`, {
                 headers: getAuthHeaders()
             })
-            .then(response => response.json())
+            .then(parseJsonSafe)
             .then(data => {
                 if (data.success) {
                     const timeline = document.getElementById('timeline');
-                    timeline.innerHTML = data.timeline.map(event => `
+                    const history = Array.isArray(data.history) ? data.history : [];
+                    timeline.innerHTML = history.map(event => {
+                        const note = event.note || (event.new_status ? `Status changed to ${event.new_status}` : 'Updated complaint');
+                        const eventType = (event.new_status || '').toLowerCase() === 'resolved'
+                            ? 'resolved'
+                            : (event.new_status ? 'status_changed' : 'created');
+                        const eventTime = event.created_at || event.timestamp;
+                        return `
                         <div class="flex items-start space-x-3">
-                            <div class="w-2 h-2 ${getEventColor(event.event_type)} rounded-full mt-2"></div>
+                            <div class="w-2 h-2 ${getEventColor(eventType)} rounded-full mt-2"></div>
                             <div class="flex-1">
-                                <p class="text-white text-sm">${event.description}</p>
-                                <p class="text-gray-500 text-xs">${new Date(event.timestamp).toLocaleString()}</p>
+                                <p class="text-white text-sm">${note}</p>
+                                <p class="text-gray-500 text-xs">${new Date(eventTime).toLocaleString()}</p>
                             </div>
                         </div>
-                    `).join('');
+                    `;
+                    }).join('');
                 }
             })
             .catch(error => console.error('Error loading timeline:', error));
@@ -646,6 +1131,15 @@
             window.location.href = 'login.html';
         }
     </script>
+    <script src="theme-toggle.js"></script>
 </body>
 
 </html>
+
+
+
+
+
+
+
+

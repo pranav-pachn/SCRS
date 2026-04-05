@@ -1,0 +1,297 @@
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --scrs-bg: #f8fbff;
+  --scrs-bg-soft: #eef4fb;
+  --scrs-surface: #ffffff;
+  --scrs-surface-soft: #f3f6fb;
+  --scrs-border: #d8e2ef;
+  --scrs-text: #0f172a;
+  --scrs-muted: #52606d;
+  --scrs-primary: #003b72;
+  --scrs-primary-strong: #00529b;
+  --scrs-accent: #0ea5e9;
+  --scrs-shadow: 0 24px 60px rgba(15, 23, 42, 0.1);
+}
+
+body.scrs-shell,
+body.scrs-legal {
+  font-family: 'Inter', sans-serif !important;
+  color: var(--scrs-text) !important;
+  background:
+    radial-gradient(circle at top left, rgba(165, 199, 255, 0.26), transparent 28%),
+    radial-gradient(circle at top right, rgba(14, 165, 233, 0.1), transparent 22%),
+    linear-gradient(180deg, #f8fbff 0%, #f8f9fa 60%, #eef4fb 100%) !important;
+}
+
+.scrs-shell h1,
+.scrs-shell h2,
+.scrs-shell h3,
+.scrs-shell h4,
+.scrs-shell h5,
+.scrs-shell .headline-font,
+.scrs-shell .font-headline,
+.scrs-legal h1,
+.scrs-legal h2,
+.scrs-legal h3,
+.scrs-legal h4 {
+  font-family: 'Public Sans', sans-serif !important;
+}
+
+.scrs-shell .bg-slate-900,
+.scrs-shell .bg-darkbg,
+.scrs-shell .dark\:bg-slate-950,
+.scrs-shell [style*="background-color: #0f172a"] {
+  background-color: transparent !important;
+}
+
+.scrs-shell .bg-slate-800,
+.scrs-shell .bg-card,
+.scrs-shell .bg-slate-800\/50,
+.scrs-shell .bg-slate-900\/50,
+.scrs-shell .bg-slate-900\/40,
+.scrs-shell .dark\:bg-slate-900,
+.scrs-shell .dark\:bg-slate-800,
+.scrs-legal .bg-card,
+.scrs-legal .bg-slate-800 {
+  background: var(--scrs-surface) !important;
+  border-color: var(--scrs-border) !important;
+  box-shadow: var(--scrs-shadow) !important;
+}
+
+.scrs-shell .bg-slate-700,
+.scrs-shell .dark\:bg-slate-700,
+.scrs-shell .dark\:bg-slate-700\/50 {
+  background: var(--scrs-surface-soft) !important;
+  border-color: var(--scrs-border) !important;
+}
+
+.scrs-shell .border-slate-700,
+.scrs-shell .border-slate-600,
+.scrs-shell .border-gray-700,
+.scrs-shell .border-gray-600,
+.scrs-shell .dark\:border-slate-700,
+.scrs-shell .dark\:border-slate-800,
+.scrs-legal .border-gray-700 {
+  border-color: var(--scrs-border) !important;
+}
+
+.scrs-shell .text-gray-200,
+.scrs-shell .text-gray-300,
+.scrs-shell .text-white,
+.scrs-shell .dark\:text-white,
+.scrs-legal .text-gray-200,
+.scrs-legal .text-gray-300,
+.scrs-legal .text-white {
+  color: var(--scrs-text) !important;
+}
+
+.scrs-shell .text-gray-400,
+.scrs-shell .text-gray-500,
+.scrs-shell .text-slate-400,
+.scrs-shell .text-slate-500,
+.scrs-shell .text-on-surface-variant,
+.scrs-legal .text-gray-400,
+.scrs-legal .text-gray-500 {
+  color: var(--scrs-muted) !important;
+}
+
+.scrs-shell .text-indigo-400,
+.scrs-shell .text-primary,
+.scrs-shell .text-blue-600,
+.scrs-shell .text-blue-700,
+.scrs-shell .text-blue-900,
+.scrs-shell .dark\:text-blue-300,
+.scrs-legal .text-primary {
+  color: var(--scrs-primary) !important;
+}
+
+.scrs-shell .bg-indigo-600,
+.scrs-shell .bg-indigo-500,
+.scrs-shell .bg-primary,
+.scrs-shell .hero-gradient,
+.scrs-legal .text-primary.hover\:underline:hover {
+  background: linear-gradient(135deg, var(--scrs-primary) 0%, var(--scrs-primary-strong) 100%) !important;
+}
+
+.scrs-shell .bg-indigo-600,
+.scrs-shell .bg-indigo-500,
+.scrs-shell .bg-primary,
+.scrs-shell .hero-gradient,
+.scrs-shell .bg-red-500,
+.scrs-shell .bg-green-600,
+.scrs-shell .bg-red-600,
+.scrs-shell .bg-yellow-500 {
+  color: #fff !important;
+}
+
+.scrs-shell .bg-indigo-600\/20,
+.scrs-shell .bg-indigo-600\/10,
+.scrs-shell .bg-blue-50,
+.scrs-shell .bg-primary\/20 {
+  background: rgba(0, 82, 155, 0.08) !important;
+}
+
+.scrs-shell .hover\:bg-slate-700:hover,
+.scrs-shell .hover\:bg-slate-800:hover,
+.scrs-shell .hover\:bg-slate-600:hover,
+.scrs-shell .hover\:bg-slate-700\/80:hover,
+.scrs-shell .hover\:bg-slate-700\/50:hover,
+.scrs-shell .hover\:bg-slate-200\/50:hover {
+  background: var(--scrs-surface-soft) !important;
+}
+
+.scrs-shell input,
+.scrs-shell select,
+.scrs-shell textarea {
+  background: var(--scrs-surface-soft) !important;
+  border-color: var(--scrs-border) !important;
+  color: var(--scrs-text) !important;
+}
+
+.scrs-shell input::placeholder,
+.scrs-shell textarea::placeholder {
+  color: #7a8797 !important;
+}
+
+.scrs-shell input:focus,
+.scrs-shell select:focus,
+.scrs-shell textarea:focus {
+  outline: none !important;
+  border-color: var(--scrs-primary-strong) !important;
+  box-shadow: 0 0 0 2px rgba(0, 82, 155, 0.12) !important;
+}
+
+.scrs-shell aside,
+.scrs-shell header,
+.scrs-legal .bg-card {
+  backdrop-filter: blur(14px);
+}
+
+.scrs-shell aside h2,
+.scrs-shell aside h1,
+.scrs-shell .text-2xl.font-bold,
+.scrs-shell .text-2xl.font-black,
+.scrs-legal h1 {
+  letter-spacing: -0.02em;
+}
+
+.scrs-shell .rounded-lg,
+.scrs-shell .rounded-xl,
+.scrs-shell .rounded-2xl,
+.scrs-legal .rounded-xl {
+  border-radius: 1rem !important;
+}
+
+.scrs-shell .shadow-xl,
+.scrs-shell .shadow-lg,
+.scrs-shell .shadow-sm,
+.scrs-shell .shadow,
+.scrs-legal .shadow-2xl {
+  box-shadow: var(--scrs-shadow) !important;
+}
+
+.scrs-legal .container {
+  max-width: 76rem !important;
+}
+
+.scrs-legal .bg-card {
+  padding: 2.5rem !important;
+}
+
+.scrs-legal a {
+  color: var(--scrs-primary);
+}
+
+.dark body.scrs-shell,
+[data-theme="dark"] body.scrs-shell,
+.dark body.scrs-legal,
+[data-theme="dark"] body.scrs-legal {
+  color: #e2e8f0 !important;
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.18), transparent 28%),
+    radial-gradient(circle at top right, rgba(14, 165, 233, 0.1), transparent 24%),
+    linear-gradient(180deg, #020617 0%, #0f172a 58%, #0b1224 100%) !important;
+}
+
+.dark .scrs-shell .bg-slate-900,
+.dark .scrs-shell .bg-darkbg,
+.dark .scrs-shell .bg-slate-800,
+.dark .scrs-shell .bg-card,
+.dark .scrs-shell .bg-slate-800\/50,
+.dark .scrs-shell .bg-slate-900\/50,
+.dark .scrs-shell .bg-slate-900\/40,
+[data-theme="dark"] .scrs-shell .bg-slate-900,
+[data-theme="dark"] .scrs-shell .bg-darkbg,
+[data-theme="dark"] .scrs-shell .bg-slate-800,
+[data-theme="dark"] .scrs-shell .bg-card,
+[data-theme="dark"] .scrs-shell .bg-slate-800\/50,
+[data-theme="dark"] .scrs-shell .bg-slate-900\/50,
+[data-theme="dark"] .scrs-shell .bg-slate-900\/40,
+.dark .scrs-legal .bg-card,
+[data-theme="dark"] .scrs-legal .bg-card {
+  background: rgba(15, 23, 42, 0.92) !important;
+  border-color: #334155 !important;
+  box-shadow: 0 24px 60px rgba(2, 6, 23, 0.48) !important;
+}
+
+.dark .scrs-shell .bg-slate-700,
+.dark .scrs-shell .dark\:bg-slate-700,
+.dark .scrs-shell .dark\:bg-slate-700\/50,
+[data-theme="dark"] .scrs-shell .bg-slate-700,
+[data-theme="dark"] .scrs-shell .dark\:bg-slate-700,
+[data-theme="dark"] .scrs-shell .dark\:bg-slate-700\/50 {
+  background: rgba(30, 41, 59, 0.95) !important;
+  border-color: #334155 !important;
+}
+
+.dark .scrs-shell .text-gray-200,
+.dark .scrs-shell .text-gray-300,
+.dark .scrs-shell .text-white,
+.dark .scrs-shell .dark\:text-white,
+.dark .scrs-legal .text-gray-200,
+.dark .scrs-legal .text-gray-300,
+.dark .scrs-legal .text-white,
+[data-theme="dark"] .scrs-shell .text-gray-200,
+[data-theme="dark"] .scrs-shell .text-gray-300,
+[data-theme="dark"] .scrs-shell .text-white,
+[data-theme="dark"] .scrs-shell .dark\:text-white,
+[data-theme="dark"] .scrs-legal .text-gray-200,
+[data-theme="dark"] .scrs-legal .text-gray-300,
+[data-theme="dark"] .scrs-legal .text-white {
+  color: #e2e8f0 !important;
+}
+
+.dark .scrs-shell .text-gray-400,
+.dark .scrs-shell .text-gray-500,
+.dark .scrs-shell .text-slate-400,
+.dark .scrs-shell .text-slate-500,
+.dark .scrs-shell .text-on-surface-variant,
+.dark .scrs-legal .text-gray-400,
+.dark .scrs-legal .text-gray-500,
+[data-theme="dark"] .scrs-shell .text-gray-400,
+[data-theme="dark"] .scrs-shell .text-gray-500,
+[data-theme="dark"] .scrs-shell .text-slate-400,
+[data-theme="dark"] .scrs-shell .text-slate-500,
+[data-theme="dark"] .scrs-shell .text-on-surface-variant,
+[data-theme="dark"] .scrs-legal .text-gray-400,
+[data-theme="dark"] .scrs-legal .text-gray-500 {
+  color: #94a3b8 !important;
+}
+
+.dark .scrs-shell .border-slate-700,
+.dark .scrs-shell .border-slate-600,
+.dark .scrs-shell .border-gray-700,
+.dark .scrs-shell .border-gray-600,
+.dark .scrs-shell .dark\:border-slate-700,
+.dark .scrs-shell .dark\:border-slate-800,
+.dark .scrs-legal .border-gray-700,
+[data-theme="dark"] .scrs-shell .border-slate-700,
+[data-theme="dark"] .scrs-shell .border-slate-600,
+[data-theme="dark"] .scrs-shell .border-gray-700,
+[data-theme="dark"] .scrs-shell .border-gray-600,
+[data-theme="dark"] .scrs-shell .dark\:border-slate-700,
+[data-theme="dark"] .scrs-shell .dark\:border-slate-800,
+[data-theme="dark"] .scrs-legal .border-gray-700 {
+  border-color: #334155 !important;
+}

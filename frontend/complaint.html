@@ -1,14 +1,15 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html class="light" lang="en">
 <head>
+  <link rel="icon" type="image/png" href="../assests/Civixa_logo_new.png">
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>Submit Complaint | SCRS Municipal</title>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <title>Submit Complaint | Civixa</title>
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   <script id="tailwind-config">
-    tailwind.config = {
+    window.tailwind = window.tailwind || {};
+        window.tailwind.config = {
       darkMode: "class",
       theme: {
         extend: {
@@ -71,7 +72,9 @@
       }
     }
   </script>
-  <style>
+  <script>if (window.tailwind && typeof window.tailwind.refresh === "function") { window.tailwind.refresh(); }</script>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
     .material-symbols-outlined {
       font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     }
@@ -105,14 +108,34 @@
     .dark .border-outline,
     .dark .border-outline-variant,
     .dark .border-surface-variant { border-color: #334155 !important; }
+    .toast-enter {
+      opacity: 0;
+      transform: translateY(-10px) scale(0.98);
+      animation: toast-in 220ms ease-out forwards;
+    }
+    .toast-exit {
+      animation: toast-out 220ms ease-in forwards;
+    }
+    @keyframes toast-in {
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    @keyframes toast-out {
+      to {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.98);
+      }
+    }
   </style>
 </head>
 <body class="bg-surface font-body text-on-surface antialiased">
-  <div id="notificationContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
+  <div id="notificationContainer" class="pointer-events-none fixed left-4 right-4 top-20 z-[80] space-y-2 sm:left-auto sm:w-full sm:max-w-md"></div>
 
   <header class="sticky top-0 z-50 bg-slate-50/70 backdrop-blur-xl shadow-sm dark:bg-slate-950/70 dark:shadow-none">
     <div class="flex w-full items-center justify-between px-6 py-3">
-      <div class="text-xl font-bold tracking-tighter text-blue-900 dark:text-blue-100 font-headline">SCRS Municipal</div>
+      <div class="text-xl font-bold tracking-tighter text-blue-900 dark:text-blue-100 font-headline">Civixa</div>
       <nav class="hidden items-center space-x-6 lg:flex">
         <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="index.html">Home</a>
         <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="dashboard-citizen.html">Dashboard</a>
@@ -140,8 +163,8 @@
             <span class="material-symbols-outlined text-sm text-white">account_balance</span>
           </div>
           <div>
-            <div class="leading-tight font-black text-blue-900 dark:text-white">City Services</div>
-            <div class="text-[10px] uppercase tracking-widest text-slate-500">Management Portal</div>
+            <div class="leading-tight font-black text-blue-900 dark:text-white">Civixa</div>
+            <div class="text-[10px] uppercase tracking-widest text-slate-500">Civixa</div>
           </div>
         </div>
       </div>
@@ -239,10 +262,10 @@
                   <select id="category" name="category" required class="w-full rounded-lg border-none bg-surface-container-low p-3 text-sm focus:ring-2 focus:ring-primary">
                     <option value="">Select a category</option>
                     <option value="Road">Road</option>
-                    <option value="Garbage">Garbage</option>
+                    <option value="Sanitation">Garbage / Sanitation</option>
                     <option value="Water">Water</option>
                     <option value="Electricity">Electricity</option>
-                    <option value="Streetlight">Streetlight</option>
+                    <option value="Other">Streetlight / Other</option>
                   </select>
                 </div>
 
@@ -257,6 +280,16 @@
 
                 <div class="space-y-1.5">
                   <label class="text-xs font-bold uppercase tracking-tighter text-on-surface/70" for="location">Incident Location *</label>
+                  <div class="mb-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    <label class="flex cursor-pointer items-center gap-2 rounded-lg border border-outline-variant bg-surface-container-low px-3 py-2 text-sm">
+                      <input id="locationModeGps" name="locationMode" type="radio" value="gps" class="h-4 w-4 accent-primary" checked/>
+                      <span class="font-semibold">Use Current GPS</span>
+                    </label>
+                    <label class="flex cursor-pointer items-center gap-2 rounded-lg border border-outline-variant bg-surface-container-low px-3 py-2 text-sm">
+                      <input id="locationModeManual" name="locationMode" type="radio" value="manual" class="h-4 w-4 accent-primary"/>
+                      <span class="font-semibold">Choose Other Location</span>
+                    </label>
+                  </div>
                   <div class="relative mb-3 h-48 w-full overflow-hidden rounded-xl bg-surface-variant">
                     <img alt="Map view of incident location" class="h-full w-full object-cover opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1Ajsnmwduudinn75LcoAk5d1DW5RQ-_sKbVahdwExZz1sG845LVlKh4jUlKHN6gCyEkd90oZwRlCi6_SC8cPJ0_uYcDpFxR-BvAZ56o2Cf30FN01LxhXOlGa6zgFx5jkKudqO5gvh4uWjsvhvp6v0d6MynoiqL8WDcs3thgXl5UYmHTk8xlzQ-5QXnLRzYrqFP4COvy8UfkKj0N5RuLq6d4DjPBjo5H1wvvN_FKOGW94vzpPyzFtHYAoocUQXQHkbS6V0-xxeSdQ"/>
                     <div class="pointer-events-none absolute inset-0 flex items-center justify-center bg-primary/10">
@@ -266,19 +299,29 @@
                     </div>
                   </div>
                   <div class="flex gap-2">
-                    <input id="location" name="location" class="flex-1 rounded-lg border-none bg-surface-container-low p-3 text-sm focus:ring-2 focus:ring-primary" placeholder="Enter location or landmark" required minlength="3" maxlength="255" type="text"/>
+                    <input id="location" name="location" class="flex-1 rounded-lg border-none bg-surface-container-low p-3 text-sm focus:ring-2 focus:ring-primary" placeholder="Enter location or landmark" required minlength="3" maxlength="255" type="text" list="locationSuggestions"/>
                     <button id="gpsLocationBtn" class="flex items-center gap-2 rounded-lg bg-surface-container-high px-4 hover:bg-surface-variant" type="button" aria-label="Use current location">
                       <span class="material-symbols-outlined text-sm">my_location</span>
                       <span class="text-xs font-bold">GPS</span>
                     </button>
                   </div>
+                  <datalist id="locationSuggestions">
+                    <option value="City Center"></option>
+                    <option value="Main Road Junction"></option>
+                    <option value="Bus Stand Area"></option>
+                    <option value="Railway Station Road"></option>
+                    <option value="Ward 1"></option>
+                    <option value="Ward 2"></option>
+                    <option value="Ward 3"></option>
+                  </datalist>
+                  <p id="locationModeHint" class="text-xs text-on-surface-variant">GPS mode is active. Tap GPS to auto-fill your current location, or switch to Choose Other Location.</p>
                 </div>
 
                 <div class="space-y-1.5">
                   <label class="text-xs font-bold uppercase tracking-tighter text-on-surface/70" for="image">Supporting Evidence (Optional)</label>
                   <input id="image" name="image" class="w-full rounded-lg border-none bg-surface-container-low p-3 text-sm file:mr-3 file:cursor-pointer file:rounded file:border-0 file:bg-primary file:px-3 file:py-1 file:text-sm file:font-semibold file:text-white" accept="image/*" type="file"/>
                   <div id="imageFeedback" class="text-sm"></div>
-                  <small class="text-xs text-on-surface-variant">Accepted formats: JPG, PNG, GIF. Max size: 5MB.</small>
+                  <small class="text-xs text-on-surface-variant">Accepted formats: JPG, PNG, GIF. Max size: 500KB.</small>
                 </div>
 
                 <div class="flex items-center justify-between pt-6">
@@ -299,7 +342,7 @@
                 <div class="flex items-start justify-between border-b border-outline-variant/20 pb-4">
                   <div>
                     <p class="text-[10px] font-bold uppercase text-slate-400">Reference ID</p>
-                    <p class="font-headline text-sm font-bold">SCRS-2026-PEND</p>
+                    <p class="font-headline text-sm font-bold">Civixa-2026-PEND</p>
                   </div>
                   <span class="rounded bg-tertiary-container px-2 py-0.5 text-[10px] font-bold text-white">URGENT</span>
                 </div>
@@ -310,7 +353,7 @@
                   </div>
                   <div class="flex gap-3">
                     <span class="material-symbols-outlined text-primary text-lg">verified_user</span>
-                    <p class="text-xs leading-relaxed text-on-surface-variant">Your identity is protected under the SCRS Privacy Shield Framework.</p>
+                    <p class="text-xs leading-relaxed text-on-surface-variant">Your identity is protected under the Civixa Privacy Shield Framework.</p>
                   </div>
                 </div>
               </div>
@@ -336,7 +379,7 @@
 
   <footer class="mt-auto w-full border-t border-slate-200 bg-slate-50 py-8 dark:border-slate-800 dark:bg-slate-950">
     <div class="mx-auto flex max-w-7xl flex-col items-center justify-between space-y-4 px-12 md:flex-row md:space-y-0">
-      <div class="text-xs tracking-wide text-slate-500 dark:text-slate-400">© 2026 Municipal SCRS. Architectural Trust System.</div>
+      <div class="text-xs tracking-wide text-slate-500 dark:text-slate-400">Â© 2026 Municipal Civixa. Architectural Trust System.</div>
       <nav class="flex space-x-6">
         <a class="text-xs tracking-wide text-slate-400 transition-colors hover:text-slate-600" href="privacy.html">Privacy Policy</a>
         <a class="text-xs tracking-wide text-slate-400 transition-colors hover:text-slate-600" href="terms.html">Terms of Service</a>
@@ -416,6 +459,9 @@
       const charCounter = document.getElementById('descCounter');
       const locationField = document.getElementById('location');
       const gpsLocationBtn = document.getElementById('gpsLocationBtn');
+      const locationModeGps = document.getElementById('locationModeGps');
+      const locationModeManual = document.getElementById('locationModeManual');
+      const locationModeHint = document.getElementById('locationModeHint');
 
       async function reverseGeocode(latitude, longitude) {
         const endpoint =
@@ -472,9 +518,9 @@
         imageFeedback.innerHTML = '';
 
         if (file) {
-          const maxSize = 5 * 1024 * 1024;
+          const maxSize = 500 * 1024;
           if (file.size > maxSize) {
-            imageFeedback.innerHTML = '<div class="text-sm text-red-500">File size exceeds 5MB limit</div>';
+            imageFeedback.innerHTML = '<div class="text-sm text-red-500">File size exceeds 500KB limit</div>';
             this.value = '';
             return;
           }
@@ -491,7 +537,44 @@
       });
 
       if (gpsLocationBtn && locationField) {
+        function updateLocationMode() {
+          const isManual = locationModeManual && locationModeManual.checked;
+
+          gpsLocationBtn.disabled = !!isManual;
+          gpsLocationBtn.classList.toggle('opacity-50', !!isManual);
+          gpsLocationBtn.classList.toggle('cursor-not-allowed', !!isManual);
+
+          if (locationModeHint) {
+            locationModeHint.textContent = isManual
+              ? 'Choose Other Location mode is active. Enter any area, address, or landmark manually.'
+              : 'GPS mode is active. Tap GPS to auto-fill your current location, or switch to Choose Other Location.';
+          }
+
+          if (isManual) {
+            locationField.placeholder = 'Type any location (address, area, landmark, etc.)';
+            if (locationField.value.trim().length === 0) {
+              locationField.focus();
+            }
+          } else {
+            locationField.placeholder = 'Enter location or landmark';
+          }
+        }
+
+        if (locationModeGps) {
+          locationModeGps.addEventListener('change', updateLocationMode);
+        }
+        if (locationModeManual) {
+          locationModeManual.addEventListener('change', updateLocationMode);
+        }
+
+        updateLocationMode();
+
         gpsLocationBtn.addEventListener('click', function() {
+          if (locationModeManual && locationModeManual.checked) {
+            showNotification('Choose Other Location mode is active. Enter your preferred location manually.', 'warning');
+            return;
+          }
+
           if (!navigator.geolocation) {
             showNotification('Geolocation is not supported by this browser. Enter location manually.', 'error');
             return;
@@ -673,14 +756,26 @@
         bgColor = 'bg-yellow-600';
       }
 
-      notification.className = bgColor + ' max-w-md rounded-lg px-4 py-3 text-sm font-medium text-white shadow-lg';
+      notification.className = bgColor + ' toast-enter pointer-events-auto w-full rounded-lg px-4 py-3 text-sm font-medium text-white shadow-lg break-words';
       notification.textContent = message;
       container.appendChild(notification);
 
       setTimeout(function() {
-        notification.remove();
-      }, 5000);
+        notification.classList.remove('toast-enter');
+        notification.classList.add('toast-exit');
+        setTimeout(function() {
+          notification.remove();
+        }, 220);
+      }, 4800);
     }
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+

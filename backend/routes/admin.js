@@ -8,6 +8,9 @@
 const express = require('express');
 const router = express.Router();
 const xss = require('xss');
+const fs = require('fs');
+const path = require('path');
+const multer = require('multer');
 const requireRole = require('../middleware/requireRole');
 const validateRequest = require('../middleware/validateRequest');
 const complaintSchemas = require('../validators/complaintValidator');
@@ -18,6 +21,81 @@ const notificationService = require('../services/notificationService');
 // This assumes dbConnection is set in server.js via app.locals.dbConnection
 function getDbConnection(req) {
   return req.app.locals.dbConnection || global.dbConnection;
+}
+
+const proofUploadDir = path.join(__dirname, '..', 'uploads', 'proofs');
+fs.mkdirSync(proofUploadDir, { recursive: true });
+
+const proofStorage = multer.diskStorage({
+  destination: (_req, _file, cb) => cb(null, proofUploadDir),
+  filename: (_req, file, cb) => {
+    const extension = path.extname(file.originalname || '').toLowerCase() || '.jpg';
+    cb(null, `proof-${Date.now()}-${Math.round(Math.random() * 1e6)}${extension}`);
+  }
+});
+
+const proofUpload = multer({
+  storage: proofStorage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    const allowedMimes = new Set(['image/jpeg', 'image/png', 'image/gif', 'image/webp']);
+    if (!allowedMimes.has(file.mimetype)) {
+      return cb(new Error('Only JPG, PNG, GIF, and WEBP images are allowed.'));
+    }
+
+    cb(null, true);
+  }
+});
+
+function uploadProofMiddleware(req, res, next) {
+  proofUpload.single('proof')(req, res, (error) => {
+    if (!error) {
+      return next();
+    }
+
+    if (error instanceof multer.MulterError && error.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({
+        success: false,
+        message: 'Proof image must be 5 MB or smaller.'
+      });
+    }
+
+    return res.status(400).json({
+      success: false,
+      message: error.message || 'Failed to upload proof image.'
+    });
+  });
+}
+
+function buildProofUrl(req, filename) {
+  return `${req.protocol}://${req.get('host')}/uploads/proofs/${encodeURIComponent(filename)}`;
+}
+
+async function applyResolveProof(dbConnection, complaintId, adminId, { proofUrl, resolutionNote }) {
+  const complaint = await complaintService.getComplaintById(dbConnection, complaintId, adminId);
+  if (!complaint) {
+    throw new Error('Complaint not found or not assigned to you');
+  }
+
+  if (proofUrl) {
+    await complaintService.uploadResolveProof(dbConnection, complaintId, proofUrl, adminId);
+  }
+
+  if (resolutionNote) {
+    await dbConnection.execute(
+      `INSERT INTO complaint_history (complaint_id, changed_by, old_status, new_status, note)
+       VALUES (?, ?, ?, ?, ?)`,
+      [
+        complaintId,
+        adminId,
+        complaint.status,
+        complaint.status,
+        `Resolution Note: ${String(resolutionNote).trim().slice(0, 1800)}`
+      ]
+    );
+  }
+
+  return complaintService.getComplaintById(dbConnection, complaintId, adminId);
 }
 
 /**
@@ -370,11 +448,65 @@ router.get('/complaints/:id/remarks', requireRole('admin'), async (req, res) => 
 });
 
 /**
+ * POST /admin/complaints/:id/proof
+ * Upload resolve proof image via multipart/form-data.
+ */
+router.post('/complaints/:id/proof', requireRole('admin'), uploadProofMiddleware, async (req, res) => {
+  const dbConnection = getDbConnection(req);
+
+  if (!dbConnection) {
+    return res.status(503).json({
+      success: false,
+      message: 'Service unavailable: database not connected.'
+    });
+  }
+
+  try {
+    const complaintId = parseInt(req.params.id, 10);
+    const adminId = req.user.id;
+    const hasFile = Boolean(req.file && req.file.filename);
+    const hasResolutionNote = typeof req.body.resolution_note === 'string' && req.body.resolution_note.trim().length > 0;
+
+    if (isNaN(complaintId)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid complaint ID.'
+      });
+    }
+
+    if (!hasFile && !hasResolutionNote) {
+      return res.status(400).json({
+        success: false,
+        message: 'Provide either proof image or resolution_note.'
+      });
+    }
+
+    const proofUrl = hasFile ? buildProofUrl(req, req.file.filename) : null;
+    const updatedComplaint = await applyResolveProof(dbConnection, complaintId, adminId, {
+      proofUrl,
+      resolutionNote: hasResolutionNote ? req.body.resolution_note : null
+    });
+
+    return res.json({
+      success: true,
+      complaint: updatedComplaint,
+      proof_url: updatedComplaint.proof_url,
+      message: hasFile ? 'Resolve proof uploaded successfully.' : 'Resolution note saved successfully.'
+    });
+  } catch (error) {
+    console.error('❌ Error in POST /admin/complaints/:id/proof:', error);
+
+    if (error.message.includes('not found') || error.message.includes('not assigned')) {
+      return res.status(403).json({ success: false, message: error.message });
+    }
+
+    return res.status(500).json({ success: false, message: 'Internal server error.' });
+  }
+});
+
+/**
  * POST /admin/complaints/:id/resolve-proof
- * Upload resolve proof (image URL)
- * 
- * Body:
- * - proof_url: URL of the proof image
+ * Upload resolve proof using JSON (proof_url) or resolution note.
  */
 router.post('/complaints/:id/resolve-proof', requireRole('admin'), async (req, res) => {
   const dbConnection = getDbConnection(req);
@@ -391,6 +523,13 @@ router.post('/complaints/:id/resolve-proof', requireRole('admin'), async (req, r
     const { proof_url, resolution_note } = req.body;
     const adminId = req.user.id;
 
+    if (isNaN(complaintId)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid complaint ID.'
+      });
+    }
+
     const hasProofUrl = typeof proof_url === 'string' && proof_url.trim().length > 0;
     const hasResolutionNote = typeof resolution_note === 'string' && resolution_note.trim().length > 0;
 
@@ -401,15 +540,7 @@ router.post('/complaints/:id/resolve-proof', requireRole('admin'), async (req, r
       });
     }
 
-    if (isNaN(complaintId)) {
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid complaint ID.'
-      });
-    }
-
     if (hasProofUrl) {
-      // Basic URL validation
       try {
         new URL(proof_url);
       } catch (urlError) {
@@ -420,60 +551,83 @@ router.post('/complaints/:id/resolve-proof', requireRole('admin'), async (req, r
       }
     }
 
-    console.log(`\n📸 Admin ${adminId} uploading resolve proof for complaint ${complaintId}`);
-
-    let updatedComplaint = null;
-    if (hasProofUrl) {
-      updatedComplaint = await complaintService.uploadResolveProof(
-        dbConnection,
-        complaintId,
-        proof_url.trim(),
-        adminId
-      );
-    } else {
-      const complaint = await complaintService.getComplaintById(dbConnection, complaintId, adminId);
-      if (!complaint) {
-        throw new Error('Complaint not found or not assigned to you');
-      }
-      await dbConnection.execute(
-        `INSERT INTO complaint_history (complaint_id, changed_by, old_status, new_status, note)
-         VALUES (?, ?, ?, ?, ?)`,
-        [
-          complaintId,
-          adminId,
-          complaint.status,
-          complaint.status,
-          `Resolution Note: ${String(resolution_note).trim().slice(0, 1800)}`
-        ]
-      );
-      updatedComplaint = complaint;
-    }
-
-    console.log(`✅ Resolve proof uploaded successfully`);
+    const updatedComplaint = await applyResolveProof(dbConnection, complaintId, adminId, {
+      proofUrl: hasProofUrl ? proof_url.trim() : null,
+      resolutionNote: hasResolutionNote ? resolution_note : null
+    });
 
     return res.json({
       success: true,
       complaint: updatedComplaint,
-      message: hasProofUrl
-        ? 'Resolve proof uploaded successfully.'
-        : 'Resolution note saved successfully.'
+      proof_url: updatedComplaint.proof_url,
+      message: hasProofUrl ? 'Resolve proof uploaded successfully.' : 'Resolution note saved successfully.'
     });
   } catch (error) {
     console.error('❌ Error in POST /admin/complaints/:id/resolve-proof:', error);
 
     if (error.message.includes('not found') || error.message.includes('not assigned')) {
-      return res.status(403).json({
+      return res.status(403).json({ success: false, message: error.message });
+    }
+
+    return res.status(500).json({ success: false, message: 'Internal server error.' });
+  }
+});
+
+async function clearProofHandler(req, res) {
+  const dbConnection = getDbConnection(req);
+
+  if (!dbConnection) {
+    return res.status(503).json({
+      success: false,
+      message: 'Service unavailable: database not connected.'
+    });
+  }
+
+  try {
+    const complaintId = parseInt(req.params.id, 10);
+    const adminId = req.user.id;
+
+    if (isNaN(complaintId)) {
+      return res.status(400).json({
         success: false,
-        message: error.message
+        message: 'Invalid complaint ID.'
       });
     }
 
-    return res.status(500).json({
-      success: false,
-      message: 'Internal server error.'
+    const complaint = await complaintService.getComplaintById(dbConnection, complaintId, adminId);
+    if (!complaint) {
+      return res.status(403).json({
+        success: false,
+        message: 'Complaint not found or not assigned to you.'
+      });
+    }
+
+    await dbConnection.execute(
+      'UPDATE complaints SET proof_url = NULL, updated_at = NOW() WHERE id = ?',
+      [complaintId]
+    );
+
+    await dbConnection.execute(
+      `INSERT INTO complaint_history (complaint_id, changed_by, old_status, new_status, note)
+       VALUES (?, ?, ?, ?, ?)`,
+      [complaintId, adminId, complaint.status, complaint.status, 'Proof removed']
+    );
+
+    const updatedComplaint = await complaintService.getComplaintById(dbConnection, complaintId, adminId);
+
+    return res.json({
+      success: true,
+      complaint: updatedComplaint,
+      message: 'Proof removed successfully.'
     });
+  } catch (error) {
+    console.error('❌ Error in DELETE proof route:', error);
+    return res.status(500).json({ success: false, message: 'Internal server error.' });
   }
-});
+}
+
+router.delete('/complaints/:id/proof', requireRole('admin'), clearProofHandler);
+router.delete('/complaints/:id/resolve-proof', requireRole('admin'), clearProofHandler);
 
 /**
  * GET /admin/dashboard

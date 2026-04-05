@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const mysql = require('mysql2/promise'); // using promise API for async/await
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -38,6 +39,14 @@ app.use(cors());
 app.use((req, res, next) => {
   res.set('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
   next();
+});
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Silence Chrome DevTools probe 404 noise.
+app.get('/.well-known/appspecific/com.chrome.devtools.json', (_req, res) => {
+  res.set('Cache-Control', 'no-store');
+  return res.status(200).json({ ok: true });
 });
 
 // =======================
@@ -1563,6 +1572,7 @@ app.get('/health/ai', authenticateToken, requireRole('admin', 'authority'), asyn
 // Admin & Authority Routes (requires authentication)
 // =======================
 app.use('/admin', authenticateToken, adminRoutes);
+app.use('/api/admin', authenticateToken, adminRoutes);
 app.use('/authority', authenticateToken, authorityRoutes);
 
 // =======================
