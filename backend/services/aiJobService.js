@@ -2,10 +2,11 @@ const mysql = require('mysql2/promise');
 const { analyzeComplaint } = require('./aiService');
 
 const dbPool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || 'Pranav@sql296',
-  database: process.env.DB_NAME || 'scrs',
+  host: process.env.MYSQLHOST,
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  database: process.env.MYSQLDATABASE,
+  port: process.env.MYSQLPORT || 3306,
   waitForConnections: true,
   connectionLimit: 3,
   queueLimit: 0,
