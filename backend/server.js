@@ -1581,7 +1581,7 @@ app.use('/authority', authenticateToken, authorityRoutes);
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
   // Attempt DB connection but don't block server start
   initDbConnectionWithRetry();
   logAiProviderStartupStatus();
