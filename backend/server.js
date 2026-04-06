@@ -59,10 +59,11 @@ app.get('/.well-known/appspecific/com.chrome.devtools.json', (_req, res) => {
 // - Resource efficient: Connections are released after query, not closed
 
 const dbConfig = {
-  host: 'localhost',
-  user: 'root',
-  password: 'Pranav@sql296',   // <-- put your MySQL password here
-  database: 'scrs',
+  host: process.env.MYSQLHOST,
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  database: process.env.MYSQLDATABASE,
+  port: process.env.MYSQLPORT || 3306,
   waitForConnections: true,     // Queue requests if no connections available
   connectionLimit: 10,           // Max connections in pool (adjust based on load)
   queueLimit: 0,                // No limit on queue size
@@ -1579,9 +1580,9 @@ app.use('/authority', authenticateToken, authorityRoutes);
 // Start server
 // =======================
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 SCRS backend server running on http://localhost:${PORT}`);
+  console.log(`🚀 SCRS backend server running on port ${PORT}`);
   // Attempt DB connection but don't block server start
   initDbConnectionWithRetry();
   logAiProviderStartupStatus();

@@ -8,9 +8,9 @@ async function initDatabase() {
 
     // Step 1: Connect to MySQL (no database specified yet)
     const conn = await mysql.createConnection({
-      host: 'localhost',
-      user: 'root',
-      password: 'Pranav@sql296'
+      host: process.env.MYSQLHOST,
+      user: process.env.MYSQLUSER,
+      password: process.env.MYSQLPASSWORD
     });
     console.log('✅ Connected to MySQL\n');
 
@@ -19,7 +19,7 @@ async function initDatabase() {
     console.log('✅ Database "scrs" created/verified\n');
 
     // Step 3: Switch to the database
-    await conn.changeUser({ database: 'scrs' });
+    await conn.changeUser({ database: process.env.MYSQLDATABASE });
     console.log('✅ Switched to database\n');
 
     // Step 4: Read and execute SQL file
