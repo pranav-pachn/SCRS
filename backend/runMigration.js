@@ -30,14 +30,10 @@ async function runMigration() {
     const migrationPath = path.join(__dirname, 'migrations', 'add_ai_intelligence_columns.sql');
     let migrationSQL = fs.readFileSync(migrationPath, 'utf8');
 
-    // Create connection
-    const connection = await mysql.createConnection({
-      host: process.env.MYSQLHOST,
-      user: process.env.MYSQLUSER,
-      password: process.env.MYSQLPASSWORD,
-      database: process.env.MYSQLDATABASE,
-      port: process.env.MYSQLPORT || 3306
-    });
+    // Create connection using centralized config
+    const dbConfig = require('./config/dbConfig');
+    const connection = await mysql.createConnection(dbConfig);
+
 
     console.log('✅ Connected to MySQL');
     console.log('📝 Running migration: add_ai_intelligence_columns.sql\n');

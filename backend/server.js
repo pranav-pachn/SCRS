@@ -58,19 +58,16 @@ app.get('/.well-known/appspecific/com.chrome.devtools.json', (_req, res) => {
 // - Auto reconnect: Pool handles connection failures transparently
 // - Resource efficient: Connections are released after query, not closed
 
-const dbConfig = {
-  host: process.env.MYSQLHOST,
-  user: process.env.MYSQLUSER,
-  password: process.env.MYSQLPASSWORD,
-  database: process.env.MYSQLDATABASE,
-  port: process.env.MYSQLPORT || 3306,
-  waitForConnections: true,     // Queue requests if no connections available
-  connectionLimit: 10,           // Max connections in pool (adjust based on load)
-  queueLimit: 0,                // No limit on queue size
-  enableKeepAlive: true         // Keep connections alive
-};
+const dbConfig = require('./config/dbConfig');
+
+// If connectionUrl was returned, it's already properly formatted for mysql2
+// If configuration object was returned, it now includes pooling options
+const dbPoolConfig = typeof dbConfig === 'string' 
+  ? dbConfig 
+  : { ...dbConfig, connectionLimit: 10 };
 
 let dbConnection = null;  // Will be the pool object
+
 let hasComplaintIdColumn = false;
 let hasComplaintHistoryTable = false;
 let lastAiHealthReport = null;
@@ -132,8 +129,9 @@ function startAiHealthMonitor() {
 // Pooled DB connection with retry
 async function initDbConnectionWithRetry() {
   try {
-    // Create pool instead of single connection
-    dbConnection = mysql.createPool(dbConfig);
+    // Create pool instead of single connection using robust config
+    dbConnection = mysql.createPool(dbPoolConfig);
+
     
     // Test the pool by getting a connection
     const testConnection = await dbConnection.getConnection();

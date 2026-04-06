@@ -6,12 +6,16 @@ async function initDatabase() {
   try {
     console.log('🔄 Initializing database...\n');
 
-    // Step 1: Connect to MySQL (no database specified yet)
-    const conn = await mysql.createConnection({
-      host: process.env.MYSQLHOST,
-      user: process.env.MYSQLUSER,
-      password: process.env.MYSQLPASSWORD
-    });
+// Step 1: Connect to MySQL (no database specified yet) using centralized config
+    const dbConfig = require('./config/dbConfig');
+    
+    // For init, we connect to the host without a database to create it first
+    const initConfig = typeof dbConfig === 'string' 
+      ? dbConfig.replace(/\/[^/]*$/, '') // Remove database from URI if it's a string
+      : { host: dbConfig.host, user: dbConfig.user, password: dbConfig.password, port: dbConfig.port };
+
+    const conn = await mysql.createConnection(initConfig);
+
     console.log('✅ Connected to MySQL\n');
 
     // Step 2: Create database

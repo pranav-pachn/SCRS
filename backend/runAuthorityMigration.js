@@ -9,17 +9,17 @@ const path = require('path');
 
 async function runAuthorityMigration() {
   try {
-    // Create connection
-    const connection = await mysql.createConnection({
-      host: process.env.MYSQLHOST,
-      user: process.env.MYSQLUSER,
-      password: process.env.MYSQLPASSWORD,
-      database: process.env.MYSQLDATABASE,
-      port: process.env.MYSQLPORT || 3306
-    });
+    // Create connection using centralized config
+    const dbConfig = require('./config/dbConfig');
+    const dbName = typeof dbConfig === 'string' 
+      ? dbConfig.split('/').pop().split('?')[0] // Extract DB name from URI
+      : dbConfig.database;
+
+    const connection = await mysql.createConnection(dbConfig);
 
     console.log('✅ Connected to MySQL\n');
-    console.log('📝 Running Authority Supervisory Role Migration\n');
+    console.log(`📝 Running Authority Supervisory Role Migration on database: ${dbName}\n`);
+
 
     // Commands to run - these are safe and handle existing columns
     const commands = [
@@ -114,10 +114,10 @@ async function runAuthorityMigration() {
       SELECT COLUMN_NAME, DATA_TYPE
       FROM INFORMATION_SCHEMA.COLUMNS
       WHERE TABLE_NAME = 'complaints'
-        AND TABLE_SCHEMA = 'scrs'
+        AND TABLE_SCHEMA = ?
         AND COLUMN_NAME IN ('manual_priority_override', 'is_escalated')
       ORDER BY COLUMN_NAME
-    `);
+    `, [dbName]);
 
     console.log('✅ Complaints table columns:');
     complaintsCols.forEach(col => {
@@ -128,10 +128,10 @@ async function runAuthorityMigration() {
       SELECT COLUMN_NAME, DATA_TYPE
       FROM INFORMATION_SCHEMA.COLUMNS
       WHERE TABLE_NAME = 'complaint_history'
-        AND TABLE_SCHEMA = 'scrs'
+        AND TABLE_SCHEMA = ?
         AND COLUMN_NAME IN ('action', 'role', 'old_value', 'new_value', 'field_changed')
       ORDER BY COLUMN_NAME
-    `);
+    `, [dbName]);
 
     console.log('\n✅ Complaint_history table columns:');
     historyCols.forEach(col => {
