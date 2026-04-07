@@ -25,6 +25,7 @@ const {
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const app = express();
+app.set('trust proxy', 1);
 
 const JWT_SECRET = process.env.JWT_SECRET || 'scrs_dev_secret';
 const JWT_EXPIRES_IN = '2h';
@@ -137,7 +138,8 @@ async function initDbConnectionWithRetry() {
     const testConnection = await dbConnection.getConnection();
     testConnection.release();
     
-    console.log('✅ Connection pool established (10 connections).');
+    console.log("✅ Connected to MySQL");
+
     
     // Make dbConnection available to routes via app.locals and global
     app.locals.dbConnection = dbConnection;
@@ -166,7 +168,8 @@ async function initDbConnectionWithRetry() {
     }
   } catch (error) {
     dbConnection = null;
-    console.error('❌ Error establishing connection pool:', error.message);
+    console.error("❌ DB connection failed:", error.message);
+
     console.log('🔁 Retrying DB connection in 5s...');
     setTimeout(initDbConnectionWithRetry, 5000);
   }
@@ -659,7 +662,7 @@ async function findDuplicateComplaint(category, location, description, similarit
 // =======================
 
 // Simple health-check route
-app.get('/', (req, res) => {
+app.get(['/', '/health', '/api/health'], (req, res) => {
   res.json({ message: 'SCRS backend is running 🚀', dbConnected: !!dbConnection });
 
 });
@@ -1578,9 +1581,9 @@ app.use('/authority', authenticateToken, authorityRoutes);
 // Start server
 // =======================
 
-const PORT = process.env.PORT || 3000;
+const PORT = Number(process.env.PORT || 3000);
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
   // Attempt DB connection but don't block server start
   initDbConnectionWithRetry();

@@ -11,25 +11,20 @@
 function getDbConfig() {
   const env = process.env;
 
-  // 0. Explicit connection URL (Highest priority - standard for Render/Railway)
-  const connectionUrl = env.MYSQL_URL || env.DATABASE_URL || env.MYSQL_PRIVATE_URL;
-  if (connectionUrl) {
-    // If it's a URL, we might still want to append SSL if it's not already there,
-    // but usually, mysql2 handles it if the connection string includes it.
-    return connectionUrl;
-  }
+  // Temporary debug to verify the active Railway variables.
+  console.log('DB_HOST:', env.DB_HOST);
+  console.log('MYSQLHOST:', env.MYSQLHOST);
 
-  // 1. Production individual variables (User's Final Working VERSION)
-  // Check both DB_* and MYSQL* conventions
-  const prodHost = env.DB_HOST || env.MYSQLHOST;
+  // Production Railway variables - single supported format.
+  const prodHost = env.DB_HOST;
   
   if (prodHost && prodHost !== 'localhost') {
     return {
       host: prodHost,
-      port: parseInt(env.DB_PORT || env.MYSQLPORT || '3306', 10),
-      user: env.DB_USER || env.MYSQLUSER,
-      password: env.DB_PASSWORD || env.MYSQLPASSWORD,
-      database: env.DB_NAME || env.MYSQLDATABASE || env.DB_DATABASE,
+      port: parseInt(env.DB_PORT || '3306', 10),
+      user: env.DB_USER,
+      password: env.DB_PASSWORD,
+      database: env.DB_NAME,
       ssl: {
         rejectUnauthorized: false
       },
