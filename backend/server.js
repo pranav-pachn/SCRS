@@ -39,7 +39,7 @@ app.use(cors({
   credentials: true
 }));
 
-app.options('*', cors());
+app.options(/.*/, cors());
 
 // Add COOP header for Google Sign-In popup compatibility
 app.use((req, res, next) => {
