@@ -3,8 +3,9 @@
  * @description Centralized, robust database configuration for SCRS.
  * Automatically handles:
  * 1. Connection strings (MYSQL_URL, DATABASE_URL, etc.)
- * 2. Individual environment variables (MYSQLHOST, MYSQLUSER, etc.)
- * 3. Local fallback (LOCAL_MYSQLHOST, etc.)
+ * 2. Individual environment variables (DB_HOST, MYSQLHOST, etc.)
+ * 3. SSL configuration for production (Render/Railway)
+ * 4. Local fallback (LOCAL_MYSQLHOST, etc.)
  */
 
 function getDbConfig() {
@@ -13,18 +14,25 @@ function getDbConfig() {
   // 0. Explicit connection URL (Highest priority - standard for Render/Railway)
   const connectionUrl = env.MYSQL_URL || env.DATABASE_URL || env.MYSQL_PRIVATE_URL;
   if (connectionUrl) {
-    return connectionUrl; // mysql2/promise createPool accepts a URI string
+    // If it's a URL, we might still want to append SSL if it's not already there,
+    // but usually, mysql2 handles it if the connection string includes it.
+    return connectionUrl;
   }
 
-  // 1. Production individual variables (Common for Railway)
-  const prodHost = env.MYSQLHOST || env.DB_HOST;
+  // 1. Production individual variables (User's Final Working VERSION)
+  // Check both DB_* and MYSQL* conventions
+  const prodHost = env.DB_HOST || env.MYSQLHOST;
+  
   if (prodHost && prodHost !== 'localhost') {
     return {
       host: prodHost,
-      user: env.MYSQLUSER || env.DB_USER,
-      password: env.MYSQLPASSWORD || env.DB_PASSWORD,
-      database: env.MYSQLDATABASE || env.DB_DATABASE || env.MYSQL_DATABASE,
-      port: parseInt(env.MYSQLPORT || env.DB_PORT || '3306', 10),
+      port: parseInt(env.DB_PORT || env.MYSQLPORT || '3306', 10),
+      user: env.DB_USER || env.MYSQLUSER,
+      password: env.DB_PASSWORD || env.MYSQLPASSWORD,
+      database: env.DB_NAME || env.MYSQLDATABASE || env.DB_DATABASE,
+      ssl: {
+        rejectUnauthorized: false
+      },
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0,
