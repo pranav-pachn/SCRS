@@ -33,8 +33,13 @@ const JWT_EXPIRES_IN = '2h';
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 
-// Enable CORS for all origins (simple for hackathon/demo)
-app.use(cors());
+// Restrict CORS to the production frontend origin.
+app.use(cors({
+  origin: 'https://civixa-scrs.netlify.app',
+  credentials: true
+}));
+
+app.options('*', cors());
 
 // Add COOP header for Google Sign-In popup compatibility
 app.use((req, res, next) => {
