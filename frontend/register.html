@@ -426,7 +426,7 @@
       if (password.length < 6) { showNotification("Password must be at least 6 characters", "error"); return; }
       if (password !== confirmPassword) { showNotification("Passwords do not match", "error"); return; }
       setButtonLoading(true);
-      fetch("http://localhost:3000/auth/register", {
+      fetch("https://your-backend-name.onrender.com/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password, role })
@@ -501,7 +501,7 @@
       }
     }
     function handleGoogleSignUp(response) {
-      fetch("http://localhost:3000/auth/google", {
+      fetch("https://your-backend-name.onrender.com/auth/google", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ credential: response.credential })
@@ -530,7 +530,7 @@
     window.addEventListener("load", function () {
       initTheme();
       initRegisterEnhancements();
-      fetch("http://localhost:3000/auth/config")
+      fetch("https://your-backend-name.onrender.com/auth/config")
         .then(res => res.json())
         .then(data => {
           if (data.success && data.googleClientId) {

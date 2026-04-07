@@ -296,7 +296,7 @@
         });
 
         function loadProfileData() {
-            fetch('http://localhost:3000/api/admin/profile', {
+            fetch('https://your-backend-name.onrender.com/api/admin/profile', {
                 headers: getAuthHeaders()
             })
             .then(response => response.json())
@@ -351,7 +351,7 @@
                 bio: document.getElementById('bio').value
             };
 
-            fetch('http://localhost:3000/api/admin/profile', {
+            fetch('https://your-backend-name.onrender.com/api/admin/profile', {
                 method: 'PUT',
                 headers: getAuthHeaders(),
                 body: JSON.stringify(formData)
@@ -391,7 +391,7 @@
                 return;
             }
 
-            fetch('http://localhost:3000/api/admin/password', {
+            fetch('https://your-backend-name.onrender.com/api/admin/password', {
                 method: 'PUT',
                 headers: getAuthHeaders(),
                 body: JSON.stringify({
@@ -425,7 +425,7 @@
                 weekly_summary: document.getElementById('weeklySummary').checked
             };
 
-            fetch('http://localhost:3000/api/admin/notifications/preferences', {
+            fetch('https://your-backend-name.onrender.com/api/admin/notifications/preferences', {
                 method: 'PUT',
                 headers: getAuthHeaders(),
                 body: JSON.stringify(preferences)
