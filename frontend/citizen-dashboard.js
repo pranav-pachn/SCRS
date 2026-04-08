@@ -24,7 +24,7 @@ function sanitizeImageUrl(url) {
 }
 // ─────────────────────────────────────────────────────────────────────────────
 
-const API_BASE = 'https://your-backend-name.onrender.com';
+const API_BASE = 'https://scrs-backend.onrender.com';
 let currentPage = 1;
 let totalPages = 1;
 let allComplaints = [];

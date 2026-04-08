@@ -332,7 +332,7 @@
 
     <script src="auth.js"></script>
     <script>
-        const ADMIN_API_BASES = ['https://your-backend-name.onrender.com/api/admin', 'https://your-backend-name.onrender.com/admin'];
+        const ADMIN_API_BASES = ['https://scrs-backend.onrender.com/api/admin', 'https://scrs-backend.onrender.com/admin'];
         let resolvedAdminApiBase = null;
 
         async function resolveAdminApiBase() {
@@ -413,8 +413,8 @@
             if (!normalized) return null;
             if (normalized.startsWith('data:image/')) return normalized;
             if (/^https?:\/\//i.test(normalized)) return normalized;
-            if (normalized.startsWith('/uploads/')) return `https://your-backend-name.onrender.com${normalized}`;
-            if (normalized.startsWith('uploads/')) return `https://your-backend-name.onrender.com/${normalized}`;
+            if (normalized.startsWith('/uploads/')) return `https://scrs-backend.onrender.com${normalized}`;
+            if (normalized.startsWith('uploads/')) return `https://scrs-backend.onrender.com/${normalized}`;
 
             const compactBase64 = normalized.replace(/\s+/g, '');
             if (/^[A-Za-z0-9+/=]+$/.test(compactBase64)) {

@@ -383,7 +383,7 @@
         const auth = requireAuth(['citizen', 'admin', 'authority']);
         if (!auth) return;
 
-        const response = await fetch('https://your-backend-name.onrender.com/complaints/my?page=1&perPage=1000', {
+        const response = await fetch('https://scrs-backend.onrender.com/complaints/my?page=1&perPage=1000', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

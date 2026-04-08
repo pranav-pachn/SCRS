@@ -30,14 +30,35 @@ app.set('trust proxy', 1);
 const JWT_SECRET = process.env.JWT_SECRET || 'scrs_dev_secret';
 const JWT_EXPIRES_IN = '2h';
 
-app.use(express.json({ limit: '1mb' }));
-app.use(express.urlencoded({ extended: true, limit: '1mb' }));
+const allowedOrigins = new Set(
+  [
+    process.env.FRONTEND_ORIGIN,
+    'https://civixa-scrs.netlify.app',
+    'https://www.civixa-scrs.netlify.app',
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:5173'
+  ].filter(Boolean)
+);
+
+const corsOptions = {
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.has(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error(`CORS blocked for origin: ${origin}`));
+  },
+  credentials: true
+};
 
 // Restrict CORS to the production frontend origin.
-app.use(cors({
-  origin: 'https://civixa-scrs.netlify.app',
-  credentials: true
-}));
+app.use(cors(corsOptions));
+app.options(/.*/, cors(corsOptions));
+
+app.use(express.json({ limit: '1mb' }));
+app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 
 // Add COOP header for Google Sign-In popup compatibility
 app.use((req, res, next) => {
