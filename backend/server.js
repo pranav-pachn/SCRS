@@ -55,9 +55,9 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 };
 
-// Enable CORS for all routes — must come BEFORE body parsers
-// app.options handles preflight (OPTIONS) requests globally
-app.options('(.*)', cors(corsOptions));
+// Enable CORS for all routes — must come BEFORE body parsers.
+// app.use(cors()) with preflightContinue:false (the default) already
+// handles OPTIONS preflight requests automatically — no app.options() needed.
 app.use(cors(corsOptions));
 
 app.use(express.json({ limit: '1mb' }));
