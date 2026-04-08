@@ -97,6 +97,34 @@
     .dark .border-outline-variant {
       border-color: #334155 !important;
     }
+    .ui-toolbar-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(194, 198, 211, 0.9);
+      background: rgba(255, 255, 255, 0.84);
+      color: #334155;
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+      backdrop-filter: blur(14px);
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+    .ui-toolbar-button:hover {
+      background: #eff6ff;
+      border-color: #93c5fd;
+      color: #0f5ca8;
+      transform: translateY(-1px);
+    }
+    .dark .ui-toolbar-button {
+      border-color: #334155;
+      background: rgba(15, 23, 42, 0.84);
+      color: #dbeafe;
+      box-shadow: 0 14px 32px rgba(2, 6, 23, 0.34);
+    }
+    .dark .ui-toolbar-button:hover {
+      background: rgba(30, 41, 59, 0.98);
+      border-color: #60a5fa;
+      color: #ffffff;
+    }
   </style>
 </head>
 <body class="min-h-screen bg-background text-on-surface font-body dark:bg-slate-950 dark:text-slate-100">
@@ -145,7 +173,7 @@
 
       <div id="authLinks" class="space-y-2">
         <a id="loginLink" href="login.html" class="block w-full rounded-xl bg-primary px-4 py-2 text-center font-semibold text-on-primary">Login</a>
-        <a id="registerLink" href="register.html" class="block w-full rounded-xl border border-primary px-4 py-2 text-center font-semibold text-primary">Register</a>
+        <a id="registerLink" href="register.html" class="block w-full rounded-xl border border-primary px-4 py-2 text-center font-semibold text-primary dark:border-blue-400 dark:text-blue-300 dark:hover:bg-blue-900/20">Register</a>
       </div>
     </div>
   </aside>
@@ -162,7 +190,7 @@
         </nav>
       </div>
       <div class="flex items-center gap-3">
-        <button id="themeToggleBtn" class="rounded-full p-2 text-slate-500 transition-colors hover:bg-blue-50/50 dark:hover:bg-blue-900/20" type="button">
+        <button id="themeToggleBtn" class="ui-toolbar-button rounded-full p-2 text-slate-500 transition-colors hover:bg-blue-50/50 dark:hover:bg-blue-900/20" type="button">
           <span id="themeToggleIcon" class="material-symbols-outlined">dark_mode</span>
         </button>
       </div>

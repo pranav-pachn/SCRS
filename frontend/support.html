@@ -110,6 +110,48 @@
         .dark .border-outline-variant {
             border-color: #334155 !important;
         }
+        .ui-toolbar-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(194, 198, 211, 0.9);
+            background: rgba(255, 255, 255, 0.84);
+            color: #334155;
+            box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+            backdrop-filter: blur(14px);
+            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+        .ui-toolbar-button:hover {
+            background: #eff6ff;
+            border-color: #93c5fd;
+            color: #0f5ca8;
+            transform: translateY(-1px);
+        }
+        .ui-toolbar-search {
+            border: 1px solid rgba(194, 198, 211, 0.85);
+            background: rgba(255, 255, 255, 0.9);
+            color: #0f172a;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+        }
+        .ui-toolbar-search::placeholder { color: #64748b; }
+        .dark .ui-toolbar-button {
+            border-color: #334155;
+            background: rgba(15, 23, 42, 0.84);
+            color: #dbeafe;
+            box-shadow: 0 14px 32px rgba(2, 6, 23, 0.34);
+        }
+        .dark .ui-toolbar-button:hover {
+            background: rgba(30, 41, 59, 0.98);
+            border-color: #60a5fa;
+            color: #ffffff;
+        }
+        .dark .ui-toolbar-search {
+            border-color: #334155;
+            background: rgba(15, 23, 42, 0.95);
+            color: #f1f5f9;
+            box-shadow: none;
+        }
+        .dark .ui-toolbar-search::placeholder { color: #94a3b8; }
     </style>
 </head>
 <body class="bg-surface text-on-surface antialiased dark:bg-slate-950 dark:text-slate-100">
@@ -127,12 +169,12 @@
             <div class="relative hidden sm:block">
                 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
                 <label class="sr-only" for="topSearchInput">Search knowledge base resources</label>
-                <input id="topSearchInput" class="w-64 rounded-full border-none bg-surface-container py-2 pl-10 pr-4 text-sm text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary" placeholder="Search resources..." type="text" aria-label="Search knowledge base resources"/>
+                <input id="topSearchInput" class="ui-toolbar-search w-64 rounded-full border-none py-2 pl-10 pr-4 text-sm text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary" placeholder="Search resources..." type="text" aria-label="Search knowledge base resources"/>
             </div>
-            <button id="themeToggleBtn" class="rounded-full p-2 text-slate-500 transition-colors hover:bg-blue-50/50 dark:hover:bg-blue-900/20" type="button">
+            <button id="themeToggleBtn" class="ui-toolbar-button rounded-full p-2 text-slate-500 transition-colors hover:bg-blue-50/50 dark:hover:bg-blue-900/20" type="button">
                 <span id="themeToggleIcon" class="material-symbols-outlined">dark_mode</span>
             </button>
-            <button class="rounded-full p-1 transition-colors hover:bg-blue-50/50 dark:hover:bg-blue-900/20" type="button">
+            <button class="ui-toolbar-button rounded-full p-1 transition-colors hover:bg-blue-50/50 dark:hover:bg-blue-900/20" type="button">
                 <img id="headerAvatar" alt="User profile avatar" class="h-8 w-8 rounded-full border border-slate-300" src="https://ui-avatars.com/api/?name=Citizen+User&background=4f46e5&color=fff"/>
             </button>
         </div>

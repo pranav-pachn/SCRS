@@ -76,6 +76,22 @@
       border: 1px solid #dbe3ef;
       box-shadow: 0 22px 55px rgba(15, 23, 42, 0.14);
     }
+    .auth-outline-button {
+      border-color: rgba(255, 255, 255, 0.12) !important;
+      background: rgba(15, 23, 42, 0.24);
+      color: inherit;
+      box-shadow: 0 10px 30px rgba(2, 6, 23, 0.16);
+      backdrop-filter: blur(14px);
+    }
+    .auth-outline-button:hover {
+      background: rgba(56, 189, 248, 0.12);
+      border-color: rgba(56, 189, 248, 0.48) !important;
+    }
+    .auth-primary-button {
+      background: linear-gradient(135deg, #0369a1 0%, #2563eb 52%, #6d28d9 100%);
+      color: #ffffff !important;
+      box-shadow: 0 24px 55px rgba(8, 20, 45, 0.42);
+    }
     .floating-field { position: relative; }
     .floating-field + .floating-field { margin-top: 1rem; }
     .floating-icon {
@@ -84,21 +100,26 @@
     }
     .floating-input {
       width: 100%; border-radius: 1rem; background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.12); padding: 0.95rem 1.25rem 0.9rem 3.2rem;
-      color: inherit; font-size: 1rem; outline: none; transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      border: 1px solid rgba(255, 255, 255, 0.12); min-height: 4.15rem; padding: 1.55rem 1.25rem 0.65rem 3.2rem;
+      color: inherit; font-size: 1rem; line-height: 1.35; outline: none; transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
     .floating-input:focus { border-color: rgba(103, 232, 249, 0.8); box-shadow: 0 0 0 2px rgba(103, 232, 249, 0.15); }
     .floating-label {
-      position: absolute; left: 3.2rem; top: 0.95rem; font-size: 0.85rem; letter-spacing: 0.04em;
+      position: absolute; left: 3.2rem; top: 0.8rem; font-size: 0.82rem; letter-spacing: 0.04em;
       text-transform: uppercase; color: rgba(255, 255, 255, 0.7); pointer-events: none;
+      transform-origin: left top;
       transition: transform 0.2s ease, font-size 0.2s ease, color 0.2s ease;
     }
     .floating-field.floating-active .floating-label, .floating-field:focus-within .floating-label {
-      transform: translateY(-1.6rem) scale(0.82); color: #67e8f9;
+      transform: translateY(-0.95rem) scale(0.82); color: #67e8f9;
+    }
+    .floating-field.floating-active .floating-input,
+    .floating-field:focus-within .floating-input {
+      background: rgba(255, 255, 255, 0.07);
     }
     .field-hint, .field-status { margin-top: 0.45rem; font-size: 0.74rem; color: rgba(255, 255, 255, 0.68); }
     .info-tooltip {
-      position: absolute; top: 0.8rem; right: 1rem; font-size: 0.7rem; text-transform: uppercase;
+      position: absolute; top: 1rem; right: 1rem; font-size: 0.7rem; text-transform: uppercase;
       letter-spacing: 0.08em; color: rgba(255, 255, 255, 0.6); border-bottom: 1px dotted rgba(255, 255, 255, 0.5); cursor: help;
     }
     .role-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(132px, 1fr)); gap: 0.75rem; }
@@ -106,12 +127,14 @@
       border-radius: 1rem; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(15, 23, 42, 0.7);
       padding: 0.7rem; cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
     }
-    .role-card:hover, .role-card input:checked + .role-card-body {
+    .role-card:hover,
+    .role-card.selected {
       border-color: rgba(103, 232, 249, 0.55); background: rgba(103, 232, 249, 0.05); transform: translateY(-2px);
     }
     .role-card-body { display: flex; align-items: center; gap: 0.75rem; padding: 0.2rem 0.25rem; }
     .role-title { margin: 0; font-size: 0.95rem; font-weight: 600; }
     .role-desc { margin: 0; font-size: 0.76rem; color: rgba(255, 255, 255, 0.62); }
+    .role-card.selected .role-desc { color: rgba(186, 230, 253, 0.92); }
     .role-hint { margin-top: 0.7rem; font-size: 0.82rem; color: rgba(255, 255, 255, 0.72); }
     .admin-note {
       margin-top: 0.3rem; max-height: 0; opacity: 0; overflow: hidden; font-size: 0.72rem;
@@ -119,9 +142,10 @@
     }
     .admin-note.visible { max-height: 4rem; opacity: 1; }
     .show-password {
-      position: absolute; right: 1rem; top: 0.95rem; border: none; background: transparent; color: rgba(255, 255, 255, 0.7);
+      position: absolute; right: 1rem; top: 1.15rem; border: none; background: transparent; color: rgba(255, 255, 255, 0.7);
       cursor: pointer; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;
     }
+    .password-field .floating-input { padding-right: 5rem; }
     .strength-meter { margin-top: 0.85rem; height: 4px; overflow: hidden; border-radius: 999px; background: rgba(255, 255, 255, 0.1); }
     .strength-fill { display: block; height: 100%; width: 0; background: #fb7185; transition: width 0.3s ease, background 0.3s ease; }
     .strength-text { margin-top: 0.35rem; font-size: 0.72rem; color: rgba(255, 255, 255, 0.62); }
@@ -203,18 +227,36 @@
     #registerButton.loading { cursor: progress; }
     #registerButton.loading .btn-spinner { opacity: 1; animation: spinner 0.8s linear infinite; }
     @keyframes spinner { to { transform: rotate(360deg); } }
+    html.light .bg-auth-background { background: #ffffff !important; }
     html.light .text-auth-text { color: #0f172a !important; }
     html.light .text-auth-muted { color: #475569 !important; }
     html.light .border-white\/10 { border-color: #cbd5e1 !important; }
+    html.light .auth-outline-button {
+      background: rgba(255, 255, 255, 0.88);
+      color: #334155 !important;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+    html.light .auth-outline-button:hover {
+      background: #eff6ff;
+      color: #0f5ca8 !important;
+      border-color: #93c5fd !important;
+    }
+    html.light .auth-primary-button {
+      box-shadow: 0 20px 44px rgba(37, 99, 235, 0.22);
+    }
     html.light .auth-grid::before {
       background-image:
         linear-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px),
         linear-gradient(90deg, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
     }
     html.light .floating-input {
-      background: #f4f7fb;
+      background: #f8fafc;
       border-color: #cbd5e1;
       color: #0f172a;
+    }
+    html.light .floating-field.floating-active .floating-input,
+    html.light .floating-field:focus-within .floating-input {
+      background: #ffffff;
     }
     html.light .floating-icon,
     html.light .floating-label,
@@ -228,6 +270,11 @@
       border-color: #cbd5e1;
       background: #ffffff;
     }
+    html.light .role-card.selected {
+      border-color: #93c5fd;
+      background: #eff6ff;
+    }
+    html.light .role-card.selected .role-desc { color: #0f5ca8; }
     html.light .help-modal { background: rgba(15, 23, 42, 0.35); }
     html.light .help-modal__panel {
       background: #ffffff;
@@ -247,12 +294,12 @@
         <div><p class="font-headline text-lg font-extrabold tracking-tight">Civixa</p><p class="text-xs uppercase tracking-[0.24em] text-auth-muted">Create Access</p></div>
       </a>
       <div class="flex items-center gap-3">
-        <button id="themeToggleBtn" class="rounded-full border border-white/10 p-2 text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent" type="button" aria-label="Toggle theme">
+        <button id="themeToggleBtn" class="auth-outline-button rounded-full border border-white/10 p-2 text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent" type="button" aria-label="Toggle theme">
           <span id="themeToggleIcon" class="material-symbols-outlined">dark_mode</span>
         </button>
-        <a href="index.html" class="hidden rounded-full border border-white/10 px-4 py-2 text-sm font-semibold text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent sm:inline-flex">Back Home</a>
-        <a href="login.html" class="rounded-full border border-white/10 px-4 py-2 text-sm font-semibold text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent">Sign In</a>
-        <a href="support.html" class="hidden rounded-full border border-white/10 px-4 py-2 text-sm font-semibold text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent sm:inline-flex" data-help-trigger>Help</a>
+        <a href="index.html" class="auth-outline-button hidden rounded-full border border-white/10 px-4 py-2 text-sm font-semibold text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent sm:inline-flex">Back Home</a>
+        <a href="login.html" class="auth-outline-button rounded-full border border-white/10 px-4 py-2 text-sm font-semibold text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent">Sign In</a>
+        <a href="support.html" class="auth-outline-button hidden rounded-full border border-white/10 px-4 py-2 text-sm font-semibold text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent sm:inline-flex" data-help-trigger>Help</a>
       </div>
     </header>
     <main class="relative z-10 mx-auto flex min-h-[calc(100vh-88px)] w-full max-w-6xl items-center px-6 pb-10">
@@ -316,7 +363,7 @@
               <input id="terms" type="checkbox" required class="mt-1 h-5 w-5 rounded border-auth-border bg-auth-card-alt text-auth-accent focus:ring-auth-accent" />
               <label class="text-xs leading-relaxed text-auth-muted" for="terms">I agree to the <a class="font-bold text-auth-accent underline" href="terms.html">Terms of Service</a> and <a class="font-bold text-auth-accent underline" href="privacy.html">Privacy Policy</a>.</label>
             </div>
-            <button id="registerButton" type="submit" class="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-auth-primary to-auth-secondary py-4 font-headline font-bold text-auth-on-primary shadow-[0_24px_55px_rgba(5,7,15,0.55)] transition-all hover:opacity-95 active:scale-[0.98]">
+            <button id="registerButton" type="submit" class="auth-primary-button flex w-full items-center justify-center gap-2 rounded-2xl py-4 font-headline font-bold transition-all hover:opacity-95 active:scale-[0.98]">
               <span class="btn-spinner" aria-hidden="true"></span>
               <span class="btn-label">Create Civixa Account</span>
             </button>
@@ -486,9 +533,19 @@
         sync();
       });
       const roleRadios = document.querySelectorAll('input[name="role"]');
-      roleRadios.forEach(radio => radio.addEventListener("change", () => updateRoleHint(radio.value)));
+      const syncRoleCards = () => {
+        document.querySelectorAll(".role-card").forEach(card => {
+          const input = card.querySelector('input[name="role"]');
+          card.classList.toggle("selected", Boolean(input && input.checked));
+        });
+      };
+      roleRadios.forEach(radio => radio.addEventListener("change", () => {
+        updateRoleHint(radio.value);
+        syncRoleCards();
+      }));
       const selectedRole = document.querySelector('input[name="role"]:checked')?.value;
       if (selectedRole) updateRoleHint(selectedRole);
+      syncRoleCards();
       const passwordInput = document.getElementById("password");
       if (passwordInput) {
         passwordInput.addEventListener("input", () => updateStrengthMeter(passwordInput.value));

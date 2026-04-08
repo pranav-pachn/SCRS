@@ -77,6 +77,26 @@
       border: 1px solid #dbe3ef;
       box-shadow: 0 22px 55px rgba(15, 23, 42, 0.14);
     }
+    .auth-outline-button {
+      border-color: rgba(255, 255, 255, 0.12) !important;
+      background: rgba(15, 23, 42, 0.24);
+      color: inherit;
+      box-shadow: 0 10px 30px rgba(2, 6, 23, 0.16);
+      backdrop-filter: blur(14px);
+    }
+    .auth-outline-button:hover {
+      background: rgba(56, 189, 248, 0.12);
+      border-color: rgba(56, 189, 248, 0.48) !important;
+    }
+    .auth-primary-button {
+      background: linear-gradient(135deg, #0369a1 0%, #2563eb 52%, #6d28d9 100%);
+      color: #ffffff !important;
+      box-shadow: 0 24px 55px rgba(8, 20, 45, 0.42);
+    }
+    .auth-input {
+      min-height: 3.5rem;
+      line-height: 1.45;
+    }
     .auth-link:hover { color: #67e8f9; }
     .help-modal {
       position: fixed;
@@ -156,8 +176,22 @@
     html.light .text-auth-text { color: #0f172a !important; }
     html.light .text-auth-muted { color: #475569 !important; }
     html.light .text-auth-outline { color: #64748b !important; }
+    html.light .bg-auth-background { background: #ffffff !important; }
     html.light .border-white\/10 { border-color: #cbd5e1 !important; }
     html.light .bg-auth-card-alt { background: #f4f7fb !important; }
+    html.light .auth-outline-button {
+      background: rgba(255, 255, 255, 0.88);
+      color: #334155 !important;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+    html.light .auth-outline-button:hover {
+      background: #eff6ff;
+      color: #0f5ca8 !important;
+      border-color: #93c5fd !important;
+    }
+    html.light .auth-primary-button {
+      box-shadow: 0 20px 44px rgba(37, 99, 235, 0.22);
+    }
     html.light .auth-grid::before {
       background-image:
         linear-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px),
@@ -187,8 +221,8 @@
         </div>
       </a>
       <div class="flex items-center gap-3">
-        <a href="index.html" class="hidden rounded-full border border-white/10 px-4 py-2 text-sm font-semibold text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent sm:inline-flex">Back Home</a>
-        <button id="themeToggleBtn" class="rounded-full border border-white/10 p-2 text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent" type="button" aria-label="Toggle theme">
+        <a href="index.html" class="auth-outline-button hidden rounded-full border border-white/10 px-4 py-2 text-sm font-semibold text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent sm:inline-flex">Back Home</a>
+        <button id="themeToggleBtn" class="auth-outline-button rounded-full border border-white/10 p-2 text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent" type="button" aria-label="Toggle theme">
           <span id="themeToggleIcon" class="material-symbols-outlined">dark_mode</span>
         </button>
       </div>
@@ -220,7 +254,7 @@
                 <label class="block text-sm font-semibold text-auth-muted" for="email">Email Address</label>
                 <div class="relative">
                   <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"><span class="material-symbols-outlined text-auth-outline text-lg">mail</span></div>
-                  <input id="email" name="email" type="email" required placeholder="name@agency.gov" class="block w-full rounded-2xl border border-white/10 bg-auth-card-alt py-3 pl-10 pr-4 text-auth-text placeholder:text-auth-muted focus:border-auth-accent focus:ring-2 focus:ring-auth-accent/30" />
+                  <input id="email" name="email" type="email" required placeholder="name@agency.gov" class="auth-input block w-full rounded-2xl border border-white/10 bg-auth-card-alt py-3 pl-10 pr-4 text-auth-text placeholder:text-auth-muted focus:border-auth-accent focus:ring-2 focus:ring-auth-accent/30" />
                 </div>
               </div>
               <div class="space-y-2">
@@ -230,7 +264,7 @@
                 </div>
                 <div class="relative">
                   <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"><span class="material-symbols-outlined text-auth-outline text-lg">lock</span></div>
-                  <input id="password" name="password" type="password" required placeholder="••••••••" class="block w-full rounded-2xl border border-white/10 bg-auth-card-alt py-3 pl-10 pr-4 text-auth-text focus:border-auth-accent focus:ring-2 focus:ring-auth-accent/30" />
+                  <input id="password" name="password" type="password" required placeholder="Enter your password" class="auth-input block w-full rounded-2xl border border-white/10 bg-auth-card-alt py-3 pl-10 pr-4 text-auth-text focus:border-auth-accent focus:ring-2 focus:ring-auth-accent/30" />
                 </div>
               </div>
               <div class="flex items-center justify-between gap-3 text-sm">
@@ -246,11 +280,11 @@
                 </a>
                 <span class="text-[11px]">Still loads <a class="text-auth-accent" href="support.html">support.html</a></span>
               </div>
-              <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-auth-primary to-auth-secondary py-4 font-bold text-auth-on-primary shadow-[0_24px_55px_rgba(8,20,45,0.55)] transition-all hover:opacity-95 active:scale-[0.98]">
+              <button type="submit" class="auth-primary-button flex w-full items-center justify-center gap-2 rounded-full py-4 font-bold transition-all hover:opacity-95 active:scale-[0.98]">
                 Log In
                 <span class="material-symbols-outlined text-lg">arrow_forward</span>
               </button>
-              <a href="register.html" class="block rounded-2xl border border-white/10 py-3 text-center font-semibold text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent">Need an account? Sign up</a>
+              <a href="register.html" class="auth-outline-button block rounded-2xl border border-white/10 py-3 text-center font-semibold text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent">Need an account? Sign up</a>
             </form>
             <div class="relative my-8">
               <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
@@ -317,7 +351,7 @@
           <h4>Support &amp; escalation</h4>
           <p>Email: <a class="text-help-link" href="mailto:help@civixa.gov">help@civixa.gov</a></p>
           <p>Phone: (555) 010-Civixa (7277)</p>
-          <p>Live chat is available once you are logged in—look for the cascading chat bubble on the dashboard.</p>
+          <p>Live chat is available once you are logged in; look for the cascading chat bubble on the dashboard.</p>
         </section>
         <section class="help-modal__section">
           <h4>Tips to get unstuck</h4>
@@ -452,6 +486,7 @@
   </script>
 </body>
 </html>
+
 
 
 
