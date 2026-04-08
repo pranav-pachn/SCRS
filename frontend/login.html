@@ -336,6 +336,9 @@
   </div>
   <script src="auth.js"></script>
   <script>
+    const DEFAULT_API_BASE = "https://scrs-backend.onrender.com";
+    const API_BASE = (localStorage.getItem("SCRS_API_BASE") || DEFAULT_API_BASE).replace(/\/$/, "");
+
     function initTheme() {
       const savedTheme = localStorage.getItem("theme") || "light";
       const root = document.documentElement;
@@ -358,7 +361,7 @@
       event.preventDefault();
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
-      fetch("https://scrs-backend.onrender.com/auth/login", {
+      fetch(`${API_BASE}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ identifier: email, password })
@@ -380,7 +383,7 @@
     }
     window.addEventListener("load", function () {
       initTheme();
-      fetch("https://scrs-backend.onrender.com/auth/config")
+      fetch(`${API_BASE}/auth/config`)
         .then(res => res.json())
         .then(data => {
           if (data.success && data.googleClientId) {
@@ -393,7 +396,7 @@
         .catch(err => { console.error("Error fetching OAuth config:", err); });
     });
     function handleGoogleSignIn(response) {
-      fetch("https://scrs-backend.onrender.com/auth/google", {
+      fetch(`${API_BASE}/auth/google`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ credential: response.credential })

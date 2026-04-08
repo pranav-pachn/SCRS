@@ -401,6 +401,9 @@
   </div>
   <script src="auth.js"></script>
   <script>
+    const DEFAULT_API_BASE = "https://scrs-backend.onrender.com";
+    const API_BASE = (localStorage.getItem("SCRS_API_BASE") || DEFAULT_API_BASE).replace(/\/$/, "");
+
     function initTheme() {
       const savedTheme = localStorage.getItem("theme") || "light";
       const root = document.documentElement;
@@ -426,7 +429,7 @@
       if (password.length < 6) { showNotification("Password must be at least 6 characters", "error"); return; }
       if (password !== confirmPassword) { showNotification("Passwords do not match", "error"); return; }
       setButtonLoading(true);
-      fetch("https://scrs-backend.onrender.com/auth/register", {
+      fetch(`${API_BASE}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password, role })
@@ -501,7 +504,7 @@
       }
     }
     function handleGoogleSignUp(response) {
-      fetch("https://scrs-backend.onrender.com/auth/google", {
+      fetch(`${API_BASE}/auth/google`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ credential: response.credential })
@@ -530,7 +533,7 @@
     window.addEventListener("load", function () {
       initTheme();
       initRegisterEnhancements();
-      fetch("https://scrs-backend.onrender.com/auth/config")
+      fetch(`${API_BASE}/auth/config`)
         .then(res => res.json())
         .then(data => {
           if (data.success && data.googleClientId) {
