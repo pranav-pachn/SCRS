@@ -53,12 +53,26 @@ const corsOptions = {
   credentials: true
 };
 
-// Restrict CORS to the production frontend origin.
-app.use(cors(corsOptions));
-app.options(/.*/, cors(corsOptions));
-
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true, limit: '1mb' }));
+
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+
+  if (origin && allowedOrigins.has(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', req.headers['access-control-request-headers'] || 'Content-Type, Authorization');
+    res.setHeader('Vary', 'Origin');
+
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(204);
+    }
+  }
+
+  return next();
+});
 
 // Add COOP header for Google Sign-In popup compatibility
 app.use((req, res, next) => {
