@@ -33,6 +33,8 @@ const JWT_EXPIRES_IN = '2h';
 const allowedOrigins = new Set(
   [
     process.env.FRONTEND_ORIGIN,
+    'https://scr-system.netlify.app',
+    'https://www.scr-system.netlify.app',
     'https://civixa-scrs.netlify.app',
     'https://www.civixa-scrs.netlify.app',
     'http://localhost:3000',
