@@ -2,7 +2,7 @@
 -- Date: 2026-03-03
 -- Purpose: Add image_url column to store user-uploaded images with complaints
 
-USE scrs;
+
 
 -- Add image_url column to store base64 image data URLs or external image URLs
 -- MEDIUMTEXT type to handle large base64 strings (up to 16MB)

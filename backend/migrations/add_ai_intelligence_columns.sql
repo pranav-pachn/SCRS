@@ -2,7 +2,7 @@
 -- Date: 2026-02-22
 -- Purpose: Add summary, tags, and ai_suggested_priority columns for AI Complaint Intelligence Module
 
-USE scrs;
+
 
 -- Add summary column (TEXT, nullable)
 -- Note: MySQL doesn't support IF NOT EXISTS for ALTER TABLE ADD COLUMN

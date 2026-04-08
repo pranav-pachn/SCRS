@@ -2,7 +2,7 @@
 -- Date: 2026-02-22
 -- Purpose: Store internal admin remarks for complaints (not visible to citizens)
 
-USE scrs;
+
 
 -- Create complaint_remarks table
 CREATE TABLE IF NOT EXISTS complaint_remarks (
@@ -17,13 +17,13 @@ CREATE TABLE IF NOT EXISTS complaint_remarks (
 );
 
 -- Indexes for performance
-CREATE INDEX IF NOT EXISTS idx_remarks_complaint 
+CREATE INDEX idx_remarks_complaint 
 ON complaint_remarks(complaint_id);
 
-CREATE INDEX IF NOT EXISTS idx_remarks_admin 
+CREATE INDEX idx_remarks_admin 
 ON complaint_remarks(admin_id);
 
-CREATE INDEX IF NOT EXISTS idx_remarks_created 
+CREATE INDEX idx_remarks_created 
 ON complaint_remarks(created_at DESC);
 
 -- Verify table was created
