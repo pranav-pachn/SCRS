@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -296,7 +296,7 @@
         });
 
         function loadProfileData() {
-            fetch('https://scrs-backend.onrender.com/api/admin/profile', {
+            fetch('https://scrs-3rwc.onrender.com/api/admin/profile', {
                 headers: getAuthHeaders()
             })
             .then(response => response.json())
@@ -351,7 +351,7 @@
                 bio: document.getElementById('bio').value
             };
 
-            fetch('https://scrs-backend.onrender.com/api/admin/profile', {
+            fetch('https://scrs-3rwc.onrender.com/api/admin/profile', {
                 method: 'PUT',
                 headers: getAuthHeaders(),
                 body: JSON.stringify(formData)
@@ -391,7 +391,7 @@
                 return;
             }
 
-            fetch('https://scrs-backend.onrender.com/api/admin/password', {
+            fetch('https://scrs-3rwc.onrender.com/api/admin/password', {
                 method: 'PUT',
                 headers: getAuthHeaders(),
                 body: JSON.stringify({
@@ -425,7 +425,7 @@
                 weekly_summary: document.getElementById('weeklySummary').checked
             };
 
-            fetch('https://scrs-backend.onrender.com/api/admin/notifications/preferences', {
+            fetch('https://scrs-3rwc.onrender.com/api/admin/notifications/preferences', {
                 method: 'PUT',
                 headers: getAuthHeaders(),
                 body: JSON.stringify(preferences)

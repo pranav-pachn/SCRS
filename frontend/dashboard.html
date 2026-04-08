@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -139,7 +139,7 @@
 
       <!-- Complaints by Category -->
       <div class="bg-card border border-gray-700 rounded-xl p-6 mb-8">
-        <h2 class="text-2xl font-bold text-white mb-2">ðŸ“Š Complaints by Category</h2>
+        <h2 class="text-2xl font-bold text-white mb-2">📊 Complaints by Category</h2>
         <p class="text-gray-400 text-sm mb-6">Breakdown of issues by type to identify common problems in the area.</p>
         <ul id="categoryStats" class="space-y-3">
           <!-- Data will be loaded here -->
@@ -148,7 +148,7 @@
 
       <!-- Complaints by Status -->
       <div class="bg-card border border-gray-700 rounded-xl p-6 mb-8">
-        <h2 class="text-2xl font-bold text-white mb-2">ðŸ“ˆ Complaints by Status</h2>
+        <h2 class="text-2xl font-bold text-white mb-2">📈 Complaints by Status</h2>
         <p class="text-gray-400 text-sm mb-6">Current status distribution showing progress on issue resolution.</p>
         <ul id="statusStats" class="space-y-3">
           <!-- Data will be loaded here -->
@@ -157,7 +157,7 @@
 
       <!-- Recent Escalations -->
       <div class="bg-card border border-gray-700 rounded-xl p-6">
-        <h2 class="text-2xl font-bold text-white mb-2">ðŸš¨ Recent Escalations</h2>
+        <h2 class="text-2xl font-bold text-white mb-2">🚨 Recent Escalations</h2>
         <p class="text-gray-400 text-sm mb-6">Issues that were escalated automatically because multiple citizens reported the same problem.</p>
         <ul id="escalationStats" class="space-y-3">
           <!-- Escalation events will be loaded here -->
@@ -173,7 +173,7 @@
   </footer>
 
   <script>
-    // â”€â”€ Security helper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Security helper ───────────────────────────────────────────────────────
     function escapeHtml(value) {
       const str = String(value == null ? '' : value);
       return str
@@ -183,9 +183,9 @@
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#x27;');
     }
-    // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ─────────────────────────────────────────────────────────────────────────
 
-    const API_BASE = 'https://scrs-backend.onrender.com';
+    const API_BASE = 'https://scrs-3rwc.onrender.com';
 
     document.addEventListener('DOMContentLoaded', () => {
       loadCategoryStats();
