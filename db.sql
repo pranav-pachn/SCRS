@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS users (
 -- Complaints table (with soft delete support for audit trail)
 CREATE TABLE IF NOT EXISTS complaints (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  complaint_id VARCHAR(20) GENERATED ALWAYS AS (CONCAT('COMP-', LPAD(id, 4, '0'))) STORED,
+  complaint_id VARCHAR(20),
   user_id INT NULL,
   category VARCHAR(50) NOT NULL,
   description TEXT NOT NULL,
