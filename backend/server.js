@@ -44,39 +44,30 @@ const allowedOrigins = new Set(
 
 const corsOptions = {
   origin(origin, callback) {
+    // Allow requests with no origin (server-to-server, curl, Render health checks)
     if (!origin || allowedOrigins.has(origin)) {
       return callback(null, true);
     }
-
     return callback(new Error(`CORS blocked for origin: ${origin}`));
   },
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 };
+
+// Enable CORS for all routes — must come BEFORE body parsers
+// app.options handles preflight (OPTIONS) requests globally
+app.options('*', cors(corsOptions));
+app.use(cors(corsOptions));
 
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 
+// COOP header: 'unsafe-none' is required for Google Sign-In's GSI iframe
+// to send postMessage to the opener window. 'same-origin-allow-popups'
+// was blocking the iframe-based GSI button communication.
 app.use((req, res, next) => {
-  const origin = req.headers.origin;
-
-  if (origin && allowedOrigins.has(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', req.headers['access-control-request-headers'] || 'Content-Type, Authorization');
-    res.setHeader('Vary', 'Origin');
-
-    if (req.method === 'OPTIONS') {
-      return res.sendStatus(204);
-    }
-  }
-
-  return next();
-});
-
-// Add COOP header for Google Sign-In popup compatibility
-app.use((req, res, next) => {
-  res.set('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+  res.set('Cross-Origin-Opener-Policy', 'unsafe-none');
   next();
 });
 
