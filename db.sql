@@ -1,7 +1,5 @@
-CREATE DATABASE IF NOT EXISTS scrs;
-USE scrs;
-
 -- Users table (citizens & admins)
+
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
@@ -57,26 +55,26 @@ CREATE TABLE IF NOT EXISTS attachments (
 -- INDEX STRATEGY FOR PERFORMANCE
 -- ============================================================
 -- Single-column indexes for WHERE clause filtering
-CREATE INDEX IF NOT EXISTS idx_complaints_status ON complaints(status);
-CREATE INDEX IF NOT EXISTS idx_complaints_priority ON complaints(priority);
-CREATE INDEX IF NOT EXISTS idx_complaints_category ON complaints(category);
-CREATE INDEX IF NOT EXISTS idx_complaints_created_at ON complaints(created_at);
+CREATE INDEX idx_complaints_status ON complaints(status);
+CREATE INDEX idx_complaints_priority ON complaints(priority);
+CREATE INDEX idx_complaints_category ON complaints(category);
+CREATE INDEX idx_complaints_created_at ON complaints(created_at);
 
 -- Composite indexes for common query patterns
 -- Used for: WHERE category = ? AND location = ? (duplicate detection)
-CREATE INDEX IF NOT EXISTS idx_complaints_category_location ON complaints(category, location);
+CREATE INDEX idx_complaints_category_location ON complaints(category, location);
 
 -- Used for: WHERE user_id = ? AND is_deleted = FALSE (user's complaints)
-CREATE INDEX IF NOT EXISTS idx_complaints_user_is_deleted ON complaints(user_id, is_deleted);
+CREATE INDEX idx_complaints_user_is_deleted ON complaints(user_id, is_deleted);
 
 -- Used for: WHERE is_deleted = FALSE ORDER BY created_at DESC (pagination)
-CREATE INDEX IF NOT EXISTS idx_complaints_is_deleted_created ON complaints(is_deleted, created_at DESC);
+CREATE INDEX idx_complaints_is_deleted_created ON complaints(is_deleted, created_at DESC);
 
 -- Soft delete support: Filter out deleted records
-CREATE INDEX IF NOT EXISTS idx_complaints_is_deleted ON complaints(is_deleted);
+CREATE INDEX idx_complaints_is_deleted ON complaints(is_deleted);
 
 -- Full-text index for description search (InnoDB in modern MySQL supports FULLTEXT)
-CREATE FULLTEXT INDEX IF NOT EXISTS ft_complaint_description ON complaints(description);
+CREATE FULLTEXT INDEX ft_complaint_description ON complaints(description);
 
 -- =========================
 -- Common operations / queries
