@@ -89,6 +89,20 @@ app.get('/.well-known/appspecific/com.chrome.devtools.json', (_req, res) => {
 });
 
 // =======================
+// PUBLIC AUTH CONFIG (no DB required)
+// GET /auth/config
+// GET /api/auth/config
+// Must be registered early — before any DB-guarded middleware
+// =======================
+const GOOGLE_CLIENT_ID_FALLBACK = '1009283935906-gjpka0rje9np9rp8uaj6n162l3a3n396.apps.googleusercontent.com';
+function sendAuthConfig(_req, res) {
+  const clientId = process.env.GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID_FALLBACK;
+  return res.json({ success: true, googleClientId: clientId });
+}
+app.get('/auth/config', sendAuthConfig);
+app.get('/api/auth/config', sendAuthConfig);
+
+// =======================
 // MySQL Connection Pool Setup
 // =======================
 // Using connection pooling for production-grade reliability:
@@ -881,18 +895,6 @@ app.post('/auth/google', async (req, res) => {
   }
 });
 
-// GET /auth/config (public endpoint)
-// GET /api/auth/config (public endpoint alias)
-// Returns public OAuth client configuration
-function sendAuthConfig(_req, res) {
-  return res.json({
-    success: true,
-    googleClientId: process.env.GOOGLE_CLIENT_ID || '1009283935906-gjpka0rje9np9rp8uaj6n162l3a3n396.apps.googleusercontent.com'
-  });
-}
-
-app.get('/auth/config', sendAuthConfig);
-app.get('/api/auth/config', sendAuthConfig);
 
 // ---------------------------------------
 // AUTH: ME
