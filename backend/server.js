@@ -882,13 +882,17 @@ app.post('/auth/google', async (req, res) => {
 });
 
 // GET /auth/config (public endpoint)
+// GET /api/auth/config (public endpoint alias)
 // Returns public OAuth client configuration
-app.get('/auth/config', (req, res) => {
-  res.json({
+function sendAuthConfig(_req, res) {
+  return res.json({
     success: true,
     googleClientId: process.env.GOOGLE_CLIENT_ID || '1009283935906-gjpka0rje9np9rp8uaj6n162l3a3n396.apps.googleusercontent.com'
   });
-});
+}
+
+app.get('/auth/config', sendAuthConfig);
+app.get('/api/auth/config', sendAuthConfig);
 
 // ---------------------------------------
 // AUTH: ME

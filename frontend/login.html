@@ -338,6 +338,7 @@
   <script>
     const DEFAULT_API_BASE = "https://scrs-backend.onrender.com";
     const API_BASE = (localStorage.getItem("SCRS_API_BASE") || DEFAULT_API_BASE).replace(/\/$/, "");
+    const FALLBACK_GOOGLE_CLIENT_ID = "1009283935906-gjpka0rje9np9rp8uaj6n162l3a3n396.apps.googleusercontent.com";
 
     function initTheme() {
       const savedTheme = localStorage.getItem("theme") || "light";
@@ -381,19 +382,42 @@
           showNotification("Connection error", "error");
         });
     }
-    window.addEventListener("load", function () {
-      initTheme();
-      fetch(`${API_BASE}/auth/config`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.success && data.googleClientId) {
-            google.accounts.id.initialize({ client_id: data.googleClientId, callback: handleGoogleSignIn });
-            google.accounts.id.renderButton(document.getElementById("google-signin-button"), { theme: "outline", size: "large", shape: "pill", width: 280 });
-          } else {
-            console.error("Failed to load Google Client ID from backend");
+    async function loadOAuthConfig() {
+      const endpoints = [
+        `${API_BASE}/auth/config`,
+        `${API_BASE}/api/auth/config`
+      ];
+
+      for (const endpoint of endpoints) {
+        try {
+          const res = await fetch(endpoint);
+          if (!res.ok) {
+            continue;
           }
-        })
-        .catch(err => { console.error("Error fetching OAuth config:", err); });
+
+          const data = await res.json();
+          if (data && data.success && data.googleClientId) {
+            return data.googleClientId;
+          }
+        } catch (error) {
+          console.error(`OAuth config fetch failed for ${endpoint}:`, error);
+        }
+      }
+
+      return FALLBACK_GOOGLE_CLIENT_ID;
+    }
+
+    window.addEventListener("load", async function () {
+      initTheme();
+
+      const googleClientId = await loadOAuthConfig();
+      if (!googleClientId) {
+        console.error("Failed to load Google Client ID");
+        return;
+      }
+
+      google.accounts.id.initialize({ client_id: googleClientId, callback: handleGoogleSignIn });
+      google.accounts.id.renderButton(document.getElementById("google-signin-button"), { theme: "outline", size: "large", shape: "pill", width: 280 });
     });
     function handleGoogleSignIn(response) {
       fetch(`${API_BASE}/auth/google`, {
