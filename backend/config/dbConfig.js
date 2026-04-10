@@ -25,6 +25,7 @@ function getDbConfig() {
       user: env.DB_USER,
       password: env.DB_PASSWORD,
       database: env.DB_NAME || env.MYSQLDATABASE || env.DB_DATABASE,
+      connectTimeout: 30000,
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0,

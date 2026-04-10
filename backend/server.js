@@ -183,7 +183,8 @@ async function initDbConnectionWithRetry() {
     const testConnection = await dbConnection.getConnection();
     testConnection.release();
     
-    console.log("✅ Connected to MySQL");
+    const host = dbPoolConfig.host || 'unknown-host';
+    console.log(`✅ Connected to MySQL [Host: ${host}]`);
 
     
     // Make dbConnection available to routes via app.locals and global
@@ -213,7 +214,8 @@ async function initDbConnectionWithRetry() {
     }
   } catch (error) {
     dbConnection = null;
-    console.error("❌ DB connection failed:", error.message);
+    const host = dbPoolConfig.host || 'unknown-host';
+    console.error(`❌ DB connection failed [Host: ${host}]:`, error.message);
 
     console.log('🔁 Retrying DB connection in 5s...');
     setTimeout(initDbConnectionWithRetry, 5000);
