@@ -11,9 +11,9 @@ ALTER TABLE complaints
 ADD COLUMN summary TEXT NULL 
 AFTER description;
 
--- Add tags column (JSON, nullable)
+-- Add tags column (TEXT, nullable - MySQL 5.5 compatible fallback for JSON)
 ALTER TABLE complaints 
-ADD COLUMN tags JSON NULL 
+ADD COLUMN tags TEXT NULL 
 AFTER summary;
 
 -- Add ai_suggested_priority column (ENUM, nullable)

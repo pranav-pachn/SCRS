@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS complaint_remarks (
   complaint_id INT NOT NULL,
   admin_id INT NOT NULL,
   remark_text TEXT NOT NULL,
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   
   FOREIGN KEY (complaint_id) REFERENCES complaints(id) ON DELETE CASCADE,
   FOREIGN KEY (admin_id) REFERENCES users(id) ON DELETE CASCADE
