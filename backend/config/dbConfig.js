@@ -24,10 +24,7 @@ function getDbConfig() {
       port: parseInt(env.DB_PORT || '3306', 10),
       user: env.DB_USER,
       password: env.DB_PASSWORD,
-      database: env.DB_NAME,
-      ssl: {
-        rejectUnauthorized: false
-      },
+      database: env.DB_NAME || env.MYSQLDATABASE || env.DB_DATABASE,
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0,

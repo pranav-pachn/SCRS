@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS users (
   email VARCHAR(150) NOT NULL UNIQUE,
   password_hash VARCHAR(255),
   role ENUM('citizen','admin','authority') NOT NULL DEFAULT 'citizen',
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Complaints table (with soft delete support for audit trail)
@@ -22,8 +22,8 @@ CREATE TABLE IF NOT EXISTS complaints (
   is_deleted BOOLEAN DEFAULT FALSE,
   deleted_at DATETIME NULL,
   deleted_by INT NULL,
-  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
   FOREIGN KEY (deleted_by) REFERENCES users(id) ON DELETE SET NULL
 );
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS complaint_history (
   old_status VARCHAR(50),
   new_status VARCHAR(50),
   note TEXT,
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (complaint_id) REFERENCES complaints(id) ON DELETE CASCADE,
   FOREIGN KEY (changed_by) REFERENCES users(id) ON DELETE SET NULL
 );
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS attachments (
   complaint_id INT NOT NULL,
   filename VARCHAR(255) NOT NULL,
   url VARCHAR(2083) NOT NULL,
-  uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (complaint_id) REFERENCES complaints(id) ON DELETE CASCADE
 );
 
@@ -73,8 +73,8 @@ CREATE INDEX idx_complaints_is_deleted_created ON complaints(is_deleted, created
 -- Soft delete support: Filter out deleted records
 CREATE INDEX idx_complaints_is_deleted ON complaints(is_deleted);
 
--- Full-text index for description search (InnoDB in modern MySQL supports FULLTEXT)
-CREATE FULLTEXT INDEX ft_complaint_description ON complaints(description);
+-- Full-text index disabled for MySQL 5.5 compatibility
+-- CREATE FULLTEXT INDEX ft_complaint_description ON complaints(description);
 
 -- =========================
 -- Common operations / queries
