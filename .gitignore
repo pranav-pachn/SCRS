@@ -64,3 +64,7 @@ desktop.ini
 
 # Generated uploads/media
 uploads/
+
+# Sensitive data
+passwords/
+backend/seedPredefinedUsers.js

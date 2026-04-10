@@ -10,6 +10,9 @@
    ========================================================= */
 
 /* ========== MODERN COLOR SYSTEM ========== */
+.relative{
+    color: black;
+}
 :root {
     /* Backgrounds - Clean & Flat */
     --bg-primary: #ffffff;
