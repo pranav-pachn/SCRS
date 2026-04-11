@@ -319,6 +319,37 @@ function sanitizeUserText(value, maxLength) {
     : sanitized;
 }
 
+function isTransientDbError(error) {
+  return ['ECONNRESET', 'PROTOCOL_CONNECTION_LOST', 'ETIMEDOUT', 'EPIPE'].includes(error && error.code);
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function executeDbWithRetry(sql, params = [], options = {}) {
+  const retries = Number.isInteger(options.retries) ? options.retries : 1;
+  const retryDelayMs = Number.isInteger(options.retryDelayMs) ? options.retryDelayMs : 250;
+
+  if (!dbConnection) {
+    const error = new Error('Database is not connected.');
+    error.code = 'DB_NOT_CONNECTED';
+    throw error;
+  }
+
+  try {
+    return await dbConnection.execute(sql, params);
+  } catch (error) {
+    if (!isTransientDbError(error) || retries <= 0) {
+      throw error;
+    }
+
+    console.warn(`⚠️ Transient DB error (${error.code}) during query. Retrying once...`);
+    await sleep(retryDelayMs);
+    return dbConnection.execute(sql, params);
+  }
+}
+
 // requireRole middleware moved to middleware/requireRole.js
 // Import it: const requireRole = require('./middleware/requireRole');
 
@@ -782,7 +813,7 @@ app.post('/auth/login', async (req, res) => {
     }
 
     const normalizedIdentifier = String(loginIdentifier).trim().toLowerCase();
-    const [rows] = await dbConnection.execute(
+    const [rows] = await executeDbWithRetry(
       `SELECT id, name, email, password_hash, role
        FROM users
        WHERE email = ? OR LOWER(name) = ?
@@ -813,6 +844,12 @@ app.post('/auth/login', async (req, res) => {
     return res.json({ success: true, token, user });
   } catch (error) {
     console.error('❌ Error in POST /auth/login:', error);
+    if (isTransientDbError(error) || error.code === 'DB_NOT_CONNECTED') {
+      return res.status(503).json({
+        success: false,
+        message: 'Database connection was interrupted. Please try again.'
+      });
+    }
     return res.status(500).json({ success: false, message: 'Internal server error.' });
   }
 });

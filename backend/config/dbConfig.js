@@ -29,7 +29,8 @@ function getDbConfig() {
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0,
-      enableKeepAlive: true
+      enableKeepAlive: true,
+      keepAliveInitialDelay: 0
     };
   }
 
@@ -43,7 +44,8 @@ function getDbConfig() {
     waitForConnections: true,
     connectionLimit: 5,
     queueLimit: 0,
-    enableKeepAlive: true
+    enableKeepAlive: true,
+    keepAliveInitialDelay: 0
   };
 }
 

@@ -25,36 +25,38 @@
     </button>
 
     <!-- Sidebar Navigation -->
-    <aside class="w-64 bg-slate-800 border-r border-slate-700 p-6 hidden md:flex flex-col fixed h-screen">
+    <aside class="fixed h-screen w-64 flex-col border-r border-slate-700 bg-slate-800 p-6 hidden md:flex">
         <div class="mb-8">
             <div class="flex items-center gap-3">
                 <img src="assests/Civixa_logo_new.png" alt="Civixa Logo" class="h-10 w-auto object-contain block">
                 <h2 class="text-2xl font-bold leading-none text-white">Civixa</h2>
             </div>
-            <p class="text-xs text-gray-400 mt-2">Civixa</p>
+            <p class="mt-2 text-xs font-medium uppercase tracking-widest text-gray-400">Admin Portal</p>
         </div>
-        <nav class="space-y-2 flex-1">
+        <nav class="flex-1 space-y-2">
             <a href="dashboard-admin.html"
-                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">
-                Dashboard</a>
+                class="flex items-center gap-3 rounded-xl border-l-4 border-transparent px-4 py-3 text-sm font-medium text-gray-300 transition-colors hover:bg-slate-700 hover:text-white">
+                <i class="fas fa-gauge-high w-4 text-center"></i><span>Dashboard</span></a>
             <a href="complaint-details-admin.html"
-                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">
-                Assigned Complaints</a>
+                class="flex items-center gap-3 rounded-xl border-l-4 border-transparent px-4 py-3 text-sm font-medium text-gray-300 transition-colors hover:bg-slate-700 hover:text-white">
+                <i class="fas fa-list-check w-4 text-center"></i><span>Assigned Complaints</span></a>
             <a href="admin-analytics.html"
-                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">
-                Analytics</a>
-            <a href="admin-profile.html"
-                class="block px-4 py-2 rounded-lg bg-slate-800 text-indigo-400 font-medium hover:bg-slate-800 transition duration-300">
-                Profile & Settings</a>
+                class="flex items-center gap-3 rounded-xl border-l-4 border-transparent px-4 py-3 text-sm font-medium text-gray-300 transition-colors hover:bg-slate-700 hover:text-white">
+                <i class="fas fa-chart-line w-4 text-center"></i><span>Analytics</span></a>
+            <a href="admin-profile.html" aria-current="page"
+                class="flex items-center gap-3 rounded-xl border-l-4 border-indigo-500 bg-slate-700 px-4 py-3 text-sm font-semibold text-indigo-300 transition-colors">
+                <i class="fas fa-user-gear w-4 text-center"></i><span>Profile & Settings</span></a>
             <a href="support.html"
-                class="block px-4 py-2 rounded-lg hover:bg-slate-700 transition duration-300 text-gray-300 hover:text-gray-100">Support</a>
+                class="flex items-center gap-3 rounded-xl border-l-4 border-transparent px-4 py-3 text-sm font-medium text-gray-300 transition-colors hover:bg-slate-700 hover:text-white">
+                <i class="fas fa-circle-question w-4 text-center"></i><span>Support</span></a>
         </nav>
         <div class="border-t border-slate-700 pt-4">
-            <div class="space-y-2">
-                <p class="text-sm text-gray-400 font-medium">Admin:</p>
-                <p class="font-semibold text-white text-sm" id="authName">Admin User</p>
+            <div class="space-y-3">
+                <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Admin</p>
+                <p class="truncate text-sm font-semibold text-white" id="authName">Admin User</p>
                 <button onclick="logout()"
-                    class="w-full px-3 py-2 rounded-lg bg-red-600/20 text-red-400 hover:bg-red-600/30 transition text-sm font-medium">Logout</button>
+                    class="flex w-full items-center justify-center gap-2 rounded-xl bg-red-600/20 px-4 py-3 text-sm font-semibold text-red-400 transition-colors hover:bg-red-600/30 hover:text-red-300">
+                    <i class="fas fa-sign-out-alt"></i><span>Logout</span></button>
             </div>
         </div>
     </aside>
@@ -289,37 +291,52 @@
             if (!auth) return;
 
             // Load profile data
-            loadProfileData();
+            loadProfileData(auth);
             
             // Setup event listeners
             setupEventListeners();
+            loadNotificationPreferences();
         });
 
-        function loadProfileData() {
-            fetch('https://scrs-3rwc.onrender.com/api/admin/profile', {
-                headers: getAuthHeaders()
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    populateProfileForm(data.profile);
-                } else {
-                    showNotification('Failed to load profile data', 'error');
-                }
-            })
-            .catch(error => {
-                console.error('Error loading profile:', error);
-                showNotification('Connection error', 'error');
-            });
+        async function parseJsonSafe(response) {
+            const text = await response.text();
+            try {
+                return JSON.parse(text);
+            } catch (_error) {
+                return {
+                    success: false,
+                    message: text && text.trim() ? text.trim() : `Non-JSON response (status ${response.status})`
+                };
+            }
+        }
+
+        function loadProfileData(authData) {
+            const auth = authData || getStoredAuth();
+            if (!auth || !auth.user) {
+                return;
+            }
+
+            populateProfileForm(auth.user);
         }
 
         function populateProfileForm(profile) {
-            document.getElementById('fullName').value = profile.name || 'Admin User';
-            document.getElementById('email').value = profile.email || 'admin@civixa.com';
-            document.getElementById('phone').value = profile.phone || '+91 98765 43210';
-            document.getElementById('department').value = profile.department || 'municipal';
-            document.getElementById('bio').value = profile.bio || '';
-            document.getElementById('authName').textContent = profile.name || 'Admin User';
+            const name = profile.name || 'Admin User';
+            const email = profile.email || 'admin@civixa.com';
+            const phone = profile.phone || '+91 98765 43210';
+            const department = profile.department || 'municipal';
+            const bio = profile.bio || 'Experienced municipal administrator with expertise in civic complaint management and public service delivery.';
+
+            document.getElementById('fullName').value = name;
+            document.getElementById('email').value = email;
+            document.getElementById('phone').value = phone;
+            document.getElementById('department').value = department;
+            document.getElementById('bio').value = bio;
+            document.getElementById('authName').textContent = name;
+
+            const profileCardName = document.querySelector('.space-y-6 h3.text-xl');
+            const profileCardEmail = document.querySelector('.space-y-6 h3.text-xl + p');
+            if (profileCardName) profileCardName.textContent = name;
+            if (profileCardEmail) profileCardEmail.textContent = email;
         }
 
         function setupEventListeners() {
@@ -344,25 +361,42 @@
 
         function updateProfile() {
             const formData = {
-                name: document.getElementById('fullName').value,
-                email: document.getElementById('email').value,
+                name: document.getElementById('fullName').value.trim(),
+                email: document.getElementById('email').value.trim(),
                 phone: document.getElementById('phone').value,
                 department: document.getElementById('department').value,
                 bio: document.getElementById('bio').value
             };
 
-            fetch('https://scrs-3rwc.onrender.com/api/admin/profile', {
+            fetch('https://scrs-3rwc.onrender.com/auth/me', {
                 method: 'PUT',
-                headers: getAuthHeaders(),
-                body: JSON.stringify(formData)
+                headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
+                body: JSON.stringify({
+                    name: formData.name,
+                    email: formData.email
+                })
             })
-            .then(response => response.json())
+            .then(parseJsonSafe)
             .then(data => {
                 if (data.success) {
+                    if (data.token && data.user) {
+                        setStoredAuth(data.token, data.user);
+                    }
+
+                    const stored = getStoredAuth();
+                    const updatedProfile = Object.assign({}, stored.user || {}, {
+                        phone: formData.phone,
+                        department: formData.department,
+                        bio: formData.bio
+                    });
+                    if (stored.token) {
+                        setStoredAuth(stored.token, updatedProfile);
+                    }
+
                     showNotification('Profile updated successfully', 'success');
-                    document.getElementById('authName').textContent = formData.name;
+                    populateProfileForm(updatedProfile);
                 } else {
-                    showNotification('Failed to update profile', 'error');
+                    showNotification(data.message || 'Failed to update profile', 'error');
                 }
             })
             .catch(error => {
@@ -386,22 +420,29 @@
                 return;
             }
 
-            if (newPassword.length < 8) {
-                showNotification('Password must be at least 8 characters long', 'error');
+            if (newPassword.length < 6) {
+                showNotification('Password must be at least 6 characters long', 'error');
                 return;
             }
 
-            fetch('https://scrs-3rwc.onrender.com/api/admin/password', {
+            fetch('https://scrs-3rwc.onrender.com/auth/me', {
                 method: 'PUT',
-                headers: getAuthHeaders(),
+                headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
                 body: JSON.stringify({
-                    current_password: currentPassword,
-                    new_password: newPassword
+                    name: document.getElementById('fullName').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    currentPassword,
+                    newPassword
                 })
             })
-            .then(response => response.json())
+            .then(parseJsonSafe)
             .then(data => {
                 if (data.success) {
+                    if (data.token && data.user) {
+                        const stored = getStoredAuth();
+                        setStoredAuth(data.token, Object.assign({}, stored.user || {}, data.user));
+                        populateProfileForm(Object.assign({}, stored.user || {}, data.user));
+                    }
                     showNotification('Password updated successfully', 'success');
                     // Clear password fields
                     document.getElementById('currentPassword').value = '';
@@ -417,31 +458,38 @@
             });
         }
 
-        function updateNotificationPreferences() {
-            const preferences = {
-                email_notifications: document.getElementById('emailNotifications').checked,
-                push_notifications: document.getElementById('pushNotifications').checked,
-                critical_alerts: document.getElementById('criticalAlerts').checked,
-                weekly_summary: document.getElementById('weeklySummary').checked
+        function loadNotificationPreferences() {
+            const defaults = {
+                emailNotifications: true,
+                pushNotifications: true,
+                criticalAlerts: true,
+                weeklySummary: false
             };
 
-            fetch('https://scrs-3rwc.onrender.com/api/admin/notifications/preferences', {
-                method: 'PUT',
-                headers: getAuthHeaders(),
-                body: JSON.stringify(preferences)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    showNotification('Notification preferences updated', 'success');
-                } else {
-                    showNotification('Failed to update preferences', 'error');
-                }
-            })
-            .catch(error => {
-                console.error('Error updating preferences:', error);
-                showNotification('Connection error', 'error');
-            });
+            try {
+                const saved = JSON.parse(localStorage.getItem('adminNotificationPreferences') || '{}');
+                Object.entries(Object.assign(defaults, saved)).forEach(([id, checked]) => {
+                    const element = document.getElementById(id);
+                    if (element) element.checked = Boolean(checked);
+                });
+            } catch (_error) {
+                Object.entries(defaults).forEach(([id, checked]) => {
+                    const element = document.getElementById(id);
+                    if (element) element.checked = checked;
+                });
+            }
+        }
+
+        function updateNotificationPreferences() {
+            const preferences = {
+                emailNotifications: document.getElementById('emailNotifications').checked,
+                pushNotifications: document.getElementById('pushNotifications').checked,
+                criticalAlerts: document.getElementById('criticalAlerts').checked,
+                weeklySummary: document.getElementById('weeklySummary').checked
+            };
+
+            localStorage.setItem('adminNotificationPreferences', JSON.stringify(preferences));
+            showNotification('Notification preferences updated', 'success');
         }
 
         function showNotification(message, type) {
