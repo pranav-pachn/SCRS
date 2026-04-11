@@ -1,2 +1,7 @@
 [build]
   publish = "frontend"
+
+[[redirects]]
+  from = "/complaint"
+  to = "/complaint.html"
+  status = 200

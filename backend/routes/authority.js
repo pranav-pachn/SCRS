@@ -162,30 +162,34 @@ router.put('/complaints/:id/assign', requireRole('authority'), async (req, res) 
       authorityId
     );
 
-    await notificationService.createNotification(dbConnection, {
-      userId: Number(admin_id),
-      title: `New Complaint Assigned (#${complaintId})`,
-      message: 'A complaint has been assigned to you by authority.',
-      type: previousAdminId ? 'reassignment' : 'assignment',
-      relatedComplaintId: Number(complaintId),
-      metadata: {
-        byAuthorityId: authorityId,
-        previousAdminId
-      }
-    });
-
-    if (previousAdminId && Number(previousAdminId) !== Number(admin_id)) {
+    try {
       await notificationService.createNotification(dbConnection, {
-        userId: Number(previousAdminId),
-        title: `Complaint Reassigned (#${complaintId})`,
-        message: 'A complaint previously assigned to you was reassigned by authority.',
-        type: 'reassignment',
+        userId: Number(admin_id),
+        title: `New Complaint Assigned (#${complaintId})`,
+        message: 'A complaint has been assigned to you by authority.',
+        type: previousAdminId ? 'reassignment' : 'assignment',
         relatedComplaintId: Number(complaintId),
         metadata: {
           byAuthorityId: authorityId,
-          reassignedToAdminId: Number(admin_id)
+          previousAdminId
         }
       });
+
+      if (previousAdminId && Number(previousAdminId) !== Number(admin_id)) {
+        await notificationService.createNotification(dbConnection, {
+          userId: Number(previousAdminId),
+          title: `Complaint Reassigned (#${complaintId})`,
+          message: 'A complaint previously assigned to you was reassigned by authority.',
+          type: 'reassignment',
+          relatedComplaintId: Number(complaintId),
+          metadata: {
+            byAuthorityId: authorityId,
+            reassignedToAdminId: Number(admin_id)
+          }
+        });
+      }
+    } catch (notificationError) {
+      console.warn('⚠️ Complaint assignment succeeded, but notification creation failed:', notificationError.message);
     }
 
     return res.json({

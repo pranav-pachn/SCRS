@@ -26,11 +26,15 @@ async function logAuthorityHistory(connection, complaintId, oldValue, newValue, 
   const safeNew = newValue != null ? String(newValue) : null;
   const historyNote = `AUTHORITY_ACTION: ${note}`;
 
-  await connection.execute(
-    `INSERT INTO complaint_history (complaint_id, changed_by, old_status, new_status, note)
-     VALUES (?, ?, ?, ?, ?)`,
-    [complaintId, authorityId, safeOld, safeNew, historyNote]
-  );
+  try {
+    await connection.execute(
+      `INSERT INTO complaint_history (complaint_id, changed_by, old_status, new_status, note)
+       VALUES (?, ?, ?, ?, ?)`,
+      [complaintId, authorityId, safeOld, safeNew, historyNote]
+    );
+  } catch (error) {
+    console.warn('⚠️ Failed to write authority history; continuing assignment:', error.message);
+  }
 }
 
 /**
