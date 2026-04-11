@@ -206,30 +206,19 @@
     html.light .help-modal__section p,
     html.light .help-modal__section ul { color: #334155; }
   </style>
-        linear-gradient(90deg, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
-    }
-    html.light .help-modal { background: rgba(15, 23, 42, 0.35); }
-    html.light .help-modal__panel {
-      background: #ffffff;
-      border-color: #dbe3ef;
-      box-shadow: 0 22px 55px rgba(15, 23, 42, 0.2);
-    }
-    html.light .help-modal__section p,
-    html.light .help-modal__section ul { color: #334155; }
-  </style>
 </head>
 <body class="auth-shell min-h-screen font-body text-auth-text">
   <div id="notificationContainer" class="fixed bottom-4 right-4 z-50 space-y-2"></div>
   <div class="auth-grid min-h-screen">
-    <header class="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-6">
+    <header class="relative z-10 mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-6">
       <a href="index.html" class="flex items-center gap-3">
         <img src="assests/Civixa_logo_new.png" alt="Civixa Logo" class="h-10 w-auto object-contain">
         <div>
           <p class="font-headline text-lg font-extrabold tracking-tight">Civixa</p>
-          <p class="text-xs uppercase tracking-[0.24em] text-auth-muted">Civixa</p>
+          <p class="text-xs uppercase tracking-[0.24em] text-auth-muted">Smart Complaint System</p>
         </div>
       </a>
-      <div class="flex items-center gap-3">
+      <div class="flex flex-wrap items-center gap-3">
         <a href="index.html" class="auth-outline-button hidden rounded-full border border-white/10 px-4 py-2 text-sm font-semibold text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent sm:inline-flex">Back Home</a>
         <button id="themeToggleBtn" class="auth-outline-button rounded-full border border-white/10 p-2 text-auth-muted transition-colors hover:border-auth-accent hover:text-auth-accent" type="button" aria-label="Toggle theme">
           <span id="themeToggleIcon" class="material-symbols-outlined">dark_mode</span>
@@ -287,7 +276,6 @@
                 <a href="support.html" class="font-semibold text-auth-muted transition-colors hover:text-auth-accent" data-help-trigger>
                   Open Help Center
                 </a>
-                <span class="text-[11px]">Still loads <a class="text-auth-accent" href="support.html">support.html</a></span>
               </div>
               <button type="submit" class="auth-primary-button flex w-full items-center justify-center gap-2 rounded-full py-4 font-bold transition-all hover:opacity-95 active:scale-[0.98]">
                 Log In
