@@ -143,7 +143,7 @@
       <a href="home.html" class="flex items-center rounded-r-lg border-l-4 border-blue-800 bg-white px-4 py-3 text-blue-700 shadow-sm transition-transform duration-200 hover:translate-x-1 dark:bg-slate-800 dark:text-blue-300">
         <span class="material-symbols-outlined mr-3">home</span><span class="font-medium">Home</span>
       </a>
-      <a href="dashboard-citizen.html" class="flex items-center px-4 py-3 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50">
+      <a onclick="return navigateToDashboard(event)" href="dashboard-citizen.html" class="flex items-center px-4 py-3 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50">
         <span class="material-symbols-outlined mr-3">dashboard</span><span class="font-medium">Dashboard</span>
       </a>
       <a href="my-complaints.html" class="flex items-center px-4 py-3 text-slate-600 transition-transform duration-200 hover:translate-x-1 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:bg-slate-800/50">
@@ -189,7 +189,7 @@
         <span class="text-xl font-bold tracking-tighter text-blue-900 dark:text-blue-100 md:hidden">Civixa</span>
         <nav class="hidden items-center space-x-6 lg:flex">
           <a class="border-b-2 border-blue-700 py-1 font-bold text-blue-700 dark:text-blue-300" href="home.html">Home</a>
-          <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="dashboard-citizen.html">Dashboard</a>
+          <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="dashboard-citizen.html" onclick="return navigateToDashboard(event)">Dashboard</a>
           <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="my-complaints.html">My Complaints</a>
           <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="support.html">Support</a>
         </nav>
@@ -303,7 +303,7 @@
             <a href="my-complaints.html" class="flex items-center justify-between rounded-xl border border-surface-variant bg-surface-container-low px-4 py-3 font-semibold text-on-surface transition-colors hover:bg-surface-container-high">
               <span>View My Complaints</span><span class="material-symbols-outlined">arrow_forward</span>
             </a>
-            <a href="dashboard-citizen.html" class="flex items-center justify-between rounded-xl border border-surface-variant bg-surface-container-low px-4 py-3 font-semibold text-on-surface transition-colors hover:bg-surface-container-high">
+            <a href="dashboard-citizen.html" onclick="return navigateToDashboard(event)" class="flex items-center justify-between rounded-xl border border-surface-variant bg-surface-container-low px-4 py-3 font-semibold text-on-surface transition-colors hover:bg-surface-container-high">
               <span>Open Dashboard</span><span class="material-symbols-outlined">arrow_forward</span>
             </a>
             <a href="support.html" class="flex items-center justify-between rounded-xl border border-surface-variant bg-surface-container-low px-4 py-3 font-semibold text-on-surface transition-colors hover:bg-surface-container-high">
@@ -328,7 +328,7 @@
 
   <nav class="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around border-t border-slate-200 bg-white/80 py-3 backdrop-blur-lg dark:border-slate-800 dark:bg-slate-950/85 md:hidden">
     <a class="flex flex-col items-center text-blue-700 dark:text-blue-300" href="home.html"><span class="material-symbols-outlined">home</span><span class="mt-1 text-[10px] font-bold">Home</span></a>
-    <a class="flex flex-col items-center text-slate-400 dark:text-slate-500" href="dashboard-citizen.html"><span class="material-symbols-outlined">dashboard</span><span class="mt-1 text-[10px] font-medium">Dashboard</span></a>
+    <a class="flex flex-col items-center text-slate-400 dark:text-slate-500" href="dashboard-citizen.html" onclick="return navigateToDashboard(event)"><span class="material-symbols-outlined">dashboard</span><span class="mt-1 text-[10px] font-medium">Dashboard</span></a>
     <div class="relative -top-8"><a href="complaint.html" class="hero-gradient flex h-14 w-14 items-center justify-center rounded-full text-white shadow-lg"><span class="material-symbols-outlined text-3xl">add</span></a></div>
     <a class="flex flex-col items-center text-slate-400 dark:text-slate-500" href="my-complaints.html"><span class="material-symbols-outlined">list_alt</span><span class="mt-1 text-[10px] font-medium">Complaints</span></a>
     <a class="flex flex-col items-center text-slate-400 dark:text-slate-500" href="support.html"><span class="material-symbols-outlined">help</span><span class="mt-1 text-[10px] font-medium">Support</span></a>
@@ -366,6 +366,18 @@
         clearAuth();
         window.location.href = "home.html";
       }
+    }
+
+    // Guard: redirect to login if not authenticated, else go to role-based dashboard
+    function navigateToDashboard(event) {
+      event.preventDefault();
+      const auth = getStoredAuth();
+      if (!auth.token || !auth.user) {
+        window.location.href = "login.html";
+        return false;
+      }
+      window.location.href = getDashboardUrl();
+      return false;
     }
 
     function initTheme() {
