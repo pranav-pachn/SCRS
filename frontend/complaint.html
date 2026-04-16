@@ -108,6 +108,18 @@
     .dark .border-outline,
     .dark .border-outline-variant,
     .dark .border-surface-variant { border-color: #334155 !important; }
+    /* Fix primary color in dark mode */
+    .dark .text-primary { color: #60a5fa !important; }
+    /* Fix glass-panel in dark mode */
+    .dark .glass-panel {
+      background: rgba(15, 23, 42, 0.82);
+      border-color: rgba(51, 65, 85, 0.8);
+    }
+    /* Light mode overrides */
+    html.light body { background: #f8f9fa; color: #0f172a; }
+    html.light .text-primary { color: #003b72 !important; }
+    html.light label { color: #0f172a; }
+    html.light .text-on-surface-variant { color: #475569 !important; }
     .ui-toolbar-button {
       display: inline-flex;
       align-items: center;

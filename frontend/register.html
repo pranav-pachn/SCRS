@@ -259,13 +259,14 @@
       background: #ffffff;
     }
     html.light .floating-icon,
-    html.light .floating-label,
+    html.light .floating-label { color: #334155; }
+    html.light .floating-field.floating-active .floating-label,
+    html.light .floating-field:focus-within .floating-label { color: #1d4ed8; }
     html.light .field-hint,
     html.light .field-status,
-    html.light .role-desc,
     html.light .role-hint,
     html.light .show-password,
-    html.light .strength-text { color: #64748b; }
+    html.light .strength-text { color: #475569; }
     html.light .role-card {
       border-color: #cbd5e1;
       background: #ffffff;
@@ -275,14 +276,7 @@
       background: #eff6ff;
     }
     html.light .role-card.selected .role-desc { color: #0f5ca8; }
-    html.light .help-modal { background: rgba(15, 23, 42, 0.35); }
-    html.light .help-modal__panel {
-      background: #ffffff;
-      border-color: #dbe3ef;
-      box-shadow: 0 22px 55px rgba(15, 23, 42, 0.2);
-    }
-    html.light .help-modal__section p,
-    html.light .help-modal__section ul { color: #334155; }
+    html.light .role-desc { color: #64748b; }
     html.light .help-modal { background: rgba(15, 23, 42, 0.35); }
     html.light .help-modal__panel {
       background: #ffffff;
@@ -313,15 +307,21 @@
     <main class="relative z-10 mx-auto flex min-h-[calc(100vh-88px)] w-full max-w-6xl items-center px-6 pb-10">
       <div class="grid w-full gap-8 lg:grid-cols-[0.92fr_1.08fr]">
         <section class="hidden flex-col justify-center lg:flex">
-          <span class="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-fuchsia-400/20 bg-fuchsia-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-fuchsia-100">
+          <span class="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-fuchsia-400/30 bg-fuchsia-500/20 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-fuchsia-800 dark:text-fuchsia-100">
             <span class="material-symbols-outlined text-base">person_add</span>
             Join Civixa
           </span>
           <h1 class="max-w-lg font-headline text-5xl font-extrabold leading-[1.05] tracking-tight">Create your account and enter the complaint workflow.</h1>
           <p class="mt-5 max-w-xl text-lg leading-8 text-auth-muted">Choose the role that matches your responsibilities and get immediate access to the tools you need for reporting, resolving, or supervising civic issues.</p>
           <div class="mt-8 space-y-4 text-sm text-auth-muted">
-            <div class="rounded-2xl border border-white/10 bg-white/5 px-5 py-4"><p class="font-semibold text-auth-text">One account, role-aware access</p><p class="mt-1">Citizen, Admin, and Authority accounts each route into their own workspace.</p></div>
-            <div class="rounded-2xl border border-white/10 bg-white/5 px-5 py-4"><p class="font-semibold text-auth-text">Fast onboarding</p><p class="mt-1">Use email registration or Google sign-up without leaving the flow.</p></div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 px-5 py-4">
+              <p class="font-semibold text-auth-text">One account, role-aware access</p>
+              <p class="mt-1">Citizen, Admin, and Authority accounts each route into their own workspace.</p>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 px-5 py-4">
+              <p class="font-semibold text-auth-text">Fast onboarding</p>
+              <p class="mt-1">Use email registration or Google sign-up without leaving the flow.</p>
+            </div>
           </div>
         </section>
         <section class="auth-card rounded-[28px] p-8 md:p-10">

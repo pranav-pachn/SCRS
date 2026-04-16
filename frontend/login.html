@@ -96,9 +96,12 @@
     .auth-input {
       min-height: 3.5rem;
       line-height: 1.45;
-      color: #0f172a !important;
+      color: inherit !important;
     }
-    .auth-input::placeholder { color: #64748b !important; }
+    html.light .auth-input { color: #0f172a !important; }
+    html.light .auth-input::placeholder { color: #64748b !important; }
+    html.dark .auth-input, .auth-shell:not(html.light *) .auth-input { color: #f8fafc !important; }
+    .auth-input::placeholder { color: rgba(203, 210, 255, 0.7) !important; }
     .auth-link:hover { color: #67e8f9; }
     .help-modal {
       position: fixed;
@@ -181,6 +184,12 @@
     html.light .bg-auth-background { background: #ffffff !important; }
     html.light .border-white\/10 { border-color: #cbd5e1 !important; }
     html.light .bg-auth-card-alt { background: #f4f7fb !important; }
+    html.light .auth-input {
+      background: #f8fafc !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    html.light .auth-input::placeholder { color: #64748b !important; }
     html.light .auth-outline-button {
       background: rgba(255, 255, 255, 0.88);
       color: #334155 !important;

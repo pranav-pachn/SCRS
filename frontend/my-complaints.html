@@ -117,19 +117,19 @@
     .dark .bg-surface-container-highest {
       background-color: #334155 !important;
     }
-    .dark .text-on-surface {
-      color: #f1f5f9 !important;
-    }
+    .dark .text-on-surface { color: #f1f5f9 !important; }
     .dark .text-on-surface-variant,
     .dark .text-outline,
-    .dark .text-outline-variant {
-      color: #94a3b8 !important;
-    }
+    .dark .text-outline-variant { color: #94a3b8 !important; }
     .dark .border-surface-variant,
     .dark .border-outline,
-    .dark .border-outline-variant {
-      border-color: #334155 !important;
-    }
+    .dark .border-outline-variant { border-color: #334155 !important; }
+    /* Fix primary accent in dark mode */
+    .dark .text-primary { color: #60a5fa !important; }
+    /* Light mode fixes */
+    html.light .text-primary { color: #003b72 !important; }
+    html.light .text-on-surface { color: #0f172a !important; }
+    html.light .text-on-surface-variant { color: #475569 !important; }
   </style>
 </head>
 <body class="bg-surface text-on-surface font-body min-h-screen dark:bg-slate-950 dark:text-slate-100">
