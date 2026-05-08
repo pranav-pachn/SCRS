@@ -1,18 +1,466 @@
-# SCRS Documentation Hub
+# Smart Complaint Resolution System (SCRS)
 
-Welcome to the Smart Complaint Resolution System (SCRS) documentation. All documentation is organized by feature and component.
+[![Status](https://img.shields.io/badge/Status-Active-green)]() [![Version](https://img.shields.io/badge/Version-1.0.0-blue)]() [![License](https://img.shields.io/badge/License-MIT-green)]()
 
-## 📚 Documentation Structure
+A comprehensive AI-powered complaint resolution platform enabling citizens to file complaints, government authorities to manage oversight, and admin staff to resolve issues efficiently.
+
+---
+
+## 📋 Table of Contents
+
+- [Overview](#overview)
+- [Key Features](#key-features)
+- [Quick Start](#quick-start)
+- [Project Structure](#project-structure)
+- [Technology Stack](#technology-stack)
+- [Getting Started](#getting-started)
+- [Documentation](#documentation)
+- [Support](#support)
+
+---
+
+## Overview
+
+**SCRS** is a full-stack web application built for smart complaint resolution management. The system connects citizens, government officials, and administrative staff through a unified platform that leverages AI for intelligent complaint analysis, routing, and resolution tracking.
+
+### Core Users
+- **Citizens** - File and track complaints
+- **Admins** - Manage complaint resolution
+- **Authority** - Provide oversight and system management
+
+### Key Capabilities
+- 🤖 **AI-Powered Analysis** - Automatic summarization and priority suggestion
+- 📊 **Real-time Dashboard** - Complaint tracking and analytics
+- 🔐 **Role-Based Access Control** - Secure multi-level permissions
+- 📞 **Notification System** - Status updates and alerts
+- 🔍 **Advanced Audit Trail** - Complete complaint history
+- 💾 **Scalable Database** - Optimized schema design
+
+---
+
+## Key Features
+
+### For Citizens
+- **File Complaints** - Easy submission with image/document upload
+- **Track Status** - Real-time complaint updates
+- **View History** - Complete complaint timeline
+- **Secure Dashboard** - Personal complaint management
+
+### For Admins
+- **Assigned Complaints** - Filter by status and priority
+- **Add Remarks** - Internal notes and comments
+- **Status Updates** - Close, reassign, or escalate
+- **Performance Metrics** - Track resolution times
+
+### For Authority
+- **System-Wide Oversight** - View all complaints
+- **Admin Management** - Assign and supervise staff
+- **Priority Override** - Adjust complaint priority
+- **Bulk Operations** - Reassign multiple complaints
+- **Analytics Dashboard** - System performance data
+
+### System Features
+- **AI Intelligence** - Google Gemini & OpenAI support
+- **API-First Design** - RESTful endpoints for all operations
+- **Real-time Notifications** - Socket.io-based updates
+- **Complete Audit Trail** - All changes logged and timestamped
+
+---
+
+## Quick Start
+
+### Prerequisites
+- Node.js 16+ 
+- MySQL 8.0+
+- Git
+
+### 1. Clone & Install
+
+```bash
+git clone <repository-url>
+cd SCRS
+
+# Install dependencies
+npm install
+cd backend && npm install
+```
+
+### 2. Configure Environment
+
+Create `.env` file in `backend/`:
+```env
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=scrs
+NODE_ENV=development
+GEMINI_API_KEY=your_key
+OPENAI_API_KEY=your_key
+```
+
+### 3. Initialize Database
+
+```bash
+cd backend
+node initDb.js          # Create tables
+node seedPredefinedUsers.js  # Add default users
+```
+
+### 4. Start Services
+
+```bash
+# Backend (from backend directory)
+npm start               # Runs on http://localhost:3000
+
+# Frontend (from root directory)
+# Open frontend/index.html in browser
+```
+
+### 5. Test Login
+
+```bash
+# Admin account
+Email: admin@scrs.local
+Password: Admin@2796
+
+# Authority account
+Email: authority@scrs.gov
+Password: Authority@2796
+```
+
+---
+
+## Project Structure
 
 ```
-docs/
-├── AUTHORITY/           ✅ Authority Supervisory Role
-├── ADMIN/              ✅ Admin Operational Role
-├── AI_MODULE/          ✅ AI Complaint Intelligence
-├── DATABASE/           ✅ Database Schema & Engineering
-├── SYSTEM/             ✅ System Architecture & Overview
-└── README.md           (This file)
+SCRS/
+├── backend/                    # Node.js Express server
+│   ├── config/                # Configuration files
+│   ├── migrations/            # SQL migrations
+│   ├── routes/                # API endpoints
+│   ├── services/              # Business logic
+│   ├── middleware/            # Express middleware
+│   ├── validators/            # Input validation
+│   ├── workers/               # Background jobs
+│   └── server.js              # Entry point
+│
+├── frontend/                  # Vanilla JavaScript UI
+│   ├── index.html             # Landing page
+│   ├── login.html             # Authentication
+│   ├── dashboard-*.html       # Role-specific dashboards
+│   ├── complaint-*.html       # Complaint pages
+│   ├── auth.js                # Auth logic
+│   ├── complaint-details-*.js # Complaint handlers
+│   └── style.css              # Styling
+│
+├── api/                       # OAuth configuration
+│   └── auth/
+│       └── config.js
+│
+├── docs/                      # Comprehensive documentation
+│   ├── AUTHORITY/             # Authority role docs
+│   ├── ADMIN/                 # Admin role docs
+│   ├── AI_MODULE/             # AI integration docs
+│   ├── DATABASE/              # Schema & engineering
+│   └── SYSTEM/                # Architecture docs
+│
+├── passwords/                 # Default credentials
+├── package.json               # Root dependencies
+└── README.md                  # This file
 ```
+
+---
+
+## Technology Stack
+
+### Backend
+| Layer | Technology |
+|-------|-----------|
+| **Runtime** | Node.js 16+ |
+| **Framework** | Express.js |
+| **Database** | MySQL 8.0 |
+| **Authentication** | JWT + OAuth 2.0 |
+| **AI Integration** | Google Gemini, OpenAI |
+| **Password** | bcryptjs |
+| **Utilities** | dotenv, mysql2, axios |
+
+### Frontend
+| Component | Technology |
+|-----------|-----------|
+| **Markup** | HTML5 |
+| **Styling** | CSS3, Tailwind CSS |
+| **Logic** | Vanilla JavaScript |
+| **API Communication** | Fetch API |
+| **Real-time** | Socket.io client |
+
+### DevOps
+| Tool | Purpose |
+|------|---------|
+| **Render** | Backend hosting |
+| **Netlify** | Frontend hosting |
+| **GitHub** | Version control |
+
+---
+
+## Getting Started
+
+### For Development
+
+1. **Backend Development**
+   - Review [backend/README.md](backend/) or [SYSTEM/CODE_STRUCTURE.md](docs/SYSTEM/CODE_STRUCTURE.md)
+   - Check [Database ENGINEERING.md](docs/DATABASE/ENGINEERING.md) for schema
+   - Follow [SYSTEM/ALGORITHM_PERFORMANCE.md](docs/SYSTEM/ALGORITHM_PERFORMANCE.md)
+
+2. **Frontend Development**
+   - Start with frontend documentation in [docs/](docs/)
+   - Review role-specific implementations
+   - Test with provided default credentials
+
+3. **Database**
+   - See [DATABASE/ER_DIAGRAM.md](docs/DATABASE/ER_DIAGRAM.md) for schema
+   - Review migrations in [backend/migrations/](backend/migrations/)
+   - Use queries from [AUTHORITY/SQL_QUERIES.sql](docs/AUTHORITY/SQL_QUERIES.sql)
+
+### For Testing
+
+```bash
+# Test backend connection
+cd backend
+node test-db-connection.js
+
+# Validate configuration
+node validateDbConfig.js
+node validateApiKeys.js
+node validateGenAiIntegration.js
+
+# Seed test data
+node seedPredefinedUsers.js
+```
+
+### For Deployment
+
+See [render.yaml](render.yaml) and [netlify.toml](netlify.toml) for deployment configuration.
+
+---
+
+## Documentation
+
+Complete documentation organized by component and user role:
+
+### 📖 Main Documentation Hub
+**[→ Complete Documentation Index](docs/README.md)**
+
+### By Role
+
+**👨‍💼 Authority (Supervisors)**
+- [Implementation Guide](docs/AUTHORITY/IMPLEMENTATION_GUIDE.md) - Full API reference
+- [Quick Start](docs/AUTHORITY/QUICKSTART.sh) - Setup script
+- [API Examples](docs/AUTHORITY/API_EXAMPLES.js) - Code samples
+- [SQL Queries](docs/AUTHORITY/SQL_QUERIES.sql) - Analytics queries
+
+**🖥️ Admin (Staff)**
+- [Quick Reference](docs/ADMIN/QUICK_REFERENCE.md) - 5-minute start
+- [Full Documentation](docs/ADMIN/DOCUMENTATION.md) - Complete API docs
+- [Examples](docs/ADMIN/EXAMPLES.md) - Code examples
+- [RBAC Details](docs/ADMIN/RBAC_IMPLEMENTATION.md) - Permissions
+
+**🤖 AI Module**
+- [Setup Guide](docs/AI_MODULE/README.md) - Installation & config
+- [Quick Reference](docs/AI_MODULE/QUICK_REFERENCE.md) - Feature overview
+- [Examples](docs/AI_MODULE/EXAMPLES.md) - API usage
+
+**🗄️ Database**
+- [Engineering](docs/DATABASE/ENGINEERING.md) - Schema & optimization
+- [ER Diagram](docs/DATABASE/ER_DIAGRAM.md) - Visual schema
+- [Overview](docs/DATABASE/README.md) - Data model summary
+
+**🏗️ System**
+- [Code Structure](docs/SYSTEM/CODE_STRUCTURE.md) - Project organization
+- [Architecture Overview](docs/SYSTEM/README.md) - System design
+- [Algorithm Analysis](docs/SYSTEM/ALGORITHM_PERFORMANCE.md) - Performance
+- [Feature Verification](docs/SYSTEM/FEATURE_VERIFICATION.md) - Checklist
+
+### 📚 Additional Resources
+- [PRD.md](docs/PRD.md) - Product Requirements Document
+- [HYBRID_AUTH_IMPLEMENTATION.md](docs/HYBRID_AUTH_IMPLEMENTATION.md) - OAuth setup
+- [GENAI_KEY_ROTATION_IMPLEMENTATION.md](GENAI_KEY_ROTATION_IMPLEMENTATION.md) - Key management
+
+---
+
+## Common Tasks
+
+### Get an API Token
+```bash
+curl -X POST http://localhost:3000/login \
+  -H 'Content-Type: application/json' \
+  -d '{"email":"admin@scrs.local","password":"Admin@2796"}'
+```
+
+### View All Complaints (Authority)
+```bash
+curl -H "Authorization: Bearer $TOKEN" \
+  http://localhost:3000/authority/complaints
+```
+
+### Assign Complaint (Authority)
+```bash
+curl -X PUT http://localhost:3000/authority/complaints/assign \
+  -H "Authorization: Bearer $TOKEN" \
+  -H 'Content-Type: application/json' \
+  -d '{"complaint_id":1,"admin_id":2}'
+```
+
+### Update Complaint Status (Admin)
+```bash
+curl -X PUT http://localhost:3000/admin/complaints/1/status \
+  -H "Authorization: Bearer $TOKEN" \
+  -H 'Content-Type: application/json' \
+  -d '{"status":"In Progress","remark":"Investigating"}'
+```
+
+---
+
+## API Endpoints
+
+### Authentication
+- `POST /login` - User login
+- `POST /logout` - User logout
+
+### Complaints (Citizens)
+- `GET /complaints` - List user's complaints
+- `POST /complaints` - File new complaint
+- `GET /complaints/:id` - View complaint details
+
+### Admin Routes
+- `GET /admin/complaints` - List assigned complaints
+- `PUT /admin/complaints/:id/status` - Update status
+- `PUT /admin/complaints/:id/remark` - Add remark
+
+### Authority Routes
+- `GET /authority/complaints` - List all complaints
+- `PUT /authority/complaints/assign` - Assign to admin
+- `PUT /authority/complaints/priority` - Override priority
+- `GET /authority/admins` - Manage staff
+
+See [AUTHORITY/IMPLEMENTATION_GUIDE.md](docs/AUTHORITY/IMPLEMENTATION_GUIDE.md) for complete API documentation.
+
+---
+
+## Environment Variables
+
+```env
+# Database
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=scrs
+
+# Server
+NODE_ENV=development
+PORT=3000
+
+# AI Services
+GEMINI_API_KEY=your_gemini_key
+OPENAI_API_KEY=your_openai_key
+
+# Auth
+JWT_SECRET=your_jwt_secret
+GOOGLE_CLIENT_ID=your_client_id
+GOOGLE_CLIENT_SECRET=your_secret
+```
+
+---
+
+## Troubleshooting
+
+### Database Connection Error
+```bash
+# Check if MySQL is running
+mysql -u root -p
+
+# Run diagnostic
+cd backend
+node validateDbConfig.js
+```
+
+### Port Already in Use
+```bash
+# Windows
+netstat -ano | findstr :3000
+taskkill /PID <PID> /F
+
+# Mac/Linux
+lsof -i :3000
+kill -9 <PID>
+```
+
+### API Key Issues
+```bash
+cd backend
+node validateApiKeys.js
+node validateGenAiIntegration.js
+```
+
+See [AUTHORITY/IMPLEMENTATION_GUIDE.md](docs/AUTHORITY/IMPLEMENTATION_GUIDE.md#troubleshooting) for detailed troubleshooting.
+
+---
+
+## Support & Contact
+
+### Documentation
+- 📖 [Complete Documentation](docs/README.md)
+- 🔍 [FAQ & Troubleshooting](docs/AUTHORITY/IMPLEMENTATION_GUIDE.md#troubleshooting)
+- 💡 [Common Questions](#documentation)
+
+### Development
+- 🐛 Check [SYSTEM/ALGORITHM_PERFORMANCE.md](docs/SYSTEM/ALGORITHM_PERFORMANCE.md) for performance issues
+- 🔐 Review [ADMIN/RBAC_IMPLEMENTATION.md](docs/ADMIN/RBAC_IMPLEMENTATION.md) for permission issues
+- 💾 See [DATABASE/ENGINEERING.md](docs/DATABASE/ENGINEERING.md) for schema questions
+
+### Credentials
+- Admin: `admin@scrs.local` / `Admin@2796`
+- Authority: `authority@scrs.gov` / `Authority@2796`
+
+---
+
+## Project Status
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| Core Platform | ✅ Complete | Full CRUD operations |
+| Authentication | ✅ Complete | JWT + OAuth 2.0 |
+| Authority Role | ✅ Complete | 7 endpoints, full documentation |
+| Admin Role | ✅ Complete | Complete with RBAC |
+| AI Module | ✅ Complete | Gemini & OpenAI support |
+| Database | ✅ Complete | Optimized schema with audit trail |
+| Frontend | ✅ Complete | All dashboards functional |
+| Documentation | ✅ Complete | 26+ comprehensive docs |
+| Deployment | ✅ Ready | Render & Netlify config included |
+
+---
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+---
+
+## Changelog
+
+### v1.0.0 (Current)
+- ✅ Complete platform launch
+- ✅ AI integration with multiple providers
+- ✅ Full role-based system
+- ✅ Comprehensive documentation
+- ✅ Production-ready database
+- ✅ Deployment configurations
+
+---
+
+**Last Updated:** May 8, 2026  
+**Maintainer:** SCRS Development Team  
+**Status:** Production Ready ✅
 
 ---
 
