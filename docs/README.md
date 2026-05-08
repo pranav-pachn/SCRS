@@ -1,6 +1,6 @@
-# SCRS Documentation Hub
+# NivaraHub Documentation Hub
 
-Welcome to the Smart Complaint Resolution System (SCRS) documentation. All documentation is organized by feature and component.
+Welcome to the NivaraHub documentation. All documentation is organized by feature and component.
 
 ## 📚 Documentation Structure
 
@@ -111,7 +111,7 @@ docs/
 # Get token
 curl -X POST http://localhost:3000/login \
   -H 'Content-Type: application/json' \
-  -d '{"email":"admin@scrs.local","password":"Admin@2796"}'
+  -d '{"email":"admin@nivarahub.local","password":"Admin@2796"}'
 
 # View assigned complaints
 curl -H "Authorization: Bearer $TOKEN" \
@@ -400,3 +400,9 @@ docs/
 **Status:** Complete & Organized ✅  
 **Total Documentation:** 26 Files  
 **Coverage:** 100% of system features
+
+
+
+
+
+

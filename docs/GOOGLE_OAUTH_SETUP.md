@@ -1,7 +1,7 @@
-# Google OAuth Setup Guide for SCRS
+# Google OAuth Setup Guide for NivaraHub
 
 ## Overview
-This guide explains how to configure Google OAuth authentication for the Smart Complaint Resolution System, enabling users to login with their Google accounts.
+This guide explains how to configure Google OAuth authentication for the NivaraHub, enabling users to login with their Google accounts.
 
 ## Features Implemented
 ✅ **Hybrid Authentication**: Users can choose between:
@@ -18,7 +18,7 @@ This guide explains how to configure Google OAuth authentication for the Smart C
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Click "Select a project" → "New Project"
-3. Enter project name: `SCRS Authentication`
+3. Enter project name: `NivaraHub Authentication`
 4. Click "Create"
 
 ### Step 2: Enable Google+ API
@@ -33,7 +33,7 @@ This guide explains how to configure Google OAuth authentication for the Smart C
 2. Select "External" user type (for public access)
 3. Click "Create"
 4. Fill in the required fields:
-   - **App name**: Smart Complaint Resolution System
+   - **App name**: NivaraHub
    - **User support email**: Your email
    - **Developer contact**: Your email
 5. Click "Save and Continue"
@@ -47,7 +47,7 @@ This guide explains how to configure Google OAuth authentication for the Smart C
 2. Click "Create Credentials" → "OAuth client ID"
 3. Select "Web application"
 4. Configure:
-   - **Name**: SCRS Web Client
+   - **Name**: NivaraHub Web Client
    - **Authorized JavaScript origins**:
      - `http://localhost:5500` (or your frontend port)
      - `http://127.0.0.1:5500`
@@ -199,3 +199,9 @@ For issues or questions:
 ---
 
 **Setup Complete!** Users can now login using either Google OAuth or traditional credentials.
+
+
+
+
+
+

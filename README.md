@@ -1,27 +1,4 @@
-# Smart Complaint Resolution System (SCRS)
-
-[![Status](https://img.shields.io/badge/Status-Active-green)]() [![Version](https://img.shields.io/badge/Version-1.0.0-blue)]() [![License](https://img.shields.io/badge/License-MIT-green)]()
-
-A comprehensive AI-powered complaint resolution platform enabling citizens to file complaints, government authorities to manage oversight, and admin staff to resolve issues efficiently.
-
----
-
-## 📋 Table of Contents
-
-- [Overview](#overview)
-- [Key Features](#key-features)
-- [Quick Start](#quick-start)
-- [Project Structure](#project-structure)
-- [Technology Stack](#technology-stack)
-- [Getting Started](#getting-started)
-- [Documentation](#documentation)
-- [Support](#support)
-
----
-
-## Overview
-
-**SCRS** is a full-stack web application built for smart complaint resolution management. The system connects citizens, government officials, and administrative staff through a unified platform that leverages AI for intelligent complaint analysis, routing, and resolution tracking.
+# NivaraHub
 
 ### Core Users
 - **Citizens** - File and track complaints
@@ -78,7 +55,7 @@ A comprehensive AI-powered complaint resolution platform enabling citizens to fi
 
 ```bash
 git clone <repository-url>
-cd SCRS
+cd NivaraHub
 
 # Install dependencies
 npm install
@@ -92,7 +69,7 @@ Create `.env` file in `backend/`:
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=your_password
-DB_NAME=scrs
+DB_NAME=nivarahub
 NODE_ENV=development
 GEMINI_API_KEY=your_key
 OPENAI_API_KEY=your_key
@@ -120,11 +97,11 @@ npm start               # Runs on http://localhost:3000
 
 ```bash
 # Admin account
-Email: admin@scrs.local
+Email: admin@nivarahub.local
 Password: Admin@2796
 
 # Authority account
-Email: authority@scrs.gov
+Email: authority@nivarahub.gov
 Password: Authority@2796
 ```
 
@@ -133,7 +110,7 @@ Password: Authority@2796
 ## Project Structure
 
 ```
-SCRS/
+NivaraHub/
 ├── backend/                    # Node.js Express server
 │   ├── config/                # Configuration files
 │   ├── migrations/            # SQL migrations
@@ -293,7 +270,7 @@ Complete documentation organized by component and user role:
 ```bash
 curl -X POST http://localhost:3000/login \
   -H 'Content-Type: application/json' \
-  -d '{"email":"admin@scrs.local","password":"Admin@2796"}'
+  -d '{"email":"admin@nivarahub.local","password":"Admin@2796"}'
 ```
 
 ### View All Complaints (Authority)
@@ -354,7 +331,7 @@ DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
 DB_PASSWORD=your_password
-DB_NAME=scrs
+DB_NAME=nivarahub
 
 # Server
 NODE_ENV=development
@@ -419,8 +396,8 @@ See [AUTHORITY/IMPLEMENTATION_GUIDE.md](docs/AUTHORITY/IMPLEMENTATION_GUIDE.md#t
 - 💾 See [DATABASE/ENGINEERING.md](docs/DATABASE/ENGINEERING.md) for schema questions
 
 ### Credentials
-- Admin: `admin@scrs.local` / `Admin@2796`
-- Authority: `authority@scrs.gov` / `Authority@2796`
+- Admin: `admin@nivarahub.local` / `Admin@2796`
+- Authority: `authority@nivarahub.gov` / `Authority@2796`
 
 ---
 
@@ -459,7 +436,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ---
 
 **Last Updated:** May 8, 2026  
-**Maintainer:** SCRS Development Team  
+**Maintainer:** NivaraHub Development Team  
 **Status:** Production Ready ✅
 
 ---
@@ -559,7 +536,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 # Get token
 curl -X POST http://localhost:3000/login \
   -H 'Content-Type: application/json' \
-  -d '{"email":"admin@scrs.local","password":"Admin@2796"}'
+  -d '{"email":"admin@nivarahub.local","password":"Admin@2796"}'
 
 # View assigned complaints
 curl -H "Authorization: Bearer $TOKEN" \
@@ -848,3 +825,9 @@ docs/
 **Status:** Complete & Organized ✅  
 **Total Documentation:** 26 Files  
 **Coverage:** 100% of system features
+
+
+
+
+
+

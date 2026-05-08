@@ -2,7 +2,7 @@
 
 ## Overview
 
-The SCRS backend now implements **automatic API key rotation** for Google Gemini API calls. When a key hits rate limits or becomes invalid, the system automatically switches to the next available key without blocking complaint creation.
+The NivaraHub backend now implements **automatic API key rotation** for Google Gemini API calls. When a key hits rate limits or becomes invalid, the system automatically switches to the next available key without blocking complaint creation.
 
 ## Features
 
@@ -309,3 +309,9 @@ Recovery: Manual inspection or wait 1 hour for recovery window
 - [ ] Weighted key selection (prefer faster/more reliable keys)
 - [ ] Dynamic key refresh from secure key management service
 - [ ] Regional key distribution (route by geography)
+
+
+
+
+
+

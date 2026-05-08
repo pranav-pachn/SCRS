@@ -1,6 +1,6 @@
 /**
  * @file dbConfig.js
- * @description Centralized, robust database configuration for SCRS.
+ * @description Centralized, robust database configuration for NivaraHub.
  * Automatically handles:
  * 1. Connection strings (MYSQL_URL, DATABASE_URL, etc.)
  * 2. Individual environment variables (DB_HOST, MYSQLHOST, etc.)
@@ -39,7 +39,7 @@ function getDbConfig() {
     host: env.LOCAL_MYSQLHOST || 'localhost',
     user: env.LOCAL_MYSQLUSER || 'root',
     password: env.LOCAL_MYSQLPASSWORD || '',
-    database: env.LOCAL_MYSQLDATABASE || 'scrs',
+    database: env.LOCAL_MYSQLDATABASE || 'nivarahub',
     port: parseInt(env.LOCAL_MYSQLPORT || '3306', 10),
     waitForConnections: true,
     connectionLimit: 5,
@@ -50,3 +50,9 @@ function getDbConfig() {
 }
 
 module.exports = getDbConfig();
+
+
+
+
+
+

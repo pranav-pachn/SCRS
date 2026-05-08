@@ -677,7 +677,7 @@ async function exportComplaintsPdf(dbConnection, filters = {}) {
         margin: 50,
         info: {
           Title: 'Authority Supervisory Report',
-          Author: 'SCRS Authority Dashboard',
+          Author: 'NivaraHub Authority Dashboard',
           Subject: 'Complaint Resolution System Report',
           Keywords: 'complaints, authority, governance, performance'
         }
@@ -699,7 +699,7 @@ async function exportComplaintsPdf(dbConnection, filters = {}) {
       
       doc.fontSize(18)
          .fillColor('#6b21a8')
-         .text('Smart Complaint Resolution System', 50, 260, { align: 'center' });
+         .text('NivaraHub', 50, 260, { align: 'center' });
       
       doc.fontSize(12)
          .fillColor('#64748b')
@@ -1027,4 +1027,10 @@ module.exports = {
   getLocationDistribution,
   getEscalations
 };
+
+
+
+
+
+
 

@@ -20,7 +20,7 @@ echo ""
 echo "INSERT INTO users (name, email, password_hash, role, created_at)"
 echo "VALUES ("
 echo "  'Government Officer',"
-echo "  'authority@scrs.gov',"
+echo "  'authority@nivarahub.gov',"
 echo "  '\$2a\$10\$YOixf.H5XRPvLCJ9e9.8n.Nj6lCKE6F8RJkKIVVE5z9WLKr5KL2gu',"  # password: "password"
 echo "  'authority',"
 echo "  NOW()"
@@ -36,7 +36,7 @@ echo ""
 echo "Step 4: Getting JWT token..."
 echo "curl -X POST http://localhost:3000/login \\"
 echo "  -H 'Content-Type: application/json' \\"
-echo "  -d '{\"email\":\"authority@scrs.gov\",\"password\":\"password\"}'"
+echo "  -d '{\"email\":\"authority@nivarahub.gov\",\"password\":\"password\"}'"
 echo ""
 
 # Step 5: Test Endpoints
@@ -74,3 +74,9 @@ echo ""
 echo "=========================================="
 echo "Implementation Complete!"
 echo "=========================================="
+
+
+
+
+
+

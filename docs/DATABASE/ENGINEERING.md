@@ -1,4 +1,4 @@
-# Database Engineering Guide - SCRS
+# Database Engineering Guide - NivaraHub
 
 **Production-Grade Database Design & Implementation**
 
@@ -6,7 +6,7 @@
 
 ## 1. Overview
 
-The SCRS database has been upgraded with enterprise-level features:
+The NivaraHub database has been upgraded with enterprise-level features:
 
 ✅ **Connection Pooling** - Multiple persistent connections for concurrency  
 ✅ **Pagination** - Scalable large dataset handling  
@@ -44,7 +44,7 @@ const dbConfig = {
   host: 'localhost',
   user: 'root',
   password: 'Pranav@sql296',
-  database: 'scrs',
+  database: 'nivarahub',
   waitForConnections: true,     // Queue if no connections available
   connectionLimit: 10,           // Max 10 connections in pool
   queueLimit: 0,                // Unlimited queue size
@@ -590,7 +590,7 @@ CHECK TABLE complaints;
 OPTIMIZE TABLE complaints;
 
 -- Backup database
-mysqldump -u root -p scrs > scrs_backup_$(date +%Y%m%d).sql;
+mysqldump -u root -p NivaraHub > scrs_backup_$(date +%Y%m%d).sql;
 ```
 
 #### Quarterly
@@ -690,3 +690,9 @@ Production-ready for 1000+ users and millions of complaints.
 **Last Updated**: February 20, 2026  
 **Status**: Production-Grade ✅  
 **Tested on**: 100,000+ complaint dataset
+
+
+
+
+
+

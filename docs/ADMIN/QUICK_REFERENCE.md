@@ -4,7 +4,7 @@
 
 ### 1️⃣ Admin User Credentials
 ```
-Email: admin@scrs.local
+Email: admin@nivarahub.local
 Password: Admin@2796
 Role: admin
 ```
@@ -13,7 +13,7 @@ Role: admin
 ```bash
 curl -X POST http://localhost:3000/auth/login \
   -H 'Content-Type: application/json' \
-  -d '{"email":"admin@scrs.local","password":"Admin@2796"}' | jq '.token'
+  -d '{"email":"admin@nivarahub.local","password":"Admin@2796"}' | jq '.token'
 ```
 
 ### 3️⃣ Test Any Endpoint (Replace TOKEN)
@@ -211,7 +211,7 @@ const mysql = require('mysql2/promise'); \
 ## 🛡️ Security Checklist
 
 - [ ] Admin password changed (Don't use default)
-- [ ] JWT_SECRET configured in .env (Not default 'scrs_dev_secret')
+- [ ] JWT_SECRET configured in .env (Not default 'nivarahub_dev_secret')
 - [ ] Database password set securely
 - [ ] HTTPS enabled in production
 - [ ] CORS properly configured
@@ -224,12 +224,12 @@ const mysql = require('mysql2/promise'); \
 
 ## 📱 Postman Collection
 
-Save this as `SCRS_Admin.postman_collection.json`:
+Save this as `NivaraHub_Admin.postman_collection.json`:
 
 ```json
 {
   "info": {
-    "name": "SCRS Admin API",
+    "name": "NivaraHub Admin API",
     "version": "1.0.0"
   },
   "request": [
@@ -238,7 +238,7 @@ Save this as `SCRS_Admin.postman_collection.json`:
       "method": "POST",
       "url": "http://localhost:3000/auth/login",
       "body": {
-        "email": "admin@scrs.local",
+        "email": "admin@nivarahub.local",
         "password": "Admin@2796"
       }
     },
@@ -325,3 +325,9 @@ tail -f server.log
 ---
 
 **Last Updated:** February 22, 2026 | **Status:** ✅ Production Ready
+
+
+
+
+
+

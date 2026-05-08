@@ -54,7 +54,7 @@ export OPENAI_API_KEY="your-api-key-here"
 
 ### Step 3: Run Database Migration
 ```bash
-mysql -u root -p scrs < backend/migrations/add_ai_intelligence_columns.sql
+mysql -u root -p NivaraHub < backend/migrations/add_ai_intelligence_columns.sql
 ```
 
 ### Step 4: Restart Server
@@ -253,3 +253,9 @@ The module is fully implemented and ready for testing. Follow the "Next Steps" s
 
 For detailed information, see `AI_MODULE_README.md`.
 For examples, see `AI_MODULE_EXAMPLES.md`.
+
+
+
+
+
+

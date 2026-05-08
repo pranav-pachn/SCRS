@@ -2,7 +2,7 @@
  * Complete Admin RBAC System - Example Usage & Testing
  * 
  * This file shows actual working examples of all admin endpoints.
- * Run each example individually against a running SCRS server.
+ * Run each example individually against a running NivaraHub server.
  */
 
 // ============================================================
@@ -12,7 +12,7 @@
 /*
 $loginRes = Invoke-RestMethod -Uri 'http://localhost:3000/auth/login' `
   -Method POST `
-  -Body '{"email":"admin@scrs.local","password":"Admin@2796"}' `
+  -Body '{"email":"admin@nivarahub.local","password":"Admin@2796"}' `
   -ContentType 'application/json'
 
 $adminToken = $loginRes.token
@@ -252,7 +252,7 @@ Metrics Explained:
 1. Admin logs in:
    curl -X POST http://localhost:3000/auth/login \
      -H 'Content-Type: application/json' \
-     -d '{"email":"admin@scrs.local","password":"Admin@2796"}'
+     -d '{"email":"admin@nivarahub.local","password":"Admin@2796"}'
 
 2. Get assigned complaints:
    curl http://localhost:3000/admin/complaints \
@@ -303,7 +303,7 @@ TOKEN=""
 # 1. Login
 LOGIN_RESPONSE=$(curl -s -X POST $BASE_URL/auth/login \
   -H 'Content-Type: application/json' \
-  -d '{"email":"admin@scrs.local","password":"Admin@2796"}')
+  -d '{"email":"admin@nivarahub.local","password":"Admin@2796"}')
 
 TOKEN=$(echo $LOGIN_RESPONSE | jq -r '.token')
 echo "Admin token: $TOKEN"
@@ -470,3 +470,9 @@ LEFT JOIN users u ON h.changed_by = u.id
 WHERE c.id = 1
 ORDER BY h.created_at DESC;
 `;
+
+
+
+
+
+

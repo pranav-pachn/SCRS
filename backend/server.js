@@ -27,7 +27,7 @@ const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const app = express();
 app.set('trust proxy', 1);
 
-const JWT_SECRET = process.env.JWT_SECRET || 'scrs_dev_secret';
+const JWT_SECRET = process.env.JWT_SECRET || 'nivarahub_dev_secret';
 const JWT_EXPIRES_IN = '2h';
 
 const allowedOrigins = new Set(
@@ -35,8 +35,8 @@ const allowedOrigins = new Set(
     process.env.FRONTEND_ORIGIN,
     'https://scr-system.netlify.app',
     'https://www.scr-system.netlify.app',
-    'https://civixa-scrs.netlify.app',
-    'https://www.civixa-scrs.netlify.app',
+    'https://civixa-NivaraHub.netlify.app',
+    'https://www.civixa-NivaraHub.netlify.app',
     'http://localhost:3000',
     'http://localhost:5173',
     'http://127.0.0.1:3000',
@@ -379,7 +379,7 @@ async function executeDbWithRetry(sql, params = [], options = {}) {
  *    Pros: Considers word frequency, better for repeated keywords
  *    Cons: Slightly more complex, still misses synonyms
  * 
- * For SCRS, we use Jaccard because:
+ * For NivaraHub, we use Jaccard because:
  * - Complaints rarely repeat keywords (each word matters equally)
  * - Simplicity aids academic understanding
  * But Cosine would be better if complaints had repeated emphasizing words
@@ -469,7 +469,7 @@ function calculateTextSimilarity(textA, textB) {
  * This function demonstrates the Cosine Similarity approach, which could
  * replace Jaccard for better performance on complaints with repeated keywords.
  * 
- * Not currently used in SCRS (using Jaccard above), but included here
+ * Not currently used in NivaraHub (using Jaccard above), but included here
  * to demonstrate understanding of multiple similarity metrics.
  * 
  * When to use Cosine instead of Jaccard:
@@ -583,7 +583,7 @@ function calculateCosineSimilarity(textA, textB) {
  *   This gives higher scores to words that are frequent in ONE document
  *   but rare across all complaints (better for distinctive complaints)
  * 
- * Example for SCRS:
+ * Example for NivaraHub:
  *   Term "pothole": Common across many Road complaints (low IDF, lower weight)
  *   Term "maharaja park": Rare, specific location (high IDF, higher weight)
  *   Result: Same-location matches become more significant
@@ -591,7 +591,7 @@ function calculateCosineSimilarity(textA, textB) {
  * Why we don't use it here:
  * - Requires tracking all complaints (heavier computation)
  * - Adds database query overhead
- * - Marginal improvement for SCRS use case (~2-3% better accuracy)
+ * - Marginal improvement for NivaraHub use case (~2-3% better accuracy)
  * - Professors prefer elegant solutions over over-engineering
  * 
  * How to implement (pseudocode):
@@ -739,7 +739,7 @@ async function findDuplicateComplaint(category, location, description, similarit
 
 // Simple health-check route
 app.get(['/', '/health', '/api/health'], (req, res) => {
-  res.json({ message: 'SCRS backend is running 🚀', dbConnected: !!dbConnection });
+  res.json({ message: 'NivaraHub backend is running 🚀', dbConnected: !!dbConnection });
 
 });
 
@@ -1664,4 +1664,10 @@ app.listen(PORT, '0.0.0.0', () => {
   logAiProviderStartupStatus();
   startAiHealthMonitor();
 });
+
+
+
+
+
+
 

@@ -2,7 +2,7 @@
 
 ## ✅ Complete Implementation Status
 
-The Smart Complaint Resolution System (SCRS) now has a **fully functional Admin Role-Based Access Control (RBAC) system** with all required features implemented and tested.
+The NivaraHub now has a **fully functional Admin Role-Based Access Control (RBAC) system** with all required features implemented and tested.
 
 ---
 
@@ -42,7 +42,7 @@ The Smart Complaint Resolution System (SCRS) now has a **fully functional Admin 
 - ✓ Connected to server via `app.use('/admin', authenticateToken, adminRoutes)`
 
 ### 5. **Admin User Setup** ✅
-- ✓ Admin user created: `admin@scrs.local` / `Admin@2796`
+- ✓ Admin user created: `admin@nivarahub.local` / `Admin@2796`
 - ✓ All available complaints assigned to admin
 - ✓ Ready for testing
 
@@ -138,7 +138,7 @@ dbConnection.execute(query, params)
 ### Setup Completed
 ```
 ✅ Admin user created (ID: 3)
-   Email: admin@scrs.local
+   Email: admin@nivarahub.local
    Password: Admin@2796
 
 ✅ 5 complaints assigned to admin
@@ -196,14 +196,14 @@ backend/
 ### Step 1: Create Admin User
 ```bash
 node setupAdminUser.js
-# Creates admin@scrs.local with 5 assigned complaints
+# Creates admin@nivarahub.local with 5 assigned complaints
 ```
 
 ### Step 2: Login as Admin
 ```bash
 curl -X POST http://localhost:3000/auth/login \
   -H 'Content-Type: application/json' \
-  -d '{"email":"admin@scrs.local","password":"Admin@2796"}'
+  -d '{"email":"admin@nivarahub.local","password":"Admin@2796"}'
 
 # Response includes JWT token
 ```
@@ -261,7 +261,7 @@ curl http://localhost:3000/admin/dashboard \
 ### Check Admin User
 ```sql
 SELECT id, name, email, role FROM users WHERE role = 'admin';
--- Result: (3, System Admin, admin@scrs.local, admin)
+-- Result: (3, System Admin, admin@nivarahub.local, admin)
 ```
 
 ### View Assigned Complaints
@@ -300,7 +300,7 @@ WHERE r.complaint_id = 1;
 
 ### Database Connection
 - Connection pool: 10 connections
-- Database: `scrs` on `localhost:3306`
+- Database: `NivaraHub` on `localhost:3306`
 - User: `root` with custom password
 - Character set: utf8mb4 (emoji support)
 
@@ -370,7 +370,7 @@ node server.js  # Run in foreground to see logs
 ### Database Connection Issues
 ```sql
 -- Verify database exists
-SHOW DATABASES LIKE 'scrs';
+SHOW DATABASES LIKE 'nivarahub';
 
 -- Check tables
 SHOW TABLES;
@@ -383,7 +383,7 @@ SELECT * FROM users WHERE role = 'admin';
 ```bash
 # Re-login to get new token
 curl -X POST http://localhost:3000/auth/login \
-  -d '{"email":"admin@scrs.local","password":"Admin@2796"}'
+  -d '{"email":"admin@nivarahub.local","password":"Admin@2796"}'
 ```
 
 ### Invalid Status Transition
@@ -415,3 +415,9 @@ The Admin RBAC system is **production-ready** with:
 
 **Last Updated:** February 22, 2026
 **System Status:** ✅ FULLY OPERATIONAL
+
+
+
+
+
+

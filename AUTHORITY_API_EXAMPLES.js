@@ -18,7 +18,7 @@
 INSERT INTO users (name, email, password_hash, role)
 VALUES (
   'Government Officer',
-  'authority@scrs.gov',
+  'authority@nivarahub.gov',
   '$2a$10$YOixf.H5XRPvLCJ9e9.8n.Nj6lCKE6F8RJkKIVVE5z9WLKr5KL2gu',
   'authority'
 );
@@ -28,7 +28,7 @@ VALUES (
 POST /login
 Body: 
 {
-  "email": "authority@scrs.gov",
+  "email": "authority@nivarahub.gov",
   "password": "password"
 }
 
@@ -66,7 +66,7 @@ Response:
       "manual_priority_override": false,
       "assigned_admin_id": 5,
       "admin_name": "Raj Kumar",
-      "admin_email": "raj.kumar@scrs.gov",
+      "admin_email": "raj.kumar@NivaraHub.gov",
       "submitter_name": "Pranav Singh",
       "submitter_email": "pranav@example.com",
       "created_at": "2026-02-15T10:30:00Z",
@@ -87,7 +87,7 @@ Response:
       "manual_priority_override": false,
       "assigned_admin_id": 7,
       "admin_name": "Priya Sharma",
-      "admin_email": "priya.sharma@scrs.gov",
+      "admin_email": "priya.sharma@NivaraHub.gov",
       "submitter_name": "Amit Desai",
       "submitter_email": "amit@example.com",
       "created_at": "2026-02-16T09:15:00Z",
@@ -287,7 +287,7 @@ Response:
     {
       "admin_id": 5,
       "admin_name": "Raj Kumar",
-      "admin_email": "raj.kumar@scrs.gov",
+      "admin_email": "raj.kumar@NivaraHub.gov",
       "total_assigned": 45,
       "resolved_count": 38,
       "pending_count": 7,
@@ -297,7 +297,7 @@ Response:
     {
       "admin_id": 7,
       "admin_name": "Priya Sharma",
-      "admin_email": "priya.sharma@scrs.gov",
+      "admin_email": "priya.sharma@NivaraHub.gov",
       "total_assigned": 42,
       "resolved_count": 35,
       "pending_count": 7,
@@ -307,7 +307,7 @@ Response:
     {
       "admin_id": 8,
       "admin_name": "Amit Patel",
-      "admin_email": "amit.patel@scrs.gov",
+      "admin_email": "amit.patel@nivarahub.gov",,
       "total_assigned": 38,
       "resolved_count": 29,
       "pending_count": 9,
@@ -445,3 +445,9 @@ COMP-0005,Sanitation,Sector 7,Low,Resolved,Priya Sharma,2026-02-17T09:10:00Z,202
      "message": "Missing or invalid token."
    }
 */
+
+
+
+
+
+

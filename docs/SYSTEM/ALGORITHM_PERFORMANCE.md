@@ -1,6 +1,6 @@
 # Performance Analysis of Duplicate Detection Algorithm
 
-**System**: Smart Complaint Resolution System (SCRS)  
+**System**: NivaraHub  
 **Algorithm**: Jaccard Similarity-based Text Comparison  
 **Date**: February 20, 2026  
 **Purpose**: Evaluate accuracy, false positives/negatives, time complexity
@@ -375,7 +375,7 @@ Scenario 3: Multiple users report same issue â†’ Verify each properly detected â
 
 ## 10. Conclusion
 
-The **Jaccard Similarity-based duplicate detection algorithm** achieves **92.9% accuracy** on the SCRS system with excellent response times (<50ms). The algorithm balances:
+The **Jaccard Similarity-based duplicate detection algorithm** achieves **92.9% accuracy** on the NivaraHub system with excellent response times (<50ms). The algorithm balances:
 
 - **High Precision** (92.9%) - Users trust the system
 - **High Recall** (92.9%) - Most duplicates are caught
@@ -386,6 +386,12 @@ Most failures are due to **semantic limitations** (synonyms, abbreviations) rath
 
 ---
 
-**Generated for**: SCRS Academic Project  
+**Generated for**: NivaraHub Academic Project  
 **Purpose**: Teaching algorithm evaluation, performance analysis, information retrieval concepts  
 **Version**: 1.0 (February 2026)
+
+
+
+
+
+

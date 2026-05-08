@@ -1,6 +1,6 @@
 # Authority Supervisory Role Documentation
 
-Complete documentation for the Authority role - the highest-level supervisory access in SCRS.
+Complete documentation for the Authority role - the highest-level supervisory access in NivaraHub.
 
 ## 📋 Documents in This Folder
 
@@ -84,7 +84,7 @@ node runAuthorityMigration.js
 INSERT INTO users (name, email, password_hash, role)
 VALUES (
   'Government Officer',
-  'authority@scrs.gov',
+  'authority@nivarahub.gov',
   '$2a$10$YOixf.H5XRPvLCJ9e9.8n.Nj6lCKE6F8RJkKIVVE5z9WLKr5KL2gu',
   'authority'
 );
@@ -94,7 +94,7 @@ VALUES (
 ```bash
 curl -X POST http://localhost:3000/login \
   -H 'Content-Type: application/json' \
-  -d '{"email":"authority@scrs.gov","password":"password"}'
+  -d '{"email":"authority@nivarahub.gov","password":"password"}'
 ```
 
 ### 4. Test an Endpoint
@@ -206,3 +206,9 @@ Use [SQL_QUERIES.sql](SQL_QUERIES.sql) for:
 
 **Last Updated:** February 23, 2026  
 **Status:** Complete & Verified ✅
+
+
+
+
+
+

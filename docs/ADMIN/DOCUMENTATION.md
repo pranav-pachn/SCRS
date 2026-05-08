@@ -2,7 +2,7 @@
 
 ## Overview
 
-This module implements a fully functional **Admin Operational Role** with Role-Based Access Control (RBAC) for the Smart Complaint Resolution System (SCRS). Admins can manage complaints assigned to them, update statuses, add remarks, and upload resolve proofs.
+This module implements a fully functional **Admin Operational Role** with Role-Based Access Control (RBAC) for the NivaraHub. Admins can manage complaints assigned to them, update statuses, add remarks, and upload resolve proofs.
 
 ---
 
@@ -293,10 +293,10 @@ All endpoints require:
 
 ```bash
 # Add admin operational fields
-mysql -u root -p scrs < backend/migrations/add_admin_operational_fields.sql
+mysql -u root -p NivaraHub < backend/migrations/add_admin_operational_fields.sql
 
 # Create complaint remarks table
-mysql -u root -p scrs < backend/migrations/create_complaint_remarks_table.sql
+mysql -u root -p NivaraHub < backend/migrations/create_complaint_remarks_table.sql
 ```
 
 ### Step 2: Verify Database Changes
@@ -319,7 +319,7 @@ SHOW INDEXES FROM complaints WHERE Key_name LIKE '%assigned%';
 INSERT INTO users (name, email, password_hash, role)
 VALUES (
   'Admin User',
-  'admin@scrs.com',
+  'admin@NivaraHub.com',
   '$2a$10$...', -- bcrypt hash of password
   'admin'
 );
@@ -470,3 +470,9 @@ For issues or questions:
 2. Verify database migrations were run successfully
 3. Ensure admin user has correct role
 4. Verify complaints are assigned to admin (`assigned_admin_id`)
+
+
+
+
+
+

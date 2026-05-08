@@ -31,7 +31,13 @@ ON complaints(assigned_admin_id, status);
 -- Verify columns were added
 SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE, COLUMN_TYPE
 FROM INFORMATION_SCHEMA.COLUMNS
-WHERE TABLE_SCHEMA = 'scrs' 
+WHERE TABLE_SCHEMA = 'nivarahub' 
   AND TABLE_NAME = 'complaints'
   AND COLUMN_NAME IN ('assigned_admin_id', 'proof_url')
 ORDER BY ORDINAL_POSITION;
+
+
+
+
+
+

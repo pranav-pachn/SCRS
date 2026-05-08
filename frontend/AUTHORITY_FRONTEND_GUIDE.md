@@ -8,7 +8,7 @@
 
 ## 📋 Overview
 
-The Authority Frontend has been fully integrated into the SCRS application. Authority users now have a dedicated dashboard with exclusive features for system-wide complaint management and admin oversight.
+The Authority Frontend has been fully integrated into the NivaraHub application. Authority users now have a dedicated dashboard with exclusive features for system-wide complaint management and admin oversight.
 
 ---
 
@@ -446,3 +446,9 @@ SELECT COUNT(*) FROM complaints WHERE assigned_admin_id=ADMIN_ID;
 **Status:** ✅ PRODUCTION READY  
 **Last Updated:** February 23, 2026  
 **Next Steps:** Deploy to production & train authority users
+
+
+
+
+
+

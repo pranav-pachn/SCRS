@@ -29,7 +29,13 @@ ON complaints(ai_suggested_priority);
 -- Verify columns were added
 SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE, COLUMN_TYPE
 FROM INFORMATION_SCHEMA.COLUMNS
-WHERE TABLE_SCHEMA = 'scrs' 
+WHERE TABLE_SCHEMA = 'nivarahub' 
   AND TABLE_NAME = 'complaints'
   AND COLUMN_NAME IN ('summary', 'tags', 'ai_suggested_priority')
 ORDER BY ORDINAL_POSITION;
+
+
+
+
+
+

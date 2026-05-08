@@ -15,10 +15,10 @@
   <script>if (window.tailwind && typeof window.tailwind.refresh === "function") { window.tailwind.refresh(); }</script>
   <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="scrs-unified.css">
+    <link rel="stylesheet" href="NivaraHub-unified.css">
 </head>
 
-<body class="scrs-shell bg-slate-900 text-gray-300 min-h-screen">
+<body class="NivaraHub-shell bg-slate-900 text-gray-300 min-h-screen">
     <div id="notificationContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
     <button id="themeToggleBtn" type="button" class="fixed right-4 top-16 z-50 rounded-full border border-slate-300 bg-white/90 px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm transition-colors hover:bg-white dark:border-slate-600 dark:bg-slate-900/90 dark:text-slate-100" aria-label="Toggle theme">
         <span id="themeToggleIcon">dark_mode</span>
@@ -334,7 +334,7 @@
 
     <script src="auth.js"></script>
     <script>
-        const ADMIN_API_BASES = ['https://scrs-3rwc.onrender.com/api/admin', 'https://scrs-3rwc.onrender.com/admin'];
+        const ADMIN_API_BASES = ['https://NivaraHub-3rwc.onrender.com/api/admin', 'https://NivaraHub-3rwc.onrender.com/admin'];
         let resolvedAdminApiBase = null;
 
         async function resolveAdminApiBase() {
@@ -415,8 +415,8 @@
             if (!normalized) return null;
             if (normalized.startsWith('data:image/')) return normalized;
             if (/^https?:\/\//i.test(normalized)) return normalized;
-            if (normalized.startsWith('/uploads/')) return `https://scrs-3rwc.onrender.com${normalized}`;
-            if (normalized.startsWith('uploads/')) return `https://scrs-3rwc.onrender.com/${normalized}`;
+            if (normalized.startsWith('/uploads/')) return `https://NivaraHub-3rwc.onrender.com${normalized}`;
+            if (normalized.startsWith('uploads/')) return `https://NivaraHub-3rwc.onrender.com/${normalized}`;
 
             const compactBase64 = normalized.replace(/\s+/g, '');
             if (/^[A-Za-z0-9+/=]+$/.test(compactBase64)) {
@@ -1137,6 +1137,12 @@
 </body>
 
 </html>
+
+
+
+
+
+
 
 
 

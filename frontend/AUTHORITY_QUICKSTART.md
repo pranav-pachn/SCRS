@@ -5,7 +5,7 @@
 ### 1. Access Authority Dashboard
 ```
 URL: http://localhost:3000 (or your-domain)/authority.html
-Login: authority@scrs.gov | password
+Login: authority@nivarahub.gov | password
 ```
 
 ### 2. Key Features
@@ -193,3 +193,9 @@ See detailed guides:
 **Last Updated:** February 23, 2026  
 
 All features implemented, tested, and documented. Ready for deployment! 🎉
+
+
+
+
+
+

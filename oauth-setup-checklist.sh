@@ -2,11 +2,11 @@
 
 # ============================================================================
 # Google OAuth Configuration Checklist
-# Quick reference for setting up Google authentication in SCRS
+# Quick reference for setting up Google authentication in NivaraHub
 # ============================================================================
 
 echo "╔══════════════════════════════════════════════════════════════╗"
-echo "║  Google OAuth Configuration Checklist for SCRS              ║"
+echo "║  Google OAuth Configuration Checklist for NivaraHub              ║"
 echo "╚══════════════════════════════════════════════════════════════╝"
 echo ""
 
@@ -20,7 +20,7 @@ echo ""
 
 echo "1️⃣  GOOGLE CLOUD CONSOLE SETUP"
 checklist_item "Go to https://console.cloud.google.com/"
-checklist_item "Create new project 'SCRS Authentication'"
+checklist_item "Create new project 'NivaraHub Authentication'"
 checklist_item "Enable Google+ API"
 checklist_item "Configure OAuth consent screen (External)"
 checklist_item "Create OAuth 2.0 Client ID (Web application)"
@@ -93,3 +93,9 @@ echo ""
 echo "╔══════════════════════════════════════════════════════════════╗"
 echo "║  Ready to configure? Follow the checklist above! 🚀         ║"
 echo "╚══════════════════════════════════════════════════════════════╝"
+
+
+
+
+
+

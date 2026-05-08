@@ -1,4 +1,4 @@
-const API_BASE = 'https://scrs-3rwc.onrender.com';
+const API_BASE = 'https://NivaraHub-3rwc.onrender.com';
 let currentComplaintId = null;
 let adminsList = [];
 
@@ -1187,3 +1187,9 @@ window.onclick = function(event) {
     }
   });
 };
+
+
+
+
+
+

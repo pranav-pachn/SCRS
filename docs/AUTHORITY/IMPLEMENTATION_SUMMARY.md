@@ -231,7 +231,7 @@ COMP-0002,Electricity,Sector 8,Critical,In Progress,Priya Sharma,2026-02-16T09:1
 INSERT INTO users (name, email, password_hash, role, created_at)
 VALUES (
   'Government Officer',
-  'authority@scrs.gov',
+  'authority@nivarahub.gov',
   '$2a$10$YOixf.H5XRPvLCJ9e9.8n.Nj6lCKE6F8RJkKIVVE5z9WLKr5KL2gu',
   'authority',
   NOW()
@@ -243,7 +243,7 @@ VALUES (
 curl -X POST http://localhost:3000/login \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "authority@scrs.gov",
+    "email": "authority@nivarahub.gov",
     "password": "password"
   }'
 
@@ -404,13 +404,13 @@ curl -H "Authorization: Bearer YOUR_TOKEN" \
 
 ```bash
 # Check authority user exists
-mysql -u root -pPassword scrs -e "SELECT * FROM users WHERE role='authority';"
+mysql -u root -pPassword NivaraHub -e "SELECT * FROM users WHERE role='authority';"
 
 # Verify schema changes
-mysql -u root -pPassword scrs -e "DESCRIBE complaints;" | grep -E "manual_priority|is_escalated"
+mysql -u root -pPassword NivaraHub -e "DESCRIBE complaints;" | grep -E "manual_priority|is_escalated"
 
 # Check audit trail
-mysql -u root -pPassword scrs -e "SELECT COUNT(*) FROM complaint_history WHERE role='authority';"
+mysql -u root -pPassword NivaraHub -e "SELECT COUNT(*) FROM complaint_history WHERE role='authority';"
 
 # Test API
 curl -H "Authorization: Bearer TOKEN" http://localhost:3000/authority/complaints
@@ -482,3 +482,9 @@ For questions or issues, refer to:
 **Implementation Date:** February 23, 2026  
 **Last Updated:** February 23, 2026  
 **Status:** Production Ready ✅
+
+
+
+
+
+

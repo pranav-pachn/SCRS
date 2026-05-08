@@ -39,7 +39,7 @@ async function setupAdmin() {
 
     // Create admin user
     log('\n📝 Creating admin user...', 'blue');
-    const adminEmail = 'admin@scrs.local';
+    const adminEmail = 'admin@nivarahub.local';
     const adminPassword = 'Admin@2796';
     const adminName = 'System Admin';
 
@@ -179,3 +179,9 @@ async function setupAdmin() {
 }
 
 setupAdmin();
+
+
+
+
+
+

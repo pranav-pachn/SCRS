@@ -1,12 +1,12 @@
 @echo off
 REM ============================================================================
 REM Google OAuth Configuration Checklist
-REM Quick reference for setting up Google authentication in SCRS
+REM Quick reference for setting up Google authentication in NivaraHub
 REM ============================================================================
 
 echo.
 echo ╔══════════════════════════════════════════════════════════════╗
-echo ║  Google OAuth Configuration Checklist for SCRS              ║
+echo ║  Google OAuth Configuration Checklist for NivaraHub              ║
 echo ╚══════════════════════════════════════════════════════════════╝
 echo.
 
@@ -15,7 +15,7 @@ echo.
 
 echo 1️⃣  GOOGLE CLOUD CONSOLE SETUP
 echo [ ] Go to https://console.cloud.google.com/
-echo [ ] Create new project 'SCRS Authentication'
+echo [ ] Create new project 'NivaraHub Authentication'
 echo [ ] Enable Google+ API
 echo [ ] Configure OAuth consent screen (External)
 echo [ ] Create OAuth 2.0 Client ID (Web application)
@@ -91,3 +91,9 @@ echo ╚════════════════════════
 echo.
 
 pause
+
+
+
+
+
+

@@ -37,7 +37,7 @@ function createCitizenPayload() {
   const unique = Date.now();
   return {
     name: `GenAI Citizen ${unique}`,
-    email: `citizen.genai.${unique}@scrs.local`,
+    email: `citizen.genai.${unique}@NivaraHub.local`,
     password: 'Citizen@2796',
     role: 'citizen'
   };
@@ -142,7 +142,7 @@ function printCriterion(name, status, details) {
 }
 
 async function main() {
-  console.log('=== SCRS GenAI Integration Validation ===');
+  console.log('=== NivaraHub GenAI Integration Validation ===');
   console.log(`API base: ${API_BASE}`);
 
   const criteria = [];
@@ -220,3 +220,9 @@ async function main() {
 }
 
 main();
+
+
+
+
+
+

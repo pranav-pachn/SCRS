@@ -5,7 +5,7 @@
 ### BEFORE (Traditional Only)
 ```
 ┌──────────────────────────────────────┐
-│          Login - SCRS                │
+│          Login - NivaraHub                │
 │                                      │
 │  Access your account to track        │
 │  complaints and manage updates.      │
@@ -22,7 +22,7 @@
 ### AFTER (Hybrid Authentication)
 ```
 ┌──────────────────────────────────────┐
-│          Login - SCRS                │
+│          Login - NivaraHub                │
 │                                      │
 │  Access your account to track        │
 │  complaints and manage updates.      │
@@ -91,7 +91,7 @@ Redirected to dashboard
 ### 1. Login Page - Desktop View
 ```
 ╔════════════════════════════════════════════╗
-║  🔷 Smart Complaint Resolution System      ║
+║  🔷 NivaraHub      ║
 ║  [ Home ] [ Dashboard ] [ Login ]          ║
 ╠════════════════════════════════════════════╣
 ║                                            ║
@@ -149,7 +149,7 @@ Redirected to dashboard
 ### Mobile View (< 768px)
 ```
 ┌──────────────────┐
-│  SCRS            │
+│  NivaraHub            │
 │  ≡ Menu          │
 ├──────────────────┤
 │                  │
@@ -353,3 +353,9 @@ Tested and working:
 ---
 
 **Visual transformation complete!** Users now have a modern, professional authentication experience with the flexibility to choose their preferred login method.
+
+
+
+
+
+

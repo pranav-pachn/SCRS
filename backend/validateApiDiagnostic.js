@@ -9,7 +9,7 @@ const {
 
 function printHeader() {
   console.log('\n==============================================');
-  console.log('SCRS AI PROVIDER DIAGNOSTIC REPORT');
+  console.log('NivaraHub AI PROVIDER DIAGNOSTIC REPORT');
   console.log('Priority: Groq -> OpenRouter -> OpenAI');
   console.log('==============================================\n');
 }
@@ -106,3 +106,9 @@ main().catch((error) => {
   console.error('Diagnostic runner error:', error?.message || error);
   process.exit(1);
 });
+
+
+
+
+
+

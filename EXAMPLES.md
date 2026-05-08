@@ -360,7 +360,7 @@ POST /auth/login
 Content-Type: application/json
 
 {
-  "email": "admin@scrs.com",
+  "email": "admin@NivaraHub.com",
   "password": "admin123"
 }
 ```
@@ -373,7 +373,7 @@ Content-Type: application/json
   "user": {
     "id": 5,
     "name": "Admin User",
-    "email": "admin@scrs.com",
+    "email": "admin@nivarahub.local",,
     "role": "admin"
   }
 }
@@ -508,3 +508,9 @@ ORDER BY created_at DESC;
 id: 2 | complaint_id: 1 | admin_id: 5 | remark_text: "Issue resolved. Proof uploaded." | created_at: 2026-02-22 12:00:00
 id: 1 | complaint_id: 1 | admin_id: 5 | remark_text: "Team dispatched. Expected completion by end of day." | created_at: 2026-02-22 11:20:00
 ```
+
+
+
+
+
+

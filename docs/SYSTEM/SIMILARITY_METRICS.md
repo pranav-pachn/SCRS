@@ -8,7 +8,7 @@
 
 1. [Quick Comparison Table](#quick-comparison)
 2. [Detailed Explanations](#detailed-explanations)
-3. [SCRS Implementation Rationale](#scrs-rationale)
+3. [NivaraHub Implementation Rationale](#NivaraHub-rationale)
 4. [Code Examples](#code-examples)
 5. [When to Use Each Metric](#when-to-use)
 6. [Academic Insights](#academic-insights)
@@ -27,7 +27,7 @@
 
 ## Detailed Explanations
 
-### 1. Jaccard Similarity (SCRS Implementation ✅)
+### 1. Jaccard Similarity (NivaraHub Implementation ✅)
 
 #### What It Does
 Measures set overlap: how many words appear in BOTH texts divided by total unique words.
@@ -126,7 +126,7 @@ Cosine: 77.3% (slightly lower due to length mismatch)
 - **Slightly More Complex**: Needs term frequency calculation
 - **Still No Semantic Understanding**: Synonyms not recognized
 - **Requires Vector Space Model**: More conceptually advanced
-- **Minimal Improvement on SCRS**: Only 2-3% accuracy increase
+- **Minimal Improvement on NivaraHub**: Only 2-3% accuracy increase
 
 #### When It's Better Than Jaccard
 ```
@@ -156,7 +156,7 @@ where:
 Then compute Cosine Similarity on TF-IDF vectors (weighted)
 ```
 
-#### Real Example from SCRS
+#### Real Example from NivaraHub
 
 **Training Data**: 1000 complaints
 
@@ -209,7 +209,7 @@ When comparing:
 - **Higher Complexity**: Requires analyzing full complaint corpus
 - **Computational Overhead**: O(n × documentCount) during indexing
 - **Database Dependency**: IDF scores must be recalculated as complaints grow
-- **Marginal Improvement for SCRS**: ~2-3% accuracy gain not worth added complexity
+- **Marginal Improvement for NivaraHub**: ~2-3% accuracy gain not worth added complexity
 - **Overkill for Academic Project**: Adds sophistication without pedagogical benefit
 
 #### When It's Worth It
@@ -222,7 +222,7 @@ Large-scale system (>100,000 complaints) where:
 
 ---
 
-## SCRS Rationale
+## NivaraHub Rationale
 
 ### Why We Chose Jaccard ✅
 
@@ -457,7 +457,7 @@ const similarity = calculateTextSimilarity(description, complaint.description);
 const similarity = calculateCosineSimilarity(description, complaint.description);
 ```
 
-**Recommendation**: Don't switch for SCRS - keep Jaccard. But be able to explain WHY if asked.
+**Recommendation**: Don't switch for NivaraHub - keep Jaccard. But be able to explain WHY if asked.
 
 ---
 
@@ -493,7 +493,7 @@ const testCases = [
 
 ## Conclusion
 
-**The "Smart" Part of SCRS**:
+**The "Smart" Part of NivaraHub**:
 
 1. **Implements**: Jaccard Similarity for practical duplicate detection
 2. **References**: Cosine and TF-IDF to show deeper understanding  
@@ -511,3 +511,9 @@ This file: Pedagogical comparison and understanding
 
 **Key Takeaway for Teaching**:  
 _"Jaccard is elegant, Cosine is sophisticated, TF-IDF is robust - we chose Jaccard because it's the right tool for this problem, but we understand the alternatives."_
+
+
+
+
+
+

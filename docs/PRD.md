@@ -1,7 +1,7 @@
 # Product Requirements Document (PRD)
 
 ## Product
-Smart Complaint Resolution System (SCRS)
+NivaraHub
 
 ## Version
 1.0 (Baseline based on current implementation)
@@ -10,13 +10,13 @@ Smart Complaint Resolution System (SCRS)
 March 26, 2026
 
 ## Document Owner
-SCRS Product and Engineering Team
+NivaraHub Product and Engineering Team
 
 ---
 
 ## 1. Purpose
 
-This PRD defines product requirements for SCRS, a civic complaint management platform that enables citizens to report municipal issues, empowers admins to manage and resolve complaints, and gives authority users system-wide oversight with analytics and assignment controls.
+This PRD defines product requirements for NivaraHub, a civic complaint management platform that enables citizens to report municipal issues, empowers admins to manage and resolve complaints, and gives authority users system-wide oversight with analytics and assignment controls.
 
 The document serves as a source of truth for:
 - Product scope
@@ -32,7 +32,7 @@ The document serves as a source of truth for:
 
 Municipal grievance handling is often fragmented, slow, and opaque. Citizens do not get timely visibility into progress, administrators lack workload balancing tools, and supervisory authorities have limited operational analytics.
 
-SCRS addresses this by providing:
+NivaraHub addresses this by providing:
 - A structured complaint lifecycle from submission to resolution
 - Role-based operational workflows (Citizen, Admin, Authority)
 - Transparent dashboard statistics
@@ -365,3 +365,8 @@ The release is accepted when all below are true:
 - Transparency dashboards and public stats: Implemented via public stats endpoints.
 
 This PRD should be updated whenever endpoint contracts, role responsibilities, or escalation policies change.
+
+
+
+
+

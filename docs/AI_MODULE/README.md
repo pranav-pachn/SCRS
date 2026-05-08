@@ -45,12 +45,12 @@ OPENAI_API_KEY=your-api-key-here
 Execute the migration script to add the required columns:
 
 ```bash
-mysql -u root -p scrs < backend/migrations/add_ai_intelligence_columns.sql
+mysql -u root -p NivaraHub < backend/migrations/add_ai_intelligence_columns.sql
 ```
 
 Or run it manually in MySQL:
 ```sql
-USE scrs;
+USE NivaraHub;
 SOURCE backend/migrations/add_ai_intelligence_columns.sql;
 ```
 
@@ -303,7 +303,7 @@ node server.js
 
 **Solution:** Run the migration script:
 ```bash
-mysql -u root -p scrs < backend/migrations/add_ai_intelligence_columns.sql
+mysql -u root -p NivaraHub < backend/migrations/add_ai_intelligence_columns.sql
 ```
 
 ## Support
@@ -313,3 +313,9 @@ For issues or questions:
 2. Verify OpenAI API key is set correctly
 3. Ensure database migration was run successfully
 4. Check OpenAI API status page
+
+
+
+
+
+

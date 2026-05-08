@@ -2,7 +2,7 @@
 
 ## 🎯 Implementation Complete
 
-Successfully implemented a **hybrid authentication system** for SCRS that supports both:
+Successfully implemented a **hybrid authentication system** for NivaraHub that supports both:
 1. **Traditional Email/Password Login** (existing)
 2. **Google OAuth 2.0 Login** (new)
 
@@ -282,4 +282,10 @@ cd frontend
 
 The hybrid authentication system is fully implemented and ready for testing. Once you configure the Google Client ID, users can choose their preferred authentication method - either Google OAuth for convenience or traditional email/password for those who prefer it.
 
-Both methods are secure, maintain separate sessions via JWT, and provide a seamless user experience across the SCRS platform.
+Both methods are secure, maintain separate sessions via JWT, and provide a seamless user experience across the NivaraHub platform.
+
+
+
+
+
+

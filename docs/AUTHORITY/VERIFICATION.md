@@ -167,7 +167,7 @@ Response: 200 OK
     {
       "admin_id": 5,
       "admin_name": "Raj Kumar",
-      "admin_email": "raj.kumar@scrs.gov",
+      "admin_email": "raj.kumar@NivaraHub.gov",
       "total_assigned": 45,
       "resolved_count": 38,
       "pending_count": 7,
@@ -314,7 +314,7 @@ field_changed           | VARCHAR(100)| NULL
 INSERT INTO users (name, email, password_hash, role)
 VALUES (
   'Government Officer',
-  'authority@scrs.gov',
+  'authority@nivarahub.gov',
   '$2a$10$YOixf.H5XRPvLCJ9e9.8n.Nj6lCKE6F8RJkKIVVE5z9WLKr5KL2gu',
   'authority'
 );
@@ -324,7 +324,7 @@ VALUES (
 ```bash
 curl -X POST http://localhost:3000/login \
   -H "Content-Type: application/json" \
-  -d '{"email":"authority@scrs.gov","password":"password"}'
+  -d '{"email":"authority@nivarahub.gov","password":"password"}'
 ```
 
 ### 3. Use Token for API Calls
@@ -517,7 +517,7 @@ GROUP BY assigned_admin_id;
 # Step 2: Login
 curl -X POST http://localhost:3000/login \
   -H "Content-Type: application/json" \
-  -d '{"email":"authority@scrs.gov","password":"password"}'
+  -d '{"email":"authority@nivarahub.gov","password":"password"}'
 
 # Step 3: Use returned token in requests
 curl -H "Authorization: Bearer RETURNED_TOKEN" \
@@ -578,3 +578,9 @@ The system is ready for immediate deployment.
 **Status:** ✅ PRODUCTION READY  
 **Implementation Time:** Complete  
 **Quality Assurance:** Passed
+
+
+
+
+
+

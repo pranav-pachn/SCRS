@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: scrs-backend
+    name: nivarahub-backend
     env: node
     rootDir: backend
     plan: free
@@ -10,3 +10,8 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+
+
+
+
+

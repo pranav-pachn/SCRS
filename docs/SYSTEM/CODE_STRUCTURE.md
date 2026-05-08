@@ -3,7 +3,7 @@
 ## 📂 Complete File Structure
 
 ```
-SCRS Backend
+NivaraHub Backend
 ├── server.js (Main Express server)
 │   ├── Database connection pool setup ✅
 │   ├── Authentication middleware ✅
@@ -348,20 +348,20 @@ ORDER BY created_at DESC;
 
 ```env
 # ============================================
-# SCRS Backend Environment Configuration
+# NivaraHub Backend Environment Configuration
 # ============================================
 
 # Database
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=Pranav@sql296
-DB_DATABASE=scrs
+DB_DATABASE=NivaraHub
 
 # OpenAI (REQUIRED for AI Module)
 OPENAI_API_KEY=sk-your-openai-api-key-here
 
 # JWT
-JWT_SECRET=scrs_dev_secret_change_in_production
+JWT_SECRET=nivarahub_dev_secret_change_in_production
 
 # Server
 PORT=5000
@@ -532,3 +532,9 @@ Doesn't affect functionality but would be nice to clean up."
 **All components are fully implemented and ready to use!** 🚀
 
 See the detailed guides for setup, testing, and troubleshooting.
+
+
+
+
+
+

@@ -30,3 +30,9 @@ ALTER TABLE complaint_history ADD COLUMN field_changed VARCHAR(100);
 CREATE INDEX idx_complaint_history_role ON complaint_history(role);
 CREATE INDEX idx_complaint_history_action ON complaint_history(action);
 CREATE INDEX idx_complaint_history_created ON complaint_history(created_at);
+
+
+
+
+
+

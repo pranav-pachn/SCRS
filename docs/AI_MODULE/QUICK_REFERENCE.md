@@ -2,7 +2,7 @@
 
 ## 🎯 What Was Built
 
-Your SCRS now has an **AI Complaint Intelligence Module** that automatically:
+Your NivaraHub now has an **AI Complaint Intelligence Module** that automatically:
 
 1. **Summarizes** citizen complaints in 1-2 lines
 2. **Extracts tags** (3-5 civic issue keywords)
@@ -39,8 +39,8 @@ OPENAI_API_KEY=sk-your-api-key-here
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=Pranav@sql296
-DB_DATABASE=scrs
-JWT_SECRET=scrs_dev_secret
+DB_DATABASE=NivaraHub
+JWT_SECRET=nivarahub_dev_secret
 ```
 
 ### 3️⃣ Run Database Migration
@@ -244,7 +244,7 @@ OPENAI_API_KEY=sk-...                    # OpenAI API key
 DB_HOST=localhost                         # MySQL host
 DB_USER=root                              # MySQL user
 DB_PASSWORD=your_password                 # MySQL password
-DB_DATABASE=scrs                          # Database name
+DB_DATABASE=NivaraHub                          # Database name
 
 # JWT
 JWT_SECRET=your_secret_key               # JWT signing secret
@@ -397,3 +397,9 @@ LIMIT 10;
 **Status: Ready to Use** ✅  
 **Last Updated:** February 22, 2026  
 **Version:** 1.0.0
+
+
+
+
+
+

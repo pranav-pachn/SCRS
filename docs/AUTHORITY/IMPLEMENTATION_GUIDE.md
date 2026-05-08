@@ -97,7 +97,7 @@ Headers:
       "manual_priority_override": false,
       "assigned_admin_id": 5,
       "admin_name": "Raj Kumar",
-      "admin_email": "raj.kumar@scrs.gov",
+      "admin_email": "raj.kumar@NivaraHub.gov",
       "submitter_name": "Pranav Singh",
       "submitter_email": "pranav@example.com",
       "created_at": "2026-02-15T10:30:00Z",
@@ -368,7 +368,7 @@ Headers:
     {
       "admin_id": 5,
       "admin_name": "Raj Kumar",
-      "admin_email": "raj.kumar@scrs.gov",
+      "admin_email": "raj.kumar@NivaraHub.gov",
       "total_assigned": 45,
       "resolved_count": 38,
       "pending_count": 7,
@@ -378,7 +378,7 @@ Headers:
     {
       "admin_id": 7,
       "admin_name": "Priya Sharma",
-      "admin_email": "priya.sharma@scrs.gov",
+      "admin_email": "priya.sharma@NivaraHub.gov",
       "total_assigned": 42,
       "resolved_count": 35,
       "pending_count": 7,
@@ -388,7 +388,7 @@ Headers:
     {
       "admin_id": 8,
       "admin_name": "Amit Patel",
-      "admin_email": "amit.patel@scrs.gov",
+      "admin_email": "amit.patel@NivaraHub.gov",
       "total_assigned": 38,
       "resolved_count": 29,
       "pending_count": 9,
@@ -738,7 +738,7 @@ async function exportComplaints() {
 INSERT INTO users (name, email, password_hash, role)
 VALUES (
   'Government Officer',
-  'authority@scrs.gov',
+  'authority@nivarahub.gov',
   -- bcrypt hashed password for "password"
   '$2a$10$YOixf.H5XRPvLCJ9e9.8n.Nj6lCKE6F8RJkKIVVE5z9WLKr5KL2gu',
   'authority'
@@ -749,7 +749,7 @@ VALUES (
 ```bash
 curl -X POST http://localhost:3000/login \
   -H "Content-Type: application/json" \
-  -d '{"email":"authority@scrs.gov","password":"password"}'
+  -d '{"email":"authority@nivarahub.gov","password":"password"}'
 ```
 
 ### 3. Test Endpoints
@@ -811,7 +811,7 @@ All authority queries benefit from these indexes:
 
 ## Summary
 
-The Authority Supervisory Role provides a complete oversight mechanism for the SCRS system with:
+The Authority Supervisory Role provides a complete oversight mechanism for the NivaraHub system with:
 - ✅ View all complaints globally
 - ✅ Dynamic reassignment capabilities
 - ✅ Priority override controls
@@ -820,3 +820,9 @@ The Authority Supervisory Role provides a complete oversight mechanism for the S
 - ✅ CSV export functionality
 - ✅ Admin performance tracking
 - ✅ Zero direct resolution capability (security)
+
+
+
+
+
+

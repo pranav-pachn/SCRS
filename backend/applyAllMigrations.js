@@ -47,3 +47,9 @@ runAllMigrations().catch(e => {
   console.error('❌ Migration script failed:', e);
   process.exit(1);
 });
+
+
+
+
+
+

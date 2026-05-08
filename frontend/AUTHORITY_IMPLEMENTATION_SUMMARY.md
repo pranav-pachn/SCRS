@@ -337,7 +337,7 @@ User clicks "Reassign" → openAssignModal() → Shows modal
 // In authority.js, change:
 const API_BASE = 'http://localhost:3000';
 // To:
-const API_BASE = 'https://api.scrs.gov';
+const API_BASE = 'https://api.NivaraHub.gov';
 ```
 
 ---
@@ -486,3 +486,9 @@ A: Data refreshes on action. Manual refresh via "🔄 Refresh" button available.
 Authority users can now access the dedicated dashboard with full supervisory capabilities. ✅
 
 *All files updated, tested, and ready for production deployment.*
+
+
+
+
+
+

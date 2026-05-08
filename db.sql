@@ -135,3 +135,9 @@ ORDER BY day;
 
 -- 10) Delete a complaint (attachments & history cascade)
 DELETE FROM complaints WHERE id = ?;
+
+
+
+
+
+

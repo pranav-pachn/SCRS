@@ -219,3 +219,9 @@ main().catch(error => {
   console.error('Validator error:', error);
   process.exit(1);
 });
+
+
+
+
+
+

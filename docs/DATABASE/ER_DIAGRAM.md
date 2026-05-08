@@ -1,4 +1,4 @@
-# SCRS Database Entity-Relationship Diagram
+# NivaraHub Database Entity-Relationship Diagram
 
 ## ER Diagram (Mermaid Format)
 
@@ -415,3 +415,9 @@ GROUP BY category;
 **Status**: Production-Ready ✅  
 **Last Updated**: February 20, 2026  
 **College-Level**: Comprehensive database engineering demonstration
+
+
+
+
+
+
