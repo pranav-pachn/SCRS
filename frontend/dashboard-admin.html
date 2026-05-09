@@ -2,10 +2,10 @@
 <html lang="en">
 
 <head>
-  <link rel="icon" type="image/png" href="assests/Civixa_logo_new.png">
+  <link rel="icon" type="image/png" href="assests/NivaraHub_logo_new.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Operations Dashboard - Civixa</title>
+    <title>Admin Operations Dashboard - NivaraHub</title>
     <script>
         window.tailwind = window.tailwind || {};
         window.tailwind.config = {
@@ -29,8 +29,8 @@
     <aside class="fixed h-screen w-64 flex-col border-r border-slate-700 bg-slate-800 p-6 hidden md:flex">
         <div class="mb-8">
             <div class="flex items-center gap-3">
-                <img src="assests/Civixa_logo_new.png" alt="Civixa Logo" class="h-10 w-auto object-contain block">
-                <h2 class="text-2xl font-bold leading-none text-white">Civixa</h2>
+                <img src="assests/NivaraHub_logo_new.png" alt="NivaraHub Logo" class="h-10 w-auto object-contain block">
+                <h2 class="text-2xl font-bold leading-none text-white">NivaraHub</h2>
             </div>
             <p class="mt-2 text-xs font-medium uppercase tracking-widest text-gray-400">Admin Portal</p>
         </div>
@@ -68,8 +68,8 @@
             <div class="flex items-center justify-between">
                 <!-- Logo -->
                 <div class="flex items-center space-x-3">
-                    <img src="assests/Civixa_logo_new.png" alt="Civixa Logo" class="h-10 w-auto object-contain">
-                    <span class="text-2xl font-bold text-white">Civixa</span>
+                    <img src="assests/NivaraHub_logo_new.png" alt="NivaraHub Logo" class="h-10 w-auto object-contain">
+                    <span class="text-2xl font-bold text-white">NivaraHub</span>
                 </div>
 
                 <!-- Right Side: Notifications + Profile -->
@@ -679,7 +679,7 @@
     <footer class="bg-slate-800 border-t border-slate-700 mt-12">
         <div class="container mx-auto px-4 py-6">
             <div class="flex flex-col md:flex-row items-center justify-between">
-                <p class="text-sm text-gray-400">&copy; 2026 Civixa. All rights reserved.</p>
+                <p class="text-sm text-gray-400">&copy; 2026 NivaraHub. All rights reserved.</p>
                 <div class="flex space-x-4 mt-4 md:mt-0">
                     <a href="privacy.html" class="text-sm text-gray-400 hover:text-white transition">Privacy Policy</a>
                     <a href="terms.html" class="text-sm text-gray-400 hover:text-white transition">Terms of Service</a>
@@ -709,7 +709,7 @@
                     <div>
                         <h4 id="profileName" class="text-xl font-bold text-white">Admin User</h4>
                         <p id="profileRole" class="text-sm text-indigo-400 font-semibold">Admin</p>
-                        <p id="profileEmail" class="text-sm text-gray-400">admin@civixa.com</p>
+                        <p id="profileEmail" class="text-sm text-gray-400">admin@nivarahub.com</p>
                     </div>
                 </div>
 
@@ -1262,7 +1262,7 @@
                 try {
                     const user = JSON.parse(userStr);
                     document.getElementById('profileName').textContent = user.name || 'Admin User';
-                    document.getElementById('profileEmail').textContent = user.email || 'admin@civixa.com';
+                    document.getElementById('profileEmail').textContent = user.email || 'admin@nivarahub.com';
                     document.getElementById('profileUserId').textContent = user.id || '#-';
                     document.getElementById('profileCreatedAt').textContent = 'March 2026';
 
@@ -1294,7 +1294,7 @@
 
             // Update user in localStorage
             let userStr = localStorage.getItem('token_placeholder');
-            let user = { name: 'Admin User', email: 'admin@civixa.com' };
+            let user = { name: 'Admin User', email: 'admin@nivarahub.com' };
             if (userStr) {
                 try {
                     user = JSON.parse(userStr);
@@ -1306,7 +1306,7 @@
 
             // Update UI elements in the modal
             document.getElementById('profileName').textContent = user.name || 'Admin User';
-            document.getElementById('profileEmail').textContent = user.email || 'admin@civixa.com';
+            document.getElementById('profileEmail').textContent = user.email || 'admin@nivarahub.com';
 
             // Also update any avatar names if present
             const avatarElems = document.querySelectorAll('img[src*="ui-avatars.com"]');
