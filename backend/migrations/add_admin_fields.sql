@@ -23,10 +23,7 @@ CREATE TABLE IF NOT EXISTS complaint_remarks (
     INDEX idx_created_at (created_at)
 );
 
--- Add proof_url to complaints for resolution proof
 ALTER TABLE complaints ADD COLUMN proof_url VARCHAR(500) NULL;
-
--- Create index on assigned_admin_id for faster queries
 CREATE INDEX idx_assigned_admin_id ON complaints(assigned_admin_id);
 CREATE INDEX idx_status_priority ON complaints(status, priority);
 

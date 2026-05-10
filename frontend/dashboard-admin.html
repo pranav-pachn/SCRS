@@ -360,7 +360,7 @@
                                 Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-700">
+                    <tbody id="assignedComplaintsTableBody" class="divide-y divide-slate-700">
 
                         <!-- Row 1 -->
                         <tr class="hover:bg-slate-700 transition">
@@ -382,6 +382,9 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
                                 <div class="flex items-center gap-1 flex-wrap">
+                                    <button class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold transition view-btn" data-complaint-id="1289">
+                                        View
+                                    </button>
                                     <button class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-semibold transition update-status-btn" data-complaint-id="1289" title="Update Status">
                                         <i class="fas fa-pen-to-square mr-1"></i>Update
                                     </button>
@@ -415,6 +418,9 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
                                 <div class="flex items-center gap-1 flex-wrap">
+                                    <button class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold transition view-btn" data-complaint-id="1287">
+                                        View
+                                    </button>
                                     <button class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-semibold transition update-status-btn" data-complaint-id="1287" title="Update Status">
                                         <i class="fas fa-pen-to-square mr-1"></i>Update
                                     </button>
@@ -449,6 +455,9 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
                                 <div class="flex items-center gap-1 flex-wrap">
+                                    <button class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold transition view-btn" data-complaint-id="1285">
+                                        View
+                                    </button>
                                     <button class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-semibold transition update-status-btn" data-complaint-id="1285" title="Update Status">
                                         <i class="fas fa-pen-to-square mr-1"></i>Update
                                     </button>
@@ -481,6 +490,9 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
                                 <div class="flex items-center gap-1 flex-wrap">
+                                    <button class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold transition view-btn" data-complaint-id="1283">
+                                        View
+                                    </button>
                                     <button class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-semibold transition update-status-btn" data-complaint-id="1283" title="Update Status">
                                         <i class="fas fa-pen-to-square mr-1"></i>Update
                                     </button>
@@ -515,6 +527,9 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
                                 <div class="flex items-center gap-1 flex-wrap">
+                                    <button class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold transition view-btn" data-complaint-id="1282">
+                                        View
+                                    </button>
                                     <button class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-semibold transition update-status-btn" data-complaint-id="1282" title="Update Status">
                                         <i class="fas fa-pen-to-square mr-1"></i>Update
                                     </button>
@@ -1895,8 +1910,11 @@
                 if (data.success) {
                     showNotification('Remark added successfully', 'success');
                     document.getElementById('newRemarkText').value = '';
-                    // Refresh complaint details to get updated remarks
-                    openDetailModal(currentComplaintId);
+                    // Refresh complaint details and dashboard counts to keep assigned state current
+                    await Promise.all([
+                        openDetailModal(currentComplaintId),
+                        refreshAdminDashboardState()
+                    ]);
                 } else {
                     showNotification(data.message || 'Failed to add remark', 'error');
                 }
@@ -1928,8 +1946,11 @@
                 if (data.success) {
                     showNotification('Status updated successfully', 'success');
                     statusModal.classList.add('hidden');
-                    // Refresh complaint details
-                    openDetailModal(currentComplaintId);
+                    // Refresh complaint details and dashboard counts to keep assigned state current
+                    await Promise.all([
+                        openDetailModal(currentComplaintId),
+                        refreshAdminDashboardState()
+                    ]);
                 } else {
                     showNotification(data.message || 'Failed to update status', 'error');
                 }
@@ -1962,8 +1983,11 @@
                     showNotification('Proof uploaded successfully', 'success');
                     document.getElementById('proofUrlInput').value = '';
                     proofModal.classList.add('hidden');
-                    // Refresh complaint details
-                    openDetailModal(currentComplaintId);
+                    // Refresh complaint details and dashboard counts to keep assigned state current
+                    await Promise.all([
+                        openDetailModal(currentComplaintId),
+                        refreshAdminDashboardState()
+                    ]);
                 } else {
                     showNotification(data.message || 'Failed to upload proof', 'error');
                 }
@@ -1996,8 +2020,11 @@
                     showNotification('Complaint escalated successfully', 'success');
                     document.getElementById('escalateReasonInput').value = '';
                     escalateModal.classList.add('hidden');
-                    // Refresh complaint details
-                    openDetailModal(currentComplaintId);
+                    // Refresh complaint details and dashboard counts to keep assigned state current
+                    await Promise.all([
+                        openDetailModal(currentComplaintId),
+                        refreshAdminDashboardState()
+                    ]);
                 } else {
                     showNotification(data.message || 'Failed to escalate complaint', 'error');
                 }
@@ -2084,6 +2111,28 @@
             }
         }
 
+        function getAssignedComplaintsTableBody() {
+            return document.getElementById('assignedComplaintsTableBody') || document.querySelector('#assignedComplaints tbody');
+        }
+
+        async function refreshAdminDashboardState() {
+            await Promise.all([
+                loadDashboardStats(),
+                loadComplaintsTable(currentPage, activeAdminFilters || {})
+            ]);
+        }
+
+        function handleAssignedComplaintsTableClick(event) {
+            const viewButton = event.target.closest('.view-btn');
+            if (!viewButton) return;
+
+            event.preventDefault();
+            const complaintId = viewButton.getAttribute('data-complaint-id');
+            if (complaintId) {
+                window.location.href = `complaint-details-admin.html?id=${complaintId}`;
+            }
+        }
+
         // Load complaints table
         async function loadComplaintsTable(page = 1, filters = {}) {
             try {
@@ -2107,7 +2156,11 @@
                 totalPages = pagination.totalPages || 1;
 
                 // Update table body
-                const tbody = document.querySelector('tbody');
+                const tbody = getAssignedComplaintsTableBody();
+                if (!tbody) {
+                    throw new Error('Assigned complaints table body not found');
+                }
+
                 if (complaints.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="7" class="px-6 py-8 text-center text-gray-500">No complaints assigned yet</td></tr>';
                     updatePaginationInfo(0, 0, 0);
@@ -2160,15 +2213,6 @@
                         td.classList.add('py-2');
                     });
                 }
-
-                // Reattach event listeners to new View buttons
-                document.querySelectorAll('.view-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const complaintId = btn.getAttribute('data-complaint-id');
-                        window.location.href = `complaint-details-admin.html?id=${complaintId}`;
-                    });
-                });
 
                 updatePaginationInfo(pagination.currentPage || 1, pagination.from || 0, pagination.to || 0, pagination.total || 0);
                 renderPaginationButtons();
@@ -2466,6 +2510,11 @@
 
             loadAdminSettings();
             applyAdminSettings();
+
+            const assignedComplaintsBody = getAssignedComplaintsTableBody();
+            if (assignedComplaintsBody) {
+                assignedComplaintsBody.addEventListener('click', handleAssignedComplaintsTableClick);
+            }
 
             // Load all dashboard data
             await Promise.all([

@@ -272,6 +272,12 @@ async function autoInitSchema() {
       FOREIGN KEY (deleted_by) REFERENCES users(id) ON DELETE SET NULL,
       FOREIGN KEY (assigned_admin_id) REFERENCES users(id) ON DELETE SET NULL
     )`,
+    `ALTER TABLE complaints ADD COLUMN assigned_admin_id INT NULL AFTER priority`,
+    `ALTER TABLE complaints ADD COLUMN proof_url VARCHAR(2083) NULL AFTER updated_at`,
+    `ALTER TABLE complaints ADD COLUMN resolved_at DATETIME NULL AFTER proof_url`,
+    `ALTER TABLE complaints ADD CONSTRAINT fk_complaints_assigned_admin FOREIGN KEY (assigned_admin_id) REFERENCES users(id) ON DELETE SET NULL`,
+    `CREATE INDEX idx_complaints_assigned_admin ON complaints(assigned_admin_id)`,
+    `CREATE INDEX idx_complaints_assigned_status ON complaints(assigned_admin_id, status)`,
     `CREATE TABLE IF NOT EXISTS complaint_history (
       id INT AUTO_INCREMENT PRIMARY KEY,
       complaint_id INT NOT NULL,

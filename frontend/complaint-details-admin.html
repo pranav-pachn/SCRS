@@ -349,11 +349,11 @@
             const isLocal = hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1';
             
             if (isLocal) {
-                // Use relative paths for local development
-                return ['/api/admin', '/admin'];
+                // Use full URL for local development (backend on port 3005)
+                return ['http://127.0.0.1:3005/api/admin', 'http://127.0.0.1:3005/admin'];
             }
             // Production URLs
-            return [(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:' ? 'http://127.0.0.1:3005' : 'https://scrs-3rwc.onrender.com') + '/api/admin', (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:' ? 'http://127.0.0.1:3005' : 'https://scrs-3rwc.onrender.com') + '/admin'];
+            return ['https://scrs-3rwc.onrender.com/api/admin', 'https://scrs-3rwc.onrender.com/admin'];
         }
 
         const ADMIN_API_BASES = getAdminApiBases();
@@ -428,7 +428,7 @@
         function getApiOrigin() {
             const hostname = window.location.hostname;
             const isLocal = hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1';
-            return isLocal ? `${window.location.protocol}//${window.location.host}` : (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:' ? 'http://127.0.0.1:3005' : (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:' ? 'http://127.0.0.1:3005' : 'https://scrs-3rwc.onrender.com') + '');
+            return isLocal ? 'http://127.0.0.1:3005' : 'https://scrs-3rwc.onrender.com';
         }
 
         function buildEvidenceImageUrl(complaint) {
@@ -453,6 +453,20 @@
             }
 
             return null;
+        }
+
+        const evidenceImagePlaceholderSrc = document.getElementById('evidenceImage')?.src || '';
+
+        function getComplaintIdFromQuery() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id');
+        }
+
+        async function refreshComplaintDetails() {
+            const complaintId = getComplaintIdFromQuery();
+            if (!complaintId) return;
+
+            await loadComplaintDetails(complaintId);
         }
 
         // Initialize page
@@ -521,6 +535,8 @@
             const evidenceUrl = buildEvidenceImageUrl(complaint);
             if (evidenceUrl) {
                 document.getElementById('evidenceImage').src = evidenceUrl;
+            } else if (evidenceImagePlaceholderSrc) {
+                document.getElementById('evidenceImage').src = evidenceImagePlaceholderSrc;
             }
             
             // Load AI analysis if available
@@ -536,8 +552,15 @@
             loadTimeline(complaint.id);
             
             // Load resolution proof if available
+            const proofPreview = document.getElementById('proofPreview');
+            const noProof = document.getElementById('noProof');
+            const markResolvedBtn = document.getElementById('markResolvedBtn');
             if (complaint.proof_url) {
                 showResolutionProof(complaint.proof_url);
+            } else {
+                if (noProof) noProof.classList.remove('hidden');
+                if (proofPreview) proofPreview.classList.add('hidden');
+                if (markResolvedBtn) markResolvedBtn.disabled = true;
             }
         }
 
@@ -620,7 +643,7 @@
                 if (data.success) {
                     showNotification('Status updated successfully', 'success');
                     document.getElementById('statusSelect').value = newStatus;
-                    loadTimeline(complaintId);
+                    refreshComplaintDetails();
                 } else {
                     showNotification('Failed to update status', 'error');
                 }
@@ -647,7 +670,7 @@
             .then(data => {
                 if (data.success) {
                     document.getElementById('newRemark').value = '';
-                    loadRemarks(complaintId);
+                    refreshComplaintDetails();
                     showNotification('Remark added successfully', 'success');
                 } else {
                     showNotification('Failed to add remark', 'error');
@@ -688,8 +711,7 @@
                 }
 
                 if (response.ok && data.success) {
-                    const proofUrl = data.proof_url || (data.complaint && data.complaint.proof_url);
-                    showResolutionProof(proofUrl);
+                    await refreshComplaintDetails();
                     showNotification('Proof uploaded successfully', 'success');
                 } else {
                     showNotification(data.message || 'Failed to upload proof', 'error');
@@ -727,9 +749,7 @@
                 }
 
                 if ((response.ok && data.success) || response.status === 404) {
-                    document.getElementById('noProof').classList.remove('hidden');
-                    document.getElementById('proofPreview').classList.add('hidden');
-                    document.getElementById('markResolvedBtn').disabled = true;
+                    await refreshComplaintDetails();
                     showNotification('Proof removed successfully', 'success');
                 } else {
                     showNotification(data.message || 'Failed to remove proof', 'error');

@@ -116,6 +116,7 @@ async function getComplaintById(dbConnection, complaintId, adminId) {
   const [rows] = await dbConnection.execute(
     `SELECT 
       c.*,
+      CONCAT('COMP-', LPAD(c.id, 4, '0')) AS complaint_id,
       TIMESTAMPDIFF(DAY, c.created_at, NOW()) AS days_since_created,
       (
         SELECT COUNT(*)
