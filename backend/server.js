@@ -46,9 +46,16 @@ const allowedOrigins = new Set(
 
 const corsOptions = {
   origin(origin, callback) {
-    // Dynamically reflect the origin to completely eliminate CORS blocks in production
-    // This is safe because we use Bearer tokens (JWT), not HttpOnly cookies, heavily mitigating CSRF risks.
-    callback(null, origin || '*');
+    // If no origin (server-to-server, curl), allow
+    if (!origin) return callback(null, true);
+
+    // Allow only explicitly whitelisted origins
+    if (allowedOrigins.has(origin) || origin === process.env.FRONTEND_ORIGIN) {
+      return callback(null, true);
+    }
+
+    // Deny other origins
+    return callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
@@ -58,11 +65,24 @@ const corsOptions = {
   maxAge: 86400
 };
 
+// Reflect allowed origin and required CORS headers for browsers (safe for credentialed requests)
+app.use((req, res, next) => {
+  const origin = req.get('Origin');
+  if (origin && (allowedOrigins.has(origin) || origin === process.env.FRONTEND_ORIGIN)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  }
+  next();
+});
+
 // Enable CORS for all routes — must come BEFORE body parsers and all other middleware.
 app.use(cors(corsOptions));
 
 // Explicit CORS preflight handler for all routes as backup
-app.options('*', cors(corsOptions));
+// Use a RegExp to match all paths and avoid path-to-regexp parsing errors
+app.options(/.*/, cors(corsOptions));
 
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true, limit: '1mb' }));
