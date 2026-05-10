@@ -343,7 +343,20 @@
 
     <script src="auth.js"></script>
     <script>
-        const ADMIN_API_BASES = ['https://scrs-3rwc.onrender.com/api/admin', 'https://scrs-3rwc.onrender.com/admin'];
+        // Auto-detect local vs production API base
+        function getAdminApiBases() {
+            const hostname = window.location.hostname;
+            const isLocal = hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1';
+            
+            if (isLocal) {
+                // Use relative paths for local development
+                return ['/api/admin', '/admin'];
+            }
+            // Production URLs
+            return ['https://scrs-3rwc.onrender.com/api/admin', 'https://scrs-3rwc.onrender.com/admin'];
+        }
+
+        const ADMIN_API_BASES = getAdminApiBases();
         let resolvedAdminApiBase = null;
 
         async function resolveAdminApiBase() {
@@ -412,6 +425,12 @@
             }
         }
 
+        function getApiOrigin() {
+            const hostname = window.location.hostname;
+            const isLocal = hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1';
+            return isLocal ? `${window.location.protocol}//${window.location.host}` : 'https://scrs-3rwc.onrender.com';
+        }
+
         function buildEvidenceImageUrl(complaint) {
             const attachmentUrl = Array.isArray(complaint.attachments) && complaint.attachments[0] && complaint.attachments[0].url
                 ? complaint.attachments[0].url
@@ -424,8 +443,9 @@
             if (!normalized) return null;
             if (normalized.startsWith('data:image/')) return normalized;
             if (/^https?:\/\//i.test(normalized)) return normalized;
-            if (normalized.startsWith('/uploads/')) return `https://scrs-3rwc.onrender.com${normalized}`;
-            if (normalized.startsWith('uploads/')) return `https://scrs-3rwc.onrender.com/${normalized}`;
+            const apiOrigin = getApiOrigin();
+            if (normalized.startsWith('/uploads/')) return `${apiOrigin}${normalized}`;
+            if (normalized.startsWith('uploads/')) return `${apiOrigin}/${normalized}`;
 
             const compactBase64 = normalized.replace(/\s+/g, '');
             if (/^[A-Za-z0-9+/=]+$/.test(compactBase64)) {
