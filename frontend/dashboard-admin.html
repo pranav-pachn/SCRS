@@ -35,21 +35,30 @@
             <p class="mt-2 text-xs font-medium uppercase tracking-widest text-gray-400">Admin Portal</p>
         </div>
         <nav class="flex-1 space-y-2">
+            <!-- Dashboard: overview stats and activity feed -->
             <a href="dashboard-admin.html" aria-current="page"
                 class="flex items-center gap-3 rounded-xl border-l-4 border-indigo-500 bg-slate-700 px-4 py-3 text-sm font-semibold text-indigo-300 transition-colors">
                 <i class="fas fa-gauge-high w-4 text-center"></i><span>Dashboard</span></a>
+
+            <!-- All Complaints: full view of every complaint assigned to this admin -->
+            <a href="dashboard-admin.html#assignedComplaints"
+                class="flex items-center gap-3 rounded-xl border-l-4 border-transparent px-4 py-3 text-sm font-medium text-gray-300 transition-colors hover:bg-slate-700 hover:text-white">
+                <i class="fas fa-list-ul w-4 text-center"></i><span>All Complaints</span></a>
+
+            <!-- Manage Complaints: take actions — assign, update, resolve -->
             <a href="complaint-details-admin.html"
                 class="flex items-center gap-3 rounded-xl border-l-4 border-transparent px-4 py-3 text-sm font-medium text-gray-300 transition-colors hover:bg-slate-700 hover:text-white">
-                <i class="fas fa-list-check w-4 text-center"></i><span>Assigned Complaints</span></a>
-            <a href="admin-analytics.html"
+                <i class="fas fa-list-check w-4 text-center"></i><span>Manage Complaints</span></a>
+
+            <!-- Escalations: complaints flagged critical or breaching SLA -->
+            <a href="#" id="escalationsNavLink"
                 class="flex items-center gap-3 rounded-xl border-l-4 border-transparent px-4 py-3 text-sm font-medium text-gray-300 transition-colors hover:bg-slate-700 hover:text-white">
-                <i class="fas fa-chart-line w-4 text-center"></i><span>Analytics</span></a>
-            <a href="admin-profile.html"
+                <i class="fas fa-triangle-exclamation w-4 text-center text-yellow-500"></i><span>Escalations</span></a>
+
+            <!-- System Logs: audit trail of all admin actions -->
+            <a href="#" id="systemLogsNavLink"
                 class="flex items-center gap-3 rounded-xl border-l-4 border-transparent px-4 py-3 text-sm font-medium text-gray-300 transition-colors hover:bg-slate-700 hover:text-white">
-                <i class="fas fa-user-gear w-4 text-center"></i><span>Profile & Settings</span></a>
-            <a href="support.html"
-                class="flex items-center gap-3 rounded-xl border-l-4 border-transparent px-4 py-3 text-sm font-medium text-gray-300 transition-colors hover:bg-slate-700 hover:text-white">
-                <i class="fas fa-circle-question w-4 text-center"></i><span>Support</span></a>
+                <i class="fas fa-terminal w-4 text-center text-slate-400"></i><span>System Logs</span></a>
         </nav>
         <div id="authSection" class="border-t border-slate-700 pt-4">
             <div class="space-y-3">
@@ -287,7 +296,7 @@
         </div>
 
         <!-- Assigned Complaints Table -->
-        <div class="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden mb-8">
+        <div id="assignedComplaints" class="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden mb-8">
             <div class="px-6 py-4 border-b border-slate-700 flex items-center justify-between">
                 <h2 class="text-xl font-bold text-white">Assigned Complaints</h2>
                 <div class="flex space-x-2">
@@ -348,7 +357,7 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                                 SLA</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                                Action</th>
+                                Actions</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-700">
@@ -372,11 +381,17 @@
                                     days</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <button
-                                    class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold transition view-btn"
-                                    data-complaint-id="1289">
-                                    <i class="fas fa-eye mr-1"></i> View
-                                </button>
+                                <div class="flex items-center gap-1 flex-wrap">
+                                    <button class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-semibold transition update-status-btn" data-complaint-id="1289" title="Update Status">
+                                        <i class="fas fa-pen-to-square mr-1"></i>Update
+                                    </button>
+                                    <button class="px-2 py-1 bg-violet-600 hover:bg-violet-700 text-white rounded text-xs font-semibold transition assign-btn" data-complaint-id="1289" title="Assign Admin">
+                                        <i class="fas fa-user-check mr-1"></i>Assign
+                                    </button>
+                                    <button class="px-2 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-xs font-semibold transition resolve-btn" data-complaint-id="1289" title="Resolve Complaint">
+                                        <i class="fas fa-circle-check mr-1"></i>Resolve
+                                    </button>
+                                </div>
                             </td>
                         </tr>
 
@@ -399,11 +414,17 @@
                                     days</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <button
-                                    class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold transition view-btn"
-                                    data-complaint-id="1287">
-                                    <i class="fas fa-eye mr-1"></i> View
-                                </button>
+                                <div class="flex items-center gap-1 flex-wrap">
+                                    <button class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-semibold transition update-status-btn" data-complaint-id="1287" title="Update Status">
+                                        <i class="fas fa-pen-to-square mr-1"></i>Update
+                                    </button>
+                                    <button class="px-2 py-1 bg-violet-600 hover:bg-violet-700 text-white rounded text-xs font-semibold transition assign-btn" data-complaint-id="1287" title="Assign Admin">
+                                        <i class="fas fa-user-check mr-1"></i>Assign
+                                    </button>
+                                    <button class="px-2 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-xs font-semibold transition resolve-btn" data-complaint-id="1287" title="Resolve Complaint">
+                                        <i class="fas fa-circle-check mr-1"></i>Resolve
+                                    </button>
+                                </div>
                             </td>
                         </tr>
 
@@ -427,11 +448,17 @@
                                     days</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <button
-                                    class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold transition view-btn"
-                                    data-complaint-id="1285">
-                                    <i class="fas fa-eye mr-1"></i> View
-                                </button>
+                                <div class="flex items-center gap-1 flex-wrap">
+                                    <button class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-semibold transition update-status-btn" data-complaint-id="1285" title="Update Status">
+                                        <i class="fas fa-pen-to-square mr-1"></i>Update
+                                    </button>
+                                    <button class="px-2 py-1 bg-violet-600 hover:bg-violet-700 text-white rounded text-xs font-semibold transition assign-btn" data-complaint-id="1285" title="Assign Admin">
+                                        <i class="fas fa-user-check mr-1"></i>Assign
+                                    </button>
+                                    <button class="px-2 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-xs font-semibold transition resolve-btn" data-complaint-id="1285" title="Resolve Complaint">
+                                        <i class="fas fa-circle-check mr-1"></i>Resolve
+                                    </button>
+                                </div>
                             </td>
                         </tr>
 
@@ -453,11 +480,17 @@
                                     days</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <button
-                                    class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold transition view-btn"
-                                    data-complaint-id="1283">
-                                    <i class="fas fa-eye mr-1"></i> View
-                                </button>
+                                <div class="flex items-center gap-1 flex-wrap">
+                                    <button class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-semibold transition update-status-btn" data-complaint-id="1283" title="Update Status">
+                                        <i class="fas fa-pen-to-square mr-1"></i>Update
+                                    </button>
+                                    <button class="px-2 py-1 bg-violet-600 hover:bg-violet-700 text-white rounded text-xs font-semibold transition assign-btn" data-complaint-id="1283" title="Assign Admin">
+                                        <i class="fas fa-user-check mr-1"></i>Assign
+                                    </button>
+                                    <button class="px-2 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-xs font-semibold transition resolve-btn" data-complaint-id="1283" title="Resolve Complaint">
+                                        <i class="fas fa-circle-check mr-1"></i>Resolve
+                                    </button>
+                                </div>
                             </td>
                         </tr>
 
@@ -481,11 +514,17 @@
                                     day</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <button
-                                    class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold transition view-btn"
-                                    data-complaint-id="1282">
-                                    <i class="fas fa-eye mr-1"></i> View
-                                </button>
+                                <div class="flex items-center gap-1 flex-wrap">
+                                    <button class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-semibold transition update-status-btn" data-complaint-id="1282" title="Update Status">
+                                        <i class="fas fa-pen-to-square mr-1"></i>Update
+                                    </button>
+                                    <button class="px-2 py-1 bg-violet-600 hover:bg-violet-700 text-white rounded text-xs font-semibold transition assign-btn" data-complaint-id="1282" title="Assign Admin">
+                                        <i class="fas fa-user-check mr-1"></i>Assign
+                                    </button>
+                                    <button class="px-2 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-xs font-semibold transition resolve-btn" data-complaint-id="1282" title="Resolve Complaint">
+                                        <i class="fas fa-circle-check mr-1"></i>Resolve
+                                    </button>
+                                </div>
                             </td>
                         </tr>
 
@@ -508,10 +547,17 @@
                                     days</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <button
-                                    class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold transition">
-                                    <i class="fas fa-edit mr-1"></i> Update
-                                </button>
+                                <div class="flex items-center gap-1 flex-wrap">
+                                    <button class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-semibold transition update-status-btn" data-complaint-id="1280" title="Update Status">
+                                        <i class="fas fa-pen-to-square mr-1"></i>Update
+                                    </button>
+                                    <button class="px-2 py-1 bg-violet-600 hover:bg-violet-700 text-white rounded text-xs font-semibold transition assign-btn" data-complaint-id="1280" title="Assign Admin">
+                                        <i class="fas fa-user-check mr-1"></i>Assign
+                                    </button>
+                                    <button class="px-2 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-xs font-semibold transition resolve-btn" data-complaint-id="1280" title="Resolve Complaint">
+                                        <i class="fas fa-circle-check mr-1"></i>Resolve
+                                    </button>
+                                </div>
                             </td>
                         </tr>
 
@@ -535,10 +581,17 @@
                                     days</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <button
-                                    class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold transition">
-                                    <i class="fas fa-edit mr-1"></i> Update
-                                </button>
+                                <div class="flex items-center gap-1 flex-wrap">
+                                    <button class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-semibold transition update-status-btn" data-complaint-id="1278" title="Update Status">
+                                        <i class="fas fa-pen-to-square mr-1"></i>Update
+                                    </button>
+                                    <button class="px-2 py-1 bg-violet-600 hover:bg-violet-700 text-white rounded text-xs font-semibold transition assign-btn" data-complaint-id="1278" title="Assign Admin">
+                                        <i class="fas fa-user-check mr-1"></i>Assign
+                                    </button>
+                                    <button class="px-2 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-xs font-semibold transition resolve-btn" data-complaint-id="1278" title="Resolve Complaint">
+                                        <i class="fas fa-circle-check mr-1"></i>Resolve
+                                    </button>
+                                </div>
                             </td>
                         </tr>
 
@@ -561,10 +614,17 @@
                                     days</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <button
-                                    class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold transition">
-                                    <i class="fas fa-edit mr-1"></i> Update
-                                </button>
+                                <div class="flex items-center gap-1 flex-wrap">
+                                    <button class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-semibold transition update-status-btn" data-complaint-id="1276" title="Update Status">
+                                        <i class="fas fa-pen-to-square mr-1"></i>Update
+                                    </button>
+                                    <button class="px-2 py-1 bg-violet-600 hover:bg-violet-700 text-white rounded text-xs font-semibold transition assign-btn" data-complaint-id="1276" title="Assign Admin">
+                                        <i class="fas fa-user-check mr-1"></i>Assign
+                                    </button>
+                                    <button class="px-2 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-xs font-semibold transition resolve-btn" data-complaint-id="1276" title="Resolve Complaint">
+                                        <i class="fas fa-circle-check mr-1"></i>Resolve
+                                    </button>
+                                </div>
                             </td>
                         </tr>
 
@@ -683,7 +743,6 @@
                 <div class="flex space-x-4 mt-4 md:mt-0">
                     <a href="privacy.html" class="text-sm text-gray-400 hover:text-white transition">Privacy Policy</a>
                     <a href="terms.html" class="text-sm text-gray-400 hover:text-white transition">Terms of Service</a>
-                    <a href="support.html" class="text-sm text-gray-400 hover:text-white transition">Contact Support</a>
                 </div>
             </div>
         </div>

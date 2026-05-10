@@ -35,21 +35,30 @@
             <p class="mt-2 text-xs font-medium uppercase tracking-widest text-gray-400">Admin Portal</p>
         </div>
         <nav class="flex-1 space-y-2">
-            <a href="dashboard-admin.html"
-                class="flex items-center gap-3 rounded-xl border-l-4 border-transparent px-4 py-3 text-sm font-medium text-gray-300 transition-colors hover:bg-slate-700 hover:text-white">
+            <!-- Dashboard: overview stats and activity feed -->
+            <a href="dashboard-admin.html" aria-current="page"
+                class="flex items-center gap-3 rounded-xl border-l-4 border-indigo-500 bg-slate-700 px-4 py-3 text-sm font-semibold text-indigo-300 transition-colors">
                 <i class="fas fa-gauge-high w-4 text-center"></i><span>Dashboard</span></a>
+
+            <!-- All Complaints: full view of every complaint assigned to this admin -->
+            <a href="dashboard-admin.html#assignedComplaints"
+                class="flex items-center gap-3 rounded-xl border-l-4 border-transparent px-4 py-3 text-sm font-medium text-gray-300 transition-colors hover:bg-slate-700 hover:text-white">
+                <i class="fas fa-list-ul w-4 text-center"></i><span>All Complaints</span></a>
+
+            <!-- Manage Complaints: take actions — assign, update, resolve -->
             <a href="complaint-details-admin.html"
                 class="flex items-center gap-3 rounded-xl border-l-4 border-transparent px-4 py-3 text-sm font-medium text-gray-300 transition-colors hover:bg-slate-700 hover:text-white">
-                <i class="fas fa-list-check w-4 text-center"></i><span>Assigned Complaints</span></a>
-            <a href="admin-analytics.html" aria-current="page"
-                class="flex items-center gap-3 rounded-xl border-l-4 border-indigo-500 bg-slate-700 px-4 py-3 text-sm font-semibold text-indigo-300 transition-colors">
-                <i class="fas fa-chart-line w-4 text-center"></i><span>Analytics</span></a>
-            <a href="admin-profile.html"
+                <i class="fas fa-list-check w-4 text-center"></i><span>Manage Complaints</span></a>
+
+            <!-- Escalations: complaints flagged critical or breaching SLA -->
+            <a href="#" id="escalationsNavLink"
                 class="flex items-center gap-3 rounded-xl border-l-4 border-transparent px-4 py-3 text-sm font-medium text-gray-300 transition-colors hover:bg-slate-700 hover:text-white">
-                <i class="fas fa-user-gear w-4 text-center"></i><span>Profile & Settings</span></a>
-            <a href="support.html"
+                <i class="fas fa-triangle-exclamation w-4 text-center text-yellow-500"></i><span>Escalations</span></a>
+
+            <!-- System Logs: audit trail of all admin actions -->
+            <a href="#" id="systemLogsNavLink"
                 class="flex items-center gap-3 rounded-xl border-l-4 border-transparent px-4 py-3 text-sm font-medium text-gray-300 transition-colors hover:bg-slate-700 hover:text-white">
-                <i class="fas fa-circle-question w-4 text-center"></i><span>Support</span></a>
+                <i class="fas fa-terminal w-4 text-center text-slate-400"></i><span>System Logs</span></a>
         </nav>
         <div class="border-t border-slate-700 pt-4">
             <div class="space-y-3">

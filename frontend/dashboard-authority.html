@@ -129,8 +129,6 @@
         <img src="assests/NivaraHub_logo_new.png" alt="NivaraHub Logo" class="h-8 w-auto object-contain">
         <nav class="hidden items-center space-x-6 lg:flex">
           <a class="border-b-2 border-blue-700 py-1 font-bold text-blue-700 dark:text-blue-300" href="dashboard-authority.html">Dashboard</a>
-          <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="my-complaints.html">My Complaints</a>
-          <a class="text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400" href="support.html">Support</a>
         </nav>
       </div>
       <div class="flex items-center gap-3">
@@ -182,27 +180,32 @@
       </div>
 
       <nav class="space-y-1 px-4">
+        <!-- Dashboard: system-wide overview -->
         <a href="dashboard-authority.html" class="flex items-center gap-3 rounded-xl border-l-4 border-blue-800 bg-white px-4 py-3 text-blue-900 shadow-sm dark:bg-slate-800 dark:text-blue-100">
           <span class="material-symbols-outlined">dashboard</span>
           <span class="headline-font text-sm font-medium">Dashboard</span>
         </a>
-        <a href="my-complaints.html" class="flex items-center gap-3 rounded-xl px-4 py-3 text-slate-600 transition hover:bg-slate-200/70 dark:text-slate-400 dark:hover:bg-slate-800/60">
-          <span class="material-symbols-outlined">list_alt</span>
-          <span class="headline-font text-sm font-medium">My Complaints</span>
+        <!-- Analytics: charts, trends, category & location breakdowns -->
+        <a href="#" class="flex items-center gap-3 rounded-xl px-4 py-3 text-slate-600 transition hover:bg-slate-200/70 dark:text-slate-400 dark:hover:bg-slate-800/60">
+          <span class="material-symbols-outlined">bar_chart</span>
+          <span class="headline-font text-sm font-medium">Analytics</span>
         </a>
-        <a href="complaint.html" class="flex items-center gap-3 rounded-xl px-4 py-3 text-slate-600 transition hover:bg-slate-200/70 dark:text-slate-400 dark:hover:bg-slate-800/60">
-          <span class="material-symbols-outlined">add_circle</span>
-          <span class="headline-font text-sm font-medium">Submit Request</span>
+        <!-- Reports: export CSV/PDF, admin performance reports -->
+        <a href="#" class="flex items-center gap-3 rounded-xl px-4 py-3 text-slate-600 transition hover:bg-slate-200/70 dark:text-slate-400 dark:hover:bg-slate-800/60">
+          <span class="material-symbols-outlined">summarize</span>
+          <span class="headline-font text-sm font-medium">Reports</span>
         </a>
-        <a href="support.html" class="flex items-center gap-3 rounded-xl px-4 py-3 text-slate-600 transition hover:bg-slate-200/70 dark:text-slate-400 dark:hover:bg-slate-800/60">
-          <span class="material-symbols-outlined">contact_support</span>
-          <span class="headline-font text-sm font-medium">Support</span>
+        <!-- Escalations: view escalated & SLA-breached complaints -->
+        <a href="#" class="flex items-center gap-3 rounded-xl px-4 py-3 text-slate-600 transition hover:bg-slate-200/70 dark:text-slate-400 dark:hover:bg-slate-800/60">
+          <span class="material-symbols-outlined">warning</span>
+          <span class="headline-font text-sm font-medium">Escalations</span>
+        </a>
+        <!-- System Health: API status, DB connectivity, uptime -->
+        <a href="#" class="flex items-center gap-3 rounded-xl px-4 py-3 text-slate-600 transition hover:bg-slate-200/70 dark:text-slate-400 dark:hover:bg-slate-800/60">
+          <span class="material-symbols-outlined">monitor_heart</span>
+          <span class="headline-font text-sm font-medium">System Health</span>
         </a>
       </nav>
-
-      <div class="px-4 pt-5">
-        <a href="complaint.html" class="block w-full rounded-xl bg-gradient-to-br from-primary to-primary-container py-3 text-center text-sm font-bold text-white shadow-lg">New Complaint</a>
-      </div>
 
       <div class="mt-auto space-y-1 border-t border-slate-200 px-4 py-5 dark:border-slate-800">
         <a href="privacy.html" class="flex items-center gap-3 rounded-xl px-4 py-2 text-xs text-slate-600 hover:bg-slate-200/70 dark:text-slate-400 dark:hover:bg-slate-800/60">
@@ -308,10 +311,8 @@
                 <th class="px-4 py-3">Category</th>
                 <th class="px-4 py-3">Location</th>
                 <th class="px-4 py-3">Priority</th>
+                <th class="px-4 py-3">Report Count</th>
                 <th class="px-4 py-3">Status</th>
-                <th class="px-4 py-3">Assigned Admin</th>
-                <th class="px-4 py-3">SLA</th>
-                <th class="px-4 py-3">Actions</th>
               </tr>
             </thead>
             <tbody id="complaintTableBody" class="divide-y divide-slate-200 dark:divide-slate-700">
@@ -385,7 +386,6 @@
       <div class="flex gap-5">
         <a href="privacy.html" class="hover:text-blue-600">Privacy Policy</a>
         <a href="terms.html" class="hover:text-blue-600">Terms of Service</a>
-        <a href="support.html" class="hover:text-blue-600">Contact</a>
       </div>
     </div>
   </footer>
