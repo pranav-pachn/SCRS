@@ -377,7 +377,7 @@
                 bio: document.getElementById('bio').value
             };
 
-            fetch('https://scrs-3rwc.onrender.com/auth/me', {
+            fetch((window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:' ? 'http://127.0.0.1:3005' : 'https://scrs-3rwc.onrender.com') + '/auth/me', {
                 method: 'PUT',
                 headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
                 body: JSON.stringify({
@@ -434,7 +434,7 @@
                 return;
             }
 
-            fetch('https://scrs-3rwc.onrender.com/auth/me', {
+            fetch((window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:' ? 'http://127.0.0.1:3005' : 'https://scrs-3rwc.onrender.com') + '/auth/me', {
                 method: 'PUT',
                 headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
                 body: JSON.stringify({

@@ -378,7 +378,7 @@
   </div>
   <script src="auth.js"></script>
   <script>
-    const DEFAULT_API_BASE = "https://scrs-3rwc.onrender.com";
+    const DEFAULT_API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:' ? 'http://127.0.0.1:3005' : (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:' ? 'http://127.0.0.1:3005' : 'https://scrs-3rwc.onrender.com') + '');
     const API_BASE = (localStorage.getItem("SCRS_API_BASE") || DEFAULT_API_BASE).replace(/\/$/, "");
     const FALLBACK_GOOGLE_CLIENT_ID = "1009283935906-gjpka0rje9np9rp8uaj6n162l3a3n396.apps.googleusercontent.com";
 

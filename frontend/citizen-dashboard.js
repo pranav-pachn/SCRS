@@ -24,7 +24,7 @@ function sanitizeImageUrl(url) {
 }
 // ─────────────────────────────────────────────────────────────────────────────
 
-const API_BASE = 'https://scrs-3rwc.onrender.com';
+const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:' ? 'http://127.0.0.1:3005' : (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:' ? 'http://127.0.0.1:3005' : 'https://scrs-3rwc.onrender.com') + '');
 let currentPage = 1;
 let totalPages = 1;
 let allComplaints = [];

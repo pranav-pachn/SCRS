@@ -338,15 +338,15 @@ async function autoInitSchema() {
     `ALTER TABLE complaints MODIFY COLUMN priority ENUM('Low','Medium','High','Critical') NOT NULL DEFAULT 'Medium'`,
     
     // ── Indexes (IF NOT EXISTS only supported in MySQL 8.0.16+, so wrap separately) ──
-    `CREATE INDEX IF NOT EXISTS idx_complaints_status ON complaints(status)`,
-    `CREATE INDEX IF NOT EXISTS idx_complaints_priority ON complaints(priority)`,
-    `CREATE INDEX IF NOT EXISTS idx_complaints_category ON complaints(category)`,
-    `CREATE INDEX IF NOT EXISTS idx_complaints_created_at ON complaints(created_at)`,
-    `CREATE INDEX IF NOT EXISTS idx_complaints_category_location ON complaints(category, location)`,
-    `CREATE INDEX IF NOT EXISTS idx_complaints_user_is_deleted ON complaints(user_id, is_deleted)`,
-    `CREATE INDEX IF NOT EXISTS idx_complaints_is_deleted ON complaints(is_deleted)`,
-    `CREATE INDEX IF NOT EXISTS idx_assigned_admin_id ON complaints(assigned_admin_id)`,
-    `CREATE INDEX IF NOT EXISTS idx_status_priority ON complaints(status, priority)`,
+    `CREATE INDEX idx_complaints_status ON complaints(status)`,
+    `CREATE INDEX idx_complaints_priority ON complaints(priority)`,
+    `CREATE INDEX idx_complaints_category ON complaints(category)`,
+    `CREATE INDEX idx_complaints_created_at ON complaints(created_at)`,
+    `CREATE INDEX idx_complaints_category_location ON complaints(category, location)`,
+    `CREATE INDEX idx_complaints_user_is_deleted ON complaints(user_id, is_deleted)`,
+    `CREATE INDEX idx_complaints_is_deleted ON complaints(is_deleted)`,
+    `CREATE INDEX idx_assigned_admin_id ON complaints(assigned_admin_id)`,
+    `CREATE INDEX idx_status_priority ON complaints(status, priority)`,
     
     // ── Seed Default Users ───────────────────────────────────────────────────
     `INSERT IGNORE INTO users (name, email, password_hash, role) VALUES 
