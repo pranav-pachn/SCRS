@@ -230,6 +230,126 @@ function startAiHealthMonitor() {
   aiHealthInterval = setInterval(runCycle, intervalMs);
 }
 
+// ============================================================================
+// AUTO SCHEMA INIT — runs all DDL on startup (idempotent: IF NOT EXISTS)
+// Safe to run on every boot; skips statements that already exist.
+// ============================================================================
+async function autoInitSchema() {
+  const statements = [
+    // ── Core tables ──────────────────────────────────────────────────────────
+    `CREATE TABLE IF NOT EXISTS users (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      name VARCHAR(100) NOT NULL,
+      email VARCHAR(150) NOT NULL UNIQUE,
+      password_hash VARCHAR(255),
+      role ENUM('citizen','admin','authority') NOT NULL DEFAULT 'citizen',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS complaints (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      complaint_id VARCHAR(20),
+      user_id INT NULL,
+      category VARCHAR(50) NOT NULL,
+      description TEXT NOT NULL,
+      location VARCHAR(255) NOT NULL,
+      status ENUM('Submitted','In Progress','Resolved') NOT NULL DEFAULT 'Submitted',
+      priority ENUM('Low','Medium','High') NOT NULL DEFAULT 'Medium',
+      is_deleted BOOLEAN DEFAULT FALSE,
+      deleted_at DATETIME NULL,
+      deleted_by INT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME DEFAULT NULL,
+      assigned_admin_id INT NULL,
+      resolved_at DATETIME NULL,
+      proof_url VARCHAR(500) NULL,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
+      FOREIGN KEY (deleted_by) REFERENCES users(id) ON DELETE SET NULL,
+      FOREIGN KEY (assigned_admin_id) REFERENCES users(id) ON DELETE SET NULL
+    )`,
+    `CREATE TABLE IF NOT EXISTS complaint_history (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      complaint_id INT NOT NULL,
+      changed_by INT NULL,
+      old_status VARCHAR(50),
+      new_status VARCHAR(50),
+      note TEXT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (complaint_id) REFERENCES complaints(id) ON DELETE CASCADE,
+      FOREIGN KEY (changed_by) REFERENCES users(id) ON DELETE SET NULL
+    )`,
+    `CREATE TABLE IF NOT EXISTS attachments (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      complaint_id INT NOT NULL,
+      filename VARCHAR(255) NOT NULL,
+      url VARCHAR(2083) NOT NULL,
+      uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (complaint_id) REFERENCES complaints(id) ON DELETE CASCADE
+    )`,
+    `CREATE TABLE IF NOT EXISTS complaint_remarks (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      complaint_id INT NOT NULL,
+      admin_id INT NOT NULL,
+      remark_text TEXT NOT NULL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (complaint_id) REFERENCES complaints(id),
+      FOREIGN KEY (admin_id) REFERENCES users(id),
+      INDEX idx_cr_complaint_id (complaint_id),
+      INDEX idx_cr_admin_id (admin_id)
+    )`,
+    `CREATE TABLE IF NOT EXISTS notifications (
+      id BIGINT AUTO_INCREMENT PRIMARY KEY,
+      user_id INT NOT NULL,
+      title VARCHAR(180) NOT NULL,
+      message TEXT NOT NULL,
+      type ENUM('assignment','escalation','reassignment','resolved','system') NOT NULL DEFAULT 'system',
+      related_complaint_id INT NULL,
+      metadata_json TEXT NULL,
+      is_read BOOLEAN NOT NULL DEFAULT FALSE,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      read_at DATETIME NULL,
+      INDEX idx_notif_user_created (user_id, created_at DESC),
+      INDEX idx_notif_user_read (user_id, is_read),
+      CONSTRAINT fk_notif_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+      CONSTRAINT fk_notif_complaint FOREIGN KEY (related_complaint_id) REFERENCES complaints(id) ON DELETE SET NULL
+    )`,
+    // ── Indexes (IF NOT EXISTS only supported in MySQL 8.0.16+, so wrap separately) ──
+    `CREATE INDEX IF NOT EXISTS idx_complaints_status ON complaints(status)`,
+    `CREATE INDEX IF NOT EXISTS idx_complaints_priority ON complaints(priority)`,
+    `CREATE INDEX IF NOT EXISTS idx_complaints_category ON complaints(category)`,
+    `CREATE INDEX IF NOT EXISTS idx_complaints_created_at ON complaints(created_at)`,
+    `CREATE INDEX IF NOT EXISTS idx_complaints_category_location ON complaints(category, location)`,
+    `CREATE INDEX IF NOT EXISTS idx_complaints_user_is_deleted ON complaints(user_id, is_deleted)`,
+    `CREATE INDEX IF NOT EXISTS idx_complaints_is_deleted ON complaints(is_deleted)`,
+    `CREATE INDEX IF NOT EXISTS idx_assigned_admin_id ON complaints(assigned_admin_id)`,
+    `CREATE INDEX IF NOT EXISTS idx_status_priority ON complaints(status, priority)`,
+  ];
+
+  console.log('🗄️  Running auto schema init...');
+  let created = 0, skipped = 0, failed = 0;
+
+  for (const sql of statements) {
+    try {
+      await dbConnection.query(sql);
+      created++;
+    } catch (err) {
+      // Ignore "already exists" and "duplicate key name" — expected on re-runs
+      if (
+        err.code === 'ER_TABLE_EXISTS_ERROR' ||
+        err.code === 'ER_DUP_KEYNAME' ||
+        err.code === 'ER_DUP_INDEX' ||
+        (err.message && (err.message.includes('already exists') || err.message.includes('Duplicate key')))
+      ) {
+        skipped++;
+      } else {
+        console.warn(`⚠️  Schema stmt skipped (${err.code}): ${err.message.split('\n')[0]}`);
+        failed++;
+      }
+    }
+  }
+
+  console.log(`✅ Schema init done — ${created} executed, ${skipped} already existed, ${failed} warnings`);
+}
+
 // Pooled DB connection with retry
 async function initDbConnectionWithRetry() {
   try {
@@ -245,6 +365,9 @@ async function initDbConnectionWithRetry() {
     console.log(`✅ Connected to MySQL [Host: ${host}]`);
 
     
+    // Auto-create tables if this is a fresh database
+    await autoInitSchema();
+
     // Make dbConnection available to routes via app.locals and global
     app.locals.dbConnection = dbConnection;
     global.dbConnection = dbConnection; // Fallback for routes
