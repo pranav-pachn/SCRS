@@ -1536,7 +1536,7 @@
             }
 
             try {
-                const response = await fetch('https://nivarahub-3rwc.onrender.com/auth/me', {
+                const response = await fetch('https://scrs-3rwc.onrender.com/auth/me', {
                     headers: getAuthHeaders()
                 });
 
@@ -1594,7 +1594,7 @@
                     payload.newPassword = newPassword;
                 }
 
-                const response = await fetch('https://nivarahub-3rwc.onrender.com/auth/me', {
+                const response = await fetch('https://scrs-3rwc.onrender.com/auth/me', {
                     method: 'PUT',
                     headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
                     body: JSON.stringify(payload)
@@ -1656,7 +1656,7 @@
             currentComplaintId = complaintId;
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch(`https://nivarahub-3rwc.onrender.com/admin/complaints/${complaintId}`, {
+                const response = await fetch(`https://scrs-3rwc.onrender.com/admin/complaints/${complaintId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
@@ -1823,7 +1823,7 @@
 
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch(`https://nivarahub-3rwc.onrender.com/admin/complaints/${currentComplaintId}/remark`, {
+                const response = await fetch(`https://scrs-3rwc.onrender.com/admin/complaints/${currentComplaintId}/remark`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -1856,7 +1856,7 @@
 
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch(`https://nivarahub-3rwc.onrender.com/admin/complaints/${currentComplaintId}/status`, {
+                const response = await fetch(`https://scrs-3rwc.onrender.com/admin/complaints/${currentComplaintId}/status`, {
                     method: 'PUT',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -1889,7 +1889,7 @@
 
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch(`https://nivarahub-3rwc.onrender.com/admin/complaints/${currentComplaintId}/resolve-proof`, {
+                const response = await fetch(`https://scrs-3rwc.onrender.com/admin/complaints/${currentComplaintId}/resolve-proof`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -1923,7 +1923,7 @@
 
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch(`https://nivarahub-3rwc.onrender.com/admin/complaints/${currentComplaintId}/escalate`, {
+                const response = await fetch(`https://scrs-3rwc.onrender.com/admin/complaints/${currentComplaintId}/escalate`, {
                     method: 'PUT',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -1980,7 +1980,7 @@
 
     <!-- Admin Dashboard Data Loading Script -->
     <script>
-        const API_BASE = 'https://nivarahub-3rwc.onrender.com';
+        const API_BASE = 'https://scrs-3rwc.onrender.com';
         let currentPage = 1;
         let totalPages = 1;
         let monthlyTrendChart = null;
