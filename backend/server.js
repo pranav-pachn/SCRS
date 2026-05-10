@@ -981,7 +981,7 @@ app.post('/auth/google', async (req, res) => {
     return res.json({ success: true, token, user });
   } catch (error) {
     console.error('❌ Error in POST /auth/google:', error);
-    return res.status(500).json({ success: false, message: 'Google authentication failed.' });
+    return res.status(500).json({ success: false, message: 'Google authentication failed: ' + error.message });
   }
 });
 
