@@ -322,6 +322,12 @@ async function autoInitSchema() {
     `CREATE INDEX IF NOT EXISTS idx_complaints_is_deleted ON complaints(is_deleted)`,
     `CREATE INDEX IF NOT EXISTS idx_assigned_admin_id ON complaints(assigned_admin_id)`,
     `CREATE INDEX IF NOT EXISTS idx_status_priority ON complaints(status, priority)`,
+    
+    // ── Seed Default Users ───────────────────────────────────────────────────
+    `INSERT IGNORE INTO users (name, email, password_hash, role) VALUES 
+      ('System Admin', 'admin@nivarahub.local', '$2a$10$lV15YTmQUZIjC3xz6QwEHuyDzP8BjgSkI9TcbFd.BSK6PIxgeteF2', 'admin'),
+      ('Authority Supervisor', 'authority@nivarahub.gov', '$2a$10$IfIfw62Z9m7e2tKfVuLlZ.KqnFlstTSvy58nFyP/H2nuSlXEr/uNm', 'authority')
+    `
   ];
 
   console.log('🗄️  Running auto schema init...');
