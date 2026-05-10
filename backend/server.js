@@ -251,9 +251,15 @@ async function autoInitSchema() {
       user_id INT NULL,
       category VARCHAR(50) NOT NULL,
       description TEXT NOT NULL,
+      summary TEXT NULL,
+      tags TEXT NULL,
       location VARCHAR(255) NOT NULL,
+      image_url MEDIUMTEXT NULL,
       status ENUM('Submitted','In Progress','Resolved') NOT NULL DEFAULT 'Submitted',
-      priority ENUM('Low','Medium','High') NOT NULL DEFAULT 'Medium',
+      priority ENUM('Low','Medium','High','Critical') NOT NULL DEFAULT 'Medium',
+      ai_suggested_priority ENUM('Low','Medium','High','Critical') NULL,
+      manual_priority_override BOOLEAN DEFAULT FALSE,
+      is_escalated BOOLEAN DEFAULT FALSE,
       is_deleted BOOLEAN DEFAULT FALSE,
       deleted_at DATETIME NULL,
       deleted_by INT NULL,
@@ -273,6 +279,11 @@ async function autoInitSchema() {
       old_status VARCHAR(50),
       new_status VARCHAR(50),
       note TEXT,
+      action VARCHAR(50),
+      role ENUM('citizen','admin','authority') DEFAULT 'admin',
+      old_value VARCHAR(255),
+      new_value VARCHAR(255),
+      field_changed VARCHAR(100),
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (complaint_id) REFERENCES complaints(id) ON DELETE CASCADE,
       FOREIGN KEY (changed_by) REFERENCES users(id) ON DELETE SET NULL
@@ -312,6 +323,20 @@ async function autoInitSchema() {
       CONSTRAINT fk_notif_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
       CONSTRAINT fk_notif_complaint FOREIGN KEY (related_complaint_id) REFERENCES complaints(id) ON DELETE SET NULL
     )`,
+    // ── Fallback Migrations for existing tables ──────────────────────────────
+    `ALTER TABLE complaints ADD COLUMN summary TEXT NULL`,
+    `ALTER TABLE complaints ADD COLUMN tags TEXT NULL`,
+    `ALTER TABLE complaints ADD COLUMN image_url MEDIUMTEXT NULL`,
+    `ALTER TABLE complaints ADD COLUMN ai_suggested_priority ENUM('Low','Medium','High','Critical') NULL`,
+    `ALTER TABLE complaints ADD COLUMN manual_priority_override BOOLEAN DEFAULT FALSE`,
+    `ALTER TABLE complaints ADD COLUMN is_escalated BOOLEAN DEFAULT FALSE`,
+    `ALTER TABLE complaint_history ADD COLUMN action VARCHAR(50)`,
+    `ALTER TABLE complaint_history ADD COLUMN role ENUM('citizen','admin','authority') DEFAULT 'admin'`,
+    `ALTER TABLE complaint_history ADD COLUMN old_value VARCHAR(255)`,
+    `ALTER TABLE complaint_history ADD COLUMN new_value VARCHAR(255)`,
+    `ALTER TABLE complaint_history ADD COLUMN field_changed VARCHAR(100)`,
+    `ALTER TABLE complaints MODIFY COLUMN priority ENUM('Low','Medium','High','Critical') NOT NULL DEFAULT 'Medium'`,
+    
     // ── Indexes (IF NOT EXISTS only supported in MySQL 8.0.16+, so wrap separately) ──
     `CREATE INDEX IF NOT EXISTS idx_complaints_status ON complaints(status)`,
     `CREATE INDEX IF NOT EXISTS idx_complaints_priority ON complaints(priority)`,
@@ -343,7 +368,8 @@ async function autoInitSchema() {
         err.code === 'ER_TABLE_EXISTS_ERROR' ||
         err.code === 'ER_DUP_KEYNAME' ||
         err.code === 'ER_DUP_INDEX' ||
-        (err.message && (err.message.includes('already exists') || err.message.includes('Duplicate key')))
+        err.code === 'ER_DUP_FIELDNAME' ||
+        (err.message && (err.message.includes('already exists') || err.message.includes('Duplicate key') || err.message.includes('Duplicate column name')))
       ) {
         skipped++;
       } else {
