@@ -237,10 +237,10 @@
                 const headers = getAuthHeaders();
 
                 const [performanceResponse, trendsResponse, categoryResponse, activityResponse] = await Promise.all([
-                    fetch('https://NivaraHub-3rwc.onrender.com/api/admin/performance', { headers }),
-                    fetch('https://NivaraHub-3rwc.onrender.com/api/admin/statistics/monthly-trends', { headers }),
-                    fetch('https://NivaraHub-3rwc.onrender.com/api/admin/statistics/category-distribution', { headers }),
-                    fetch('https://NivaraHub-3rwc.onrender.com/api/admin/activity-feed?limit=12', { headers })
+                    fetch('https://nivarahub-3rwc.onrender.com/api/admin/performance', { headers }),
+                    fetch('https://nivarahub-3rwc.onrender.com/api/admin/statistics/monthly-trends', { headers }),
+                    fetch('https://nivarahub-3rwc.onrender.com/api/admin/statistics/category-distribution', { headers }),
+                    fetch('https://nivarahub-3rwc.onrender.com/api/admin/activity-feed?limit=12', { headers })
                 ]);
 
                 const [performanceData, trendsData, categoryData, activityData] = await Promise.all([
@@ -493,7 +493,7 @@
             document.getElementById('refreshActivityBtn').addEventListener('click', function() {
                 this.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>Loading...';
 
-                fetch('https://NivaraHub-3rwc.onrender.com/api/admin/activity-feed?limit=12', {
+                fetch('https://nivarahub-3rwc.onrender.com/api/admin/activity-feed?limit=12', {
                     headers: getAuthHeaders()
                 })
                 .then(parseJsonSafe)
