@@ -39,18 +39,41 @@ const allowedOrigins = new Set(
     'https://www.nivarahub-NivaraHub.netlify.app',
     'http://localhost:3000',
     'http://localhost:5173',
+    'http://localhost:5500',
     'http://127.0.0.1:3000',
-    'http://127.0.0.1:5173'
+    'http://127.0.0.1:5173',
+    'http://127.0.0.1:5500'
   ].filter(Boolean)
 );
+
+// In development, also allow any localhost or 127.0.0.1 origin dynamically.
+const isDev = process.env.NODE_ENV !== 'production';
+function isLocalhostOrigin(origin) {
+  if (!origin) return false;
+  try {
+    const url = new URL(origin);
+    return (
+      url.hostname === 'localhost' ||
+      url.hostname === '127.0.0.1' ||
+      url.hostname === '::1'
+    );
+  } catch {
+    return false;
+  }
+}
 
 const corsOptions = {
   origin(origin, callback) {
     // If no origin (server-to-server, curl), allow
     if (!origin) return callback(null, true);
 
-    // Allow only explicitly whitelisted origins
+    // Always allow explicitly whitelisted origins
     if (allowedOrigins.has(origin) || origin === process.env.FRONTEND_ORIGIN) {
+      return callback(null, true);
+    }
+
+    // In development mode, allow any localhost origin regardless of port
+    if (isDev && isLocalhostOrigin(origin)) {
       return callback(null, true);
     }
 
@@ -68,7 +91,14 @@ const corsOptions = {
 // Reflect allowed origin and required CORS headers for browsers (safe for credentialed requests)
 app.use((req, res, next) => {
   const origin = req.get('Origin');
-  if (origin && (allowedOrigins.has(origin) || origin === process.env.FRONTEND_ORIGIN)) {
+  if (
+    origin &&
+    (
+      allowedOrigins.has(origin) ||
+      origin === process.env.FRONTEND_ORIGIN ||
+      (isDev && isLocalhostOrigin(origin))
+    )
+  ) {
     res.setHeader('Access-Control-Allow-Origin', origin);
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
