@@ -487,6 +487,7 @@
 
   <script src="auth.js"></script>
   <script src="notifications.js"></script>
+  <script src="authority.js"></script>
   <script>
     requireAuth(['authority']);
 
@@ -532,48 +533,64 @@
       if (typeof submitPriorityOverride === 'function') submitPriorityOverride();
     }
 
-    const themeToggleBtn = document.getElementById('themeToggleBtn');
-    if (themeToggleBtn) {
-      themeToggleBtn.addEventListener('click', function () {
-        const root = document.documentElement;
-        const isDark = root.classList.toggle('dark');
-        root.classList.toggle('light', !isDark);
-        root.setAttribute('data-theme', isDark ? 'dark' : 'light');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        const icon = document.getElementById('themeToggleIcon');
-        if (icon) icon.textContent = isDark ? 'light_mode' : 'dark_mode';
-      });
-    }
-
-    const notificationBtn = document.getElementById('notificationBtn');
-    const notificationDropdown = document.getElementById('notificationDropdown');
-    if (notificationBtn && notificationDropdown) {
-      notificationBtn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        notificationDropdown.classList.toggle('hidden');
-      });
-      notificationDropdown.addEventListener('click', function (e) { e.stopPropagation(); });
-      document.addEventListener('click', function (e) {
-        if (!notificationDropdown.contains(e.target) && e.target !== notificationBtn) {
-          notificationDropdown.classList.add('hidden');
-        }
-      });
-    }
-
-    document.getElementById('applyFiltersBtn').addEventListener('click', function () {
-      if (typeof loadComplaints === 'function') loadComplaints(1);
-    });
-
-    document.getElementById('exportCsvBtn').addEventListener('click', function () {
-      if (typeof exportComplaints === 'function') exportComplaints();
-    });
-
     document.addEventListener('DOMContentLoaded', function () {
       initTheme();
       updateSidebarAuth();
+
+      // Theme toggle
+      const themeToggleBtn = document.getElementById('themeToggleBtn');
+      if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', function () {
+          const root = document.documentElement;
+          const isDark = root.classList.toggle('dark');
+          root.classList.toggle('light', !isDark);
+          root.setAttribute('data-theme', isDark ? 'dark' : 'light');
+          localStorage.setItem('theme', isDark ? 'dark' : 'light');
+          const icon = document.getElementById('themeToggleIcon');
+          if (icon) icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+        });
+      }
+
+      // Notification dropdown
+      const notificationBtn = document.getElementById('notificationBtn');
+      const notificationDropdown = document.getElementById('notificationDropdown');
+      if (notificationBtn && notificationDropdown) {
+        notificationBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          notificationDropdown.classList.toggle('hidden');
+        });
+        notificationDropdown.addEventListener('click', function (e) { e.stopPropagation(); });
+        document.addEventListener('click', function (e) {
+          if (!notificationDropdown.contains(e.target) && e.target !== notificationBtn) {
+            notificationDropdown.classList.add('hidden');
+          }
+        });
+      }
+
+      // Filter buttons — authority.js is already loaded above so loadComplaints is defined
+      document.getElementById('applyFiltersBtn').addEventListener('click', function () {
+        currentPage = 1;
+        loadComplaints(1);
+      });
+
+      // Also trigger filter on Enter key in location text box
+      document.getElementById('locationFilter').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { currentPage = 1; loadComplaints(1); }
+      });
+
+      // Clear-filter shortcut on each select (optional UX: auto-apply on change)
+      ['statusFilter','priorityFilter','categoryFilter'].forEach(function(id) {
+        document.getElementById(id).addEventListener('change', function () {
+          currentPage = 1;
+          loadComplaints(1);
+        });
+      });
+
+      document.getElementById('exportCsvBtn').addEventListener('click', function () {
+        if (typeof exportComplaints === 'function') exportComplaints();
+      });
     });
   </script>
-  <script src="authority.js"></script>
 </body>
 </html>
 
