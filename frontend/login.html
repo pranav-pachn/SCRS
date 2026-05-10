@@ -424,33 +424,55 @@
           showNotification("Connection error", "error");
         });
     }
+    // Wake the Render dyno (free tier spins down after ~15 min inactivity).
+    // Fires a no-wait ping to /health so the container starts before we need it.
+    async function warmupBackend() {
+      try {
+        await fetch(`${API_BASE}/health`, { method: 'GET', signal: AbortSignal.timeout(8000) });
+      } catch (_) {
+        // Ignore — warmup is best-effort
+      }
+    }
+
     async function loadOAuthConfig() {
       const endpoints = [
         `${API_BASE}/auth/config`,
         `${API_BASE}/api/auth/config`
       ];
 
-      for (const endpoint of endpoints) {
-        try {
-          const res = await fetch(endpoint);
-          if (!res.ok) {
-            continue;
-          }
+      const MAX_RETRIES = 3;
+      const BASE_DELAY_MS = 1500;
 
-          const data = await res.json();
-          if (data && data.success && data.googleClientId) {
-            return data.googleClientId;
+      for (const endpoint of endpoints) {
+        for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+          try {
+            const res = await fetch(endpoint, { signal: AbortSignal.timeout(8000) });
+            if (!res.ok) break; // Non-2xx from this endpoint — try next one
+
+            const data = await res.json();
+            if (data && data.success && data.googleClientId) {
+              return data.googleClientId;
+            }
+            break; // Unexpected shape — move on
+          } catch (error) {
+            console.warn(`OAuth config attempt ${attempt}/${MAX_RETRIES} failed for ${endpoint}:`, error.message);
+            if (attempt < MAX_RETRIES) {
+              // Exponential back-off: 1.5 s, 3 s, 6 s …
+              await new Promise(r => setTimeout(r, BASE_DELAY_MS * attempt));
+            }
           }
-        } catch (error) {
-          console.error(`OAuth config fetch failed for ${endpoint}:`, error);
         }
       }
 
+      console.warn("OAuth config unreachable — using fallback client ID.");
       return FALLBACK_GOOGLE_CLIENT_ID;
     }
 
     window.addEventListener("load", async function () {
       initTheme();
+
+      // Fire-and-forget warmup to wake Render's free-tier dyno
+      warmupBackend();
 
       const googleClientId = await loadOAuthConfig();
       if (!googleClientId) {

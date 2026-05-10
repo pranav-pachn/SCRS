@@ -456,8 +456,9 @@
   </div>
   <script src="auth.js"></script>
   <script>
-    const DEFAULT_API_BASE = "https://NivaraHub-3rwc.onrender.com";
+    const DEFAULT_API_BASE = "https://nivarahub-3rwc.onrender.com";
     const API_BASE = (localStorage.getItem("SCRS_API_BASE") || DEFAULT_API_BASE).replace(/\/$/, "");
+    const FALLBACK_GOOGLE_CLIENT_ID = "1009283935906-gjpka0rje9np9rp8uaj6n162l3a3n396.apps.googleusercontent.com";
 
     function initTheme() {
       const savedTheme = localStorage.getItem("theme") || "light";
@@ -595,20 +596,43 @@
       container.appendChild(notification);
       setTimeout(() => notification.remove(), 3000);
     }
-    window.addEventListener("load", function () {
+    async function warmupBackend() {
+      try {
+        await fetch(`${API_BASE}/health`, { method: 'GET', signal: AbortSignal.timeout(8000) });
+      } catch (_) { /* best-effort */ }
+    }
+    async function loadOAuthConfig() {
+      const endpoints = [`${API_BASE}/auth/config`, `${API_BASE}/api/auth/config`];
+      const MAX_RETRIES = 3;
+      const BASE_DELAY_MS = 1500;
+      for (const endpoint of endpoints) {
+        for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+          try {
+            const res = await fetch(endpoint, { signal: AbortSignal.timeout(8000) });
+            if (!res.ok) break;
+            const data = await res.json();
+            if (data && data.success && data.googleClientId) return data.googleClientId;
+            break;
+          } catch (err) {
+            console.warn(`OAuth config attempt ${attempt}/${MAX_RETRIES} failed for ${endpoint}:`, err.message);
+            if (attempt < MAX_RETRIES) await new Promise(r => setTimeout(r, BASE_DELAY_MS * attempt));
+          }
+        }
+      }
+      console.warn("OAuth config unreachable — using fallback client ID.");
+      return FALLBACK_GOOGLE_CLIENT_ID;
+    }
+    window.addEventListener("load", async function () {
       initTheme();
       initRegisterEnhancements();
-      fetch(`${API_BASE}/auth/config`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.success && data.googleClientId) {
-            google.accounts.id.initialize({ client_id: data.googleClientId, callback: handleGoogleSignUp });
-            google.accounts.id.renderButton(document.getElementById("google-signup-button"), { theme: "outline", size: "large", shape: "pill", width: 280 });
-          } else {
-            console.error("Failed to load Google Client ID from backend");
-          }
-        })
-        .catch(err => { console.error("Error fetching OAuth config:", err); });
+      warmupBackend();
+      const googleClientId = await loadOAuthConfig();
+      if (googleClientId) {
+        google.accounts.id.initialize({ client_id: googleClientId, callback: handleGoogleSignUp });
+        google.accounts.id.renderButton(document.getElementById("google-signup-button"), { theme: "outline", size: "large", shape: "pill", width: 280 });
+      } else {
+        console.error("Failed to load Google Client ID");
+      }
     });
   </script>
   <script src="theme-toggle.js"></script>

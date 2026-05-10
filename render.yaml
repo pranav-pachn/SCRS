@@ -11,7 +11,46 @@ services:
       - key: NODE_ENV
         value: production
 
+      # ── CORS ────────────────────────────────────────────────────────────────
+      # Primary frontend origin. Add additional origins directly in server.js.
+      - key: FRONTEND_ORIGIN
+        value: https://scr-system.netlify.app
 
+      # ── Database ─────────────────────────────────────────────────────────────
+      # Set these to your production MySQL host values in the Render dashboard.
+      - key: DB_HOST
+        sync: false        # secret — fill in Render dashboard
+      - key: DB_PORT
+        value: 3306
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        value: nivarahub
 
+      # ── Auth ────────────────────────────────────────────────────────────────
+      - key: JWT_SECRET
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
 
+      # ── AI Providers ─────────────────────────────────────────────────────────
+      - key: GROQ_API_KEYS
+        sync: false
+      - key: GROQ_MODEL
+        value: llama-3.3-70b-versatile
 
+      - key: OPENROUTER_API_KEYS
+        sync: false
+      - key: OPENROUTER_MODEL
+        value: openai/gpt-4o-mini
+      - key: OPENROUTER_SITE_URL
+        value: https://scr-system.netlify.app
+      - key: OPENROUTER_APP_NAME
+        value: NivaraHub
+
+      - key: OPENAI_API_KEYS
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-4o-mini
