@@ -368,6 +368,30 @@ router.get('/admin-performance', requireRole('authority'), async (req, res) => {
 });
 
 /**
+ * GET /authority/complaints/:id
+ * Return details for a single complaint for authority view.
+ */
+router.get('/complaints/:id', requireRole('authority'), async (req, res) => {
+  const dbConnection = getDbConnection(req);
+
+  if (!dbConnection) {
+    return res.status(503).json({ success: false, message: 'Service unavailable: database not connected.' });
+  }
+
+  try {
+    const id = req.params.id;
+    const complaint = await authorityService.getComplaintById(dbConnection, id);
+    return res.json({ success: true, complaint });
+  } catch (error) {
+    console.error('❌ Error in GET /authority/complaints/:id:', error.message || error);
+    if (error.message && error.message.includes('not found')) {
+      return res.status(404).json({ success: false, message: error.message });
+    }
+    return res.status(500).json({ success: false, message: 'Internal server error.' });
+  }
+});
+
+/**
  * GET /authority/monthly-trends
  * Complaint counts grouped by month (YYYY-MM).
  */

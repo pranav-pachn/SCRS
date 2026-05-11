@@ -102,6 +102,19 @@ async function getAllComplaints(dbConnection, filters = {}, pagination = null) {
       c.priority,
       c.summary,
       c.tags,
+      c.image_url,
+      c.proof_url,
+      COALESCE(
+        c.image_url,
+        c.proof_url,
+        (
+          SELECT a.url
+          FROM attachments a
+          WHERE a.complaint_id = c.id
+          ORDER BY a.uploaded_at ASC, a.id ASC
+          LIMIT 1
+        )
+      ) AS evidence_url,
       c.ai_suggested_priority,
       c.manual_priority_override,
       c.assigned_admin_id,
@@ -261,7 +274,29 @@ async function assignComplaintToAdmin(dbConnection, complaintId, adminId, author
       [numericComplaintId]
     );
 
-    return updatedRows[0];
+    const updatedComplaint = updatedRows[0];
+
+    // Emit SSE events to target admin and previous admin (if any)
+    try {
+      const eventBus = require('./eventBus');
+      if (updatedComplaint && updatedComplaint.assigned_admin_id) {
+        eventBus.emitToAdmin(updatedComplaint.assigned_admin_id, 'assignment', {
+          complaintId: numericComplaintId,
+          complaint: updatedComplaint
+        });
+      }
+
+      if (previousAdminId && Number(previousAdminId) !== Number(numericAdminId)) {
+        eventBus.emitToAdmin(previousAdminId, 'reassignment', {
+          complaintId: numericComplaintId,
+          reassignedTo: numericAdminId
+        });
+      }
+    } catch (e) {
+      console.warn('⚠️ eventBus emit failed:', e.message);
+    }
+
+    return updatedComplaint;
   } catch (error) {
     await connection.rollback();
     throw error;
@@ -357,6 +392,66 @@ async function overrideComplaintPriority(dbConnection, complaintId, newPriority,
   } finally {
     connection.release();
   }
+}
+
+/**
+ * Get a single complaint by id for authority view.
+ * Returns detailed complaint fields joined with submitter and assigned admin.
+ */
+async function getComplaintById(dbConnection, complaintId) {
+  const numericComplaintId = Number(complaintId);
+  if (!Number.isInteger(numericComplaintId) || numericComplaintId <= 0) {
+    throw new Error('Invalid complaint ID.');
+  }
+
+  const [rows] = await dbConnection.execute(
+    `SELECT
+       c.id,
+       CONCAT('COMP-', LPAD(c.id, 4, '0')) AS complaint_id,
+       c.category,
+       c.description,
+       c.location,
+       c.status,
+       c.priority,
+       c.summary,
+       c.tags,
+       c.image_url,
+      c.proof_url,
+       c.ai_suggested_priority,
+       c.manual_priority_override,
+       c.assigned_admin_id,
+       c.created_at,
+       c.updated_at,
+       c.resolved_at,
+       submitter.id AS submitter_id,
+       submitter.name AS submitter_name,
+       submitter.email AS submitter_email,
+       admin.id AS assigned_admin_id,
+       admin.name AS assigned_admin_name,
+       admin.email AS assigned_admin_email
+     FROM complaints c
+     LEFT JOIN users submitter ON c.user_id = submitter.id
+     LEFT JOIN users admin ON c.assigned_admin_id = admin.id
+     WHERE c.id = ? AND c.is_deleted = FALSE
+     LIMIT 1`,
+    [numericComplaintId]
+  );
+
+  if (!rows || rows.length === 0) {
+    throw new Error('Complaint not found or has been deleted.');
+  }
+
+  const complaint = rows[0];
+  const [attachmentRows] = await dbConnection.execute(
+    `SELECT id, filename, url, uploaded_at
+     FROM attachments
+     WHERE complaint_id = ?
+     ORDER BY uploaded_at ASC, id ASC`,
+    [numericComplaintId]
+  );
+
+  complaint.attachments = attachmentRows || [];
+  return complaint;
 }
 
 /**
@@ -1016,6 +1111,7 @@ async function getEscalations(dbConnection) {
 module.exports = {
   getAllComplaints,
   getAllAdmins,
+  getComplaintById,
   assignComplaintToAdmin,
   overrideComplaintPriority,
   getAuthorityDashboardStats,

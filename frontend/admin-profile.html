@@ -238,7 +238,7 @@
                             </div>
                             <div class="flex items-center text-sm">
                                 <i class="fas fa-calendar text-gray-400 mr-2 w-4"></i>
-                                <span class="text-gray-300">Joined March 2024</span>
+                                <span class="text-gray-300" id="joinedDate">Joined -</span>
                             </div>
                         </div>
                     </div>
@@ -259,7 +259,7 @@
                         </div>
                         <div class="flex items-center justify-between">
                             <span class="text-gray-400">Last Login</span>
-                            <span class="text-white">2 hours ago</span>
+                            <span class="text-white" id="lastLogin">-</span>
                         </div>
                         <div class="flex items-center justify-between">
                             <span class="text-gray-400">Account Status</span>
@@ -346,6 +346,16 @@
             const profileCardEmail = document.querySelector('.space-y-6 h3.text-xl + p');
             if (profileCardName) profileCardName.textContent = name;
             if (profileCardEmail) profileCardEmail.textContent = email;
+
+            // Joined date and last login placeholders
+            try {
+                const joinedEl = document.getElementById('joinedDate');
+                const lastLoginEl = document.getElementById('lastLogin');
+                if (joinedEl) joinedEl.textContent = profile.joined_at ? `Joined ${profile.joined_at}` : 'Joined -';
+                if (lastLoginEl) lastLoginEl.textContent = profile.last_login ? new Date(profile.last_login).toLocaleString() : '-';
+            } catch (e) {
+                // ignore
+            }
         }
 
         function setupEventListeners() {

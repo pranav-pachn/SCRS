@@ -313,10 +313,13 @@
                 <th class="px-4 py-3">Priority</th>
                 <th class="px-4 py-3">Report Count</th>
                 <th class="px-4 py-3">Status</th>
+                <th class="px-4 py-3">Assigned</th>
+                <th class="px-4 py-3">SLA</th>
+                <th class="px-4 py-3">Actions</th>
               </tr>
             </thead>
             <tbody id="complaintTableBody" class="divide-y divide-slate-200 dark:divide-slate-700">
-              <tr><td colspan="8" class="px-4 py-8 text-center text-on-surface-variant">Loading complaints...</td></tr>
+              <tr><td colspan="9" class="px-4 py-8 text-center text-on-surface-variant">Loading complaints...</td></tr>
             </tbody>
           </table>
         </div>
@@ -451,6 +454,22 @@
       </div>
       <div class="flex gap-2 border-t border-slate-200 px-5 py-4 dark:border-slate-700">
         <button onclick="document.getElementById('profileModal').classList.add('hidden')" class="flex-1 rounded-lg bg-slate-200 py-2 text-sm font-semibold dark:bg-slate-700" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Complaint Details Modal -->
+  <div id="complaintDetailModal" class="hidden fixed inset-0 z-[80] bg-black/40 p-4">
+    <div class="mx-auto mt-12 max-w-3xl rounded-2xl border border-slate-300 bg-white shadow-2xl dark:border-slate-700 dark:bg-slate-800 p-6 overflow-y-auto max-h-[80vh]">
+      <div class="flex items-start justify-between">
+        <h3 class="headline-font text-lg font-bold">Complaint Details</h3>
+        <button onclick="closeComplaintDetails()" class="material-symbols-outlined">close</button>
+      </div>
+      <div id="complaintDetailBody" class="mt-4 text-sm text-on-surface-variant">
+        Loading...
+      </div>
+      <div class="flex gap-2 border-t border-slate-200 px-5 py-4 dark:border-slate-700 mt-4">
+        <button onclick="closeComplaintDetails()" class="flex-1 rounded-lg bg-slate-200 py-2 text-sm font-semibold dark:bg-slate-700" type="button">Close</button>
       </div>
     </div>
   </div>

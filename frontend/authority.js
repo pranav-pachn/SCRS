@@ -1,6 +1,7 @@
 const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:' ? 'http://127.0.0.1:3005' : (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:' ? 'http://127.0.0.1:3005' : 'https://scrs-3rwc.onrender.com') + '');
 let currentComplaintId = null;
 let adminsList = [];
+const complaintCache = new Map();
 
 // Pagination state
 let currentPage = 1;
@@ -26,6 +27,66 @@ function escapeHtml(value) {
 function safePriorityClass(value) {
   const normalized = String(value || 'Medium').toLowerCase();
   return ['low', 'medium', 'high', 'critical'].includes(normalized) ? normalized : 'medium';
+}
+
+function sanitizeImageUrl(value) {
+  const url = String(value || '').trim();
+  if (!url) return '';
+  const isSafeDataImage = /^data:image\/(png|jpe?g|gif);base64,[a-z0-9+/=\s]+$/i.test(url);
+  const isSafeHttp = /^https?:\/\/[^\s]+$/i.test(url);
+  return isSafeDataImage || isSafeHttp ? url : '';
+}
+
+function normalizeComplaintTags(tags) {
+  if (Array.isArray(tags)) {
+    return tags.map((tag) => String(tag || '').trim()).filter(Boolean);
+  }
+
+  if (typeof tags === 'string' && tags.trim()) {
+    try {
+      const parsed = JSON.parse(tags);
+      if (Array.isArray(parsed)) {
+        return parsed.map((tag) => String(tag || '').trim()).filter(Boolean);
+      }
+    } catch (_) {
+      return tags
+        .split(',')
+        .map((tag) => tag.trim())
+        .filter(Boolean);
+    }
+  }
+
+  return [];
+}
+
+function getApiOrigin() {
+  const hostname = window.location.hostname;
+  const isLocal = hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1';
+  return isLocal ? 'http://127.0.0.1:3005' : 'https://scrs-3rwc.onrender.com';
+}
+
+function buildEvidenceImageUrl(complaint) {
+  const attachmentUrl = Array.isArray(complaint.attachments) && complaint.attachments[0] && complaint.attachments[0].url
+    ? complaint.attachments[0].url
+    : null;
+  const candidate = complaint.image_url || complaint.proof_url || complaint.evidence_url || attachmentUrl;
+
+  if (!candidate || typeof candidate !== 'string') return '';
+
+  const normalized = candidate.trim();
+  if (!normalized) return '';
+  if (normalized.startsWith('data:image/')) return normalized;
+  if (/^https?:\/\//i.test(normalized)) return normalized;
+  const apiOrigin = getApiOrigin();
+  if (normalized.startsWith('/uploads/')) return `${apiOrigin}${normalized}`;
+  if (normalized.startsWith('uploads/')) return `${apiOrigin}/${normalized}`;
+
+  const compactBase64 = normalized.replace(/\s+/g, '');
+  if (/^[A-Za-z0-9+/=]+$/.test(compactBase64)) {
+    return `data:image/jpeg;base64,${compactBase64}`;
+  }
+
+  return '';
 }
 
 // Initialize page
@@ -54,6 +115,18 @@ document.addEventListener('visibilitychange', () => {
     if (isAutoRefreshEnabled) {
       startAutoRefresh();
     }
+  }
+});
+
+// Handle View button clicks the same way as the admin dashboard
+document.addEventListener('click', (event) => {
+  const viewButton = event.target.closest('.view-btn');
+  if (!viewButton) return;
+
+  event.preventDefault();
+  const complaintId = viewButton.getAttribute('data-complaint-id');
+  if (complaintId) {
+    openComplaintDetails(complaintId);
   }
 });
 
@@ -167,7 +240,7 @@ async function loadDashboard() {
 // =================== COMPLAINTS MANAGEMENT ===================
 async function loadComplaints(page = 1) {
   const tbody = document.getElementById('complaintTableBody');
-  tbody.innerHTML = '<tr><td colspan="8" class="px-6 py-8 text-center text-gray-500">Loading...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="9" class="px-6 py-8 text-center text-gray-500">Loading...</td></tr>';
 
   try {
     const status = document.getElementById('statusFilter').value;
@@ -201,12 +274,14 @@ async function loadComplaints(page = 1) {
     }
 
     tbody.innerHTML = '';
+    complaintCache.clear();
     if (complaints.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="8" class="px-6 py-8 text-center text-gray-500">No complaints found</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="9" class="px-6 py-8 text-center text-gray-500">No complaints found</td></tr>';
       return;
     }
 
     complaints.forEach(complaint => {
+      complaintCache.set(String(complaint.id), complaint);
       const row = document.createElement('tr');
       const displayId = complaint.complaint_id || `COMP-${complaint.id.toString().padStart(4, '0')}`;
       const adminName = complaint.assigned_admin_name || (complaint.assigned_admin_id ? 'Assigned' : '❌ Unassigned');
@@ -241,9 +316,10 @@ async function loadComplaints(page = 1) {
         <td class="px-6 py-4 text-sm">${escapeHtml(adminName)}</td>
         <td class="px-6 py-4 text-sm">${calculateSLA(complaint.created_at)}</td>
         <td class="px-6 py-4 text-center">
-          <div class="flex gap-2 justify-center flex-wrap">
-            <button onclick="openAssignModal(${complaint.id})" class="px-2 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-xs rounded transition">👤</button>
-            <button onclick="openPriorityModal(${complaint.id}, '${escapeHtml(complaint.ai_suggested_priority || 'Medium')}')" class="px-2 py-1 bg-orange-600 hover:bg-orange-700 text-white text-xs rounded transition">⚡</button>
+          <div class="flex items-center gap-2 justify-center flex-nowrap">
+            <button onclick="openAssignModal(${complaint.id})" class="flex-shrink-0 px-2 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-xs rounded transition" title="Reassign">👤</button>
+            <button onclick="openPriorityModal(${complaint.id}, '${escapeHtml(complaint.ai_suggested_priority || 'Medium')}')" class="flex-shrink-0 px-2 py-1 bg-orange-600 hover:bg-orange-700 text-white text-xs rounded transition" title="Override Priority">⚡</button>
+            <button class="view-btn flex-shrink-0 px-2 py-1 bg-slate-700 hover:bg-slate-600 text-white text-xs rounded transition" data-complaint-id="${complaint.id}" title="View">🔍</button>
           </div>
         </td>
       `;
@@ -253,7 +329,7 @@ async function loadComplaints(page = 1) {
     console.error('❌ Error loading complaints:', error);
     tbody.innerHTML = `
       <tr>
-        <td colspan="8" class="px-6 py-8 text-center">
+        <td colspan="9" class="px-6 py-8 text-center">
           <div class="text-gray-500">Error loading complaints. Please try refreshing the page.</div>
         </td>
       </tr>
@@ -876,6 +952,142 @@ async function exportPdf() {
     console.error('❌ Error exporting PDF:', error);
     notifications.error('Error generating PDF: ' + error.message);
   }
+}
+
+// =================== COMPLAINT DETAILS MODAL ===================
+function renderComplaintDetails(complaint, note = '') {
+  const c = complaint || {};
+  const evidenceUrl = sanitizeImageUrl(buildEvidenceImageUrl(c));
+  const aiTags = normalizeComplaintTags(c.tags);
+  const aiPriority = c.ai_suggested_priority || '';
+  const similarCount = Number(c.similar_count || 0);
+  const reportsCount = Number(c.reports_count || 0);
+  const escalationLevel = c.escalation_level || '';
+  const aiPriorityClass = safePriorityClass(aiPriority || c.priority || 'Medium');
+  const imageHtml = evidenceUrl ? `
+      <div class="rounded-xl border border-slate-600 bg-slate-900/40 p-3">
+        <div class="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-400">Attached Image</div>
+        <img src="${escapeHtml(evidenceUrl)}" alt="complaint image" class="complaint-image max-h-[420px] w-full cursor-pointer rounded-lg object-contain" data-image-url="${escapeHtml(evidenceUrl)}" />
+      </div>
+    ` : '';
+  const aiSummary = c.summary ? escapeHtml(c.summary) : '';
+  const aiTagsHtml = aiTags.length
+    ? aiTags.map((tag) => `<span class="rounded-full bg-indigo-600/20 px-2.5 py-1 text-xs font-semibold text-indigo-300">${escapeHtml(tag)}</span>`).join('')
+    : '<span class="text-sm text-gray-500">No tags generated yet</span>';
+  const aiPriorityLabel = aiPriority || 'Pending';
+  const escalationText = escalationLevel ? `${escapeHtml(escalationLevel)} escalation` : '';
+  const html = `
+    <div class="space-y-4">
+      ${note ? `<div class="rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">${escapeHtml(note)}</div>` : ''}
+      <div class="flex items-start gap-4">
+        <div class="text-indigo-400 font-semibold">${escapeHtml(c.complaint_id || ('COMP-' + String(c.id || '').padStart(4,'0')))}</div>
+        <div class="flex-1">
+          <div class="text-sm text-gray-400">${escapeHtml(c.category || 'N/A')} • ${escapeHtml(c.location || 'N/A')}</div>
+          <h3 class="text-lg font-bold">${escapeHtml(c.summary || c.description?.slice(0,120) || 'No summary')}</h3>
+        </div>
+        <div class="text-sm text-on-surface-variant">${c.created_at ? new Date(c.created_at).toLocaleString() : 'Unknown date'}</div>
+      </div>
+      <div class="rounded-lg bg-surface-container-low p-4 text-sm">
+        <p class="text-gray-300">${escapeHtml(c.description || 'No description')}</p>
+      </div>
+      <div class="rounded-xl border border-indigo-500/20 bg-indigo-500/5 p-4">
+        <div class="mb-3 flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2 text-indigo-300">
+            <i class="fas fa-brain"></i>
+            <span class="text-sm font-semibold uppercase tracking-wider">AI Analysis</span>
+          </div>
+          <div class="text-xs text-gray-400">
+            ${similarCount > 0 ? `${similarCount} similar complaint${similarCount === 1 ? '' : 's'}` : 'No similar complaints'}
+            ${reportsCount > 0 ? ` • ${reportsCount} report${reportsCount === 1 ? '' : 's'}` : ''}
+            ${escalationText ? ` • ${escalationText}` : ''}
+          </div>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <div class="mb-1 text-xs font-semibold uppercase tracking-wider text-gray-400">AI Summary</div>
+            <p class="rounded-lg bg-slate-900/50 p-3 text-sm text-gray-200">${aiSummary || '<span class="text-gray-500">Analysis pending</span>'}</p>
+          </div>
+          <div>
+            <div class="mb-1 text-xs font-semibold uppercase tracking-wider text-gray-400">AI Tags</div>
+            <div class="flex flex-wrap gap-2">${aiTagsHtml}</div>
+          </div>
+          <div class="flex flex-wrap items-center gap-3">
+            <div>
+              <div class="mb-1 text-xs font-semibold uppercase tracking-wider text-gray-400">AI Suggested Priority</div>
+              <span class="inline-flex items-center rounded-full bg-${aiPriorityClass}-600/20 px-3 py-1 text-sm font-semibold text-${aiPriorityClass}-400">${escapeHtml(aiPriorityLabel)}</span>
+            </div>
+            ${aiPriority && c.priority && aiPriority !== c.priority ? `
+              <div>
+                <div class="mb-1 text-xs font-semibold uppercase tracking-wider text-gray-400">Current Priority</div>
+                <span class="inline-flex items-center rounded-full bg-slate-700 px-3 py-1 text-sm font-semibold text-white">${escapeHtml(c.priority)}</span>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      </div>
+      ${imageHtml}
+      <div class="grid grid-cols-2 gap-4 text-sm">
+        <div><strong>Status:</strong> ${escapeHtml(c.status || 'Submitted')}</div>
+        <div><strong>Priority:</strong> ${escapeHtml(c.priority || 'Medium')}</div>
+        <div><strong>Assigned To:</strong> ${escapeHtml(c.assigned_admin_name || 'Unassigned')}</div>
+        <div><strong>Submitter:</strong> ${escapeHtml(c.submitter_name || c.submitter_email || 'Unknown')}</div>
+      </div>
+    </div>
+  `;
+
+  const container = document.getElementById('complaintDetailBody');
+  if (container) container.innerHTML = html;
+
+  const complaintImage = container ? container.querySelector('.complaint-image') : null;
+  if (complaintImage) {
+    complaintImage.addEventListener('click', () => {
+      const imageUrl = complaintImage.getAttribute('data-image-url');
+      if (imageUrl) {
+        window.open(imageUrl, '_blank', 'noopener,noreferrer');
+      }
+    });
+
+    complaintImage.addEventListener('error', () => {
+      complaintImage.style.display = 'none';
+    });
+  }
+}
+
+async function openComplaintDetails(complaintId) {
+  try {
+    isModalOpen = true;
+    const cachedComplaint = complaintCache.get(String(complaintId));
+    const modal = document.getElementById('complaintDetailModal');
+    const container = document.getElementById('complaintDetailBody');
+    if (modal) modal.classList.remove('hidden');
+    if (container) container.innerHTML = '<p class="text-gray-500">Loading complaint details...</p>';
+
+    if (cachedComplaint) {
+      renderComplaintDetails(cachedComplaint);
+    }
+
+    const response = await fetch(`${API_BASE}/authority/complaints/${complaintId}`, { headers: getAuthHeaders() });
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+    const data = await response.json();
+    if (!data.success) throw new Error(data.message || 'Failed to load');
+
+    renderComplaintDetails({ ...cachedComplaint, ...data.complaint });
+  } catch (error) {
+    console.error('❌ Error loading complaint details:', error);
+    const container = document.getElementById('complaintDetailBody');
+    const cachedComplaint = complaintCache.get(String(complaintId));
+    if (cachedComplaint) {
+      renderComplaintDetails(cachedComplaint);
+      return;
+    }
+    if (container) container.innerHTML = `<div class="text-red-500">Error loading details: ${escapeHtml(error.message || String(error))}</div>`;
+  }
+}
+
+function closeComplaintDetails() {
+  isModalOpen = false;
+  const modal = document.getElementById('complaintDetailModal');
+  if (modal) modal.classList.add('hidden');
 }
 
 // =================== TAB SWITCHING ===================

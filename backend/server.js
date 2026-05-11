@@ -275,7 +275,6 @@ async function autoInitSchema() {
     `ALTER TABLE complaints ADD COLUMN assigned_admin_id INT NULL AFTER priority`,
     `ALTER TABLE complaints ADD COLUMN proof_url VARCHAR(2083) NULL AFTER updated_at`,
     `ALTER TABLE complaints ADD COLUMN resolved_at DATETIME NULL AFTER proof_url`,
-    `ALTER TABLE complaints ADD CONSTRAINT fk_complaints_assigned_admin FOREIGN KEY (assigned_admin_id) REFERENCES users(id) ON DELETE SET NULL`,
     `CREATE INDEX idx_complaints_assigned_admin ON complaints(assigned_admin_id)`,
     `CREATE INDEX idx_complaints_assigned_status ON complaints(assigned_admin_id, status)`,
     `CREATE TABLE IF NOT EXISTS complaint_history (
@@ -513,6 +512,42 @@ function authenticateToken(req, res, next) {
     return res.status(401).json({ success: false, message: 'Token expired or invalid.' });
   }
 }
+
+// Admin SSE stream endpoint (allows token via Authorization header OR ?token=...)
+app.get('/admin/stream', async (req, res) => {
+  const authHeader = req.headers.authorization || '';
+  const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : (req.query.token || null);
+
+  if (!token) {
+    return res.status(401).json({ success: false, message: 'Missing token for SSE connection.' });
+  }
+
+  let decoded;
+  try {
+    decoded = jwt.verify(token, JWT_SECRET);
+  } catch (error) {
+    return res.status(401).json({ success: false, message: 'Invalid or expired token.' });
+  }
+
+  if (decoded.role !== 'admin') {
+    return res.status(403).json({ success: false, message: 'Only admins may open this stream.' });
+  }
+
+  // Set SSE headers
+  res.writeHead(200, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    Connection: 'keep-alive'
+  });
+  res.write('\n');
+
+  const eventBus = require('./services/eventBus');
+  eventBus.addClient(decoded.id, res);
+
+  req.on('close', () => {
+    try { eventBus.removeClient(decoded.id, res); } catch (e) { /* ignore */ }
+  });
+});
 
 function requireRole(...roles) {
   return (req, res, next) => {

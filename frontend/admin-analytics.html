@@ -87,7 +87,7 @@
                     <h3 class="text-sm font-medium text-gray-400">Total Assigned</h3>
                     <i class="fas fa-clipboard-list text-indigo-600 text-xl"></i>
                 </div>
-                <p class="text-3xl font-bold text-white mb-1" id="totalAssigned">48</p>
+                <p class="text-3xl font-bold text-white mb-1" id="totalAssigned">0</p>
                 <p class="text-xs text-gray-500">All time complaints</p>
             </div>
 
@@ -97,7 +97,7 @@
                     <h3 class="text-sm font-medium text-gray-400">Resolved</h3>
                     <i class="fas fa-check-circle text-green-600 text-xl"></i>
                 </div>
-                <p class="text-3xl font-bold text-white mb-1" id="totalResolved">36</p>
+                <p class="text-3xl font-bold text-white mb-1" id="totalResolved">0</p>
                 <p class="text-xs text-gray-500">Successfully completed</p>
             </div>
 
@@ -107,7 +107,7 @@
                     <h3 class="text-sm font-medium text-gray-400">Avg Resolution Time</h3>
                     <i class="fas fa-clock text-blue-600 text-xl"></i>
                 </div>
-                <p class="text-3xl font-bold text-white mb-1" id="avgResolutionTime">2.4</p>
+                <p class="text-3xl font-bold text-white mb-1" id="avgResolutionTime">-</p>
                 <p class="text-xs text-gray-500">Days per complaint</p>
             </div>
 
@@ -117,7 +117,7 @@
                     <h3 class="text-sm font-medium text-gray-400">Performance Score</h3>
                     <i class="fas fa-trophy text-yellow-600 text-xl"></i>
                 </div>
-                <p class="text-3xl font-bold text-white mb-1" id="performanceScore">92%</p>
+                <p class="text-3xl font-bold text-white mb-1" id="performanceScore">0%</p>
                 <p class="text-xs text-gray-500">Overall rating</p>
             </div>
         </div>
@@ -179,34 +179,7 @@
             </div>
             
             <div class="space-y-3" id="activityTimeline">
-                <div class="flex items-start space-x-3">
-                    <div class="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
-                    <div class="flex-1">
-                        <p class="text-white text-sm">Complaint #1289 marked as resolved</p>
-                        <p class="text-gray-500 text-xs">2 hours ago</p>
-                    </div>
-                </div>
-                <div class="flex items-start space-x-3">
-                    <div class="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-                    <div class="flex-1">
-                        <p class="text-white text-sm">Complaint #1290 assigned to you</p>
-                        <p class="text-gray-500 text-xs">5 hours ago</p>
-                    </div>
-                </div>
-                <div class="flex items-start space-x-3">
-                    <div class="w-2 h-2 bg-yellow-500 rounded-full mt-2"></div>
-                    <div class="flex-1">
-                        <p class="text-white text-sm">Status updated for Complaint #1287</p>
-                        <p class="text-gray-500 text-xs">1 day ago</p>
-                    </div>
-                </div>
-                <div class="flex items-start space-x-3">
-                    <div class="w-2 h-2 bg-indigo-500 rounded-full mt-2"></div>
-                    <div class="flex-1">
-                        <p class="text-white text-sm">Added remark to Complaint #1285</p>
-                        <p class="text-gray-500 text-xs">2 days ago</p>
-                    </div>
-                </div>
+                <div class="text-gray-400 text-sm">Loading recent activity...</div>
             </div>
         </div>
     </main>
@@ -535,7 +508,7 @@
 
             const mockActivities = [
                 { type: 'resolved', description: 'Complaint #1289 marked as resolved', timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000) },
-                { type: 'assigned', description: 'Complaint #1290 assigned to you', timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000) },
+                { type: 'assigned', description: 'Complaint #1290 assigned', timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000) },
                 { type: 'status_updated', description: 'Status updated for Complaint #1287', timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000) },
                 { type: 'remark_added', description: 'Added remark to Complaint #1285', timestamp: new Date(Date.now() - 48 * 60 * 60 * 1000) }
             ];
