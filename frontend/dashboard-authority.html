@@ -186,22 +186,22 @@
           <span class="headline-font text-sm font-medium">Dashboard</span>
         </a>
         <!-- Analytics: charts, trends, category & location breakdowns -->
-        <a href="#" class="flex items-center gap-3 rounded-xl px-4 py-3 text-slate-600 transition hover:bg-slate-200/70 dark:text-slate-400 dark:hover:bg-slate-800/60">
+        <a href="#analyticsSection" class="flex items-center gap-3 rounded-xl px-4 py-3 text-slate-600 transition hover:bg-slate-200/70 dark:text-slate-400 dark:hover:bg-slate-800/60">
           <span class="material-symbols-outlined">bar_chart</span>
           <span class="headline-font text-sm font-medium">Analytics</span>
         </a>
         <!-- Reports: export CSV/PDF, admin performance reports -->
-        <a href="#" class="flex items-center gap-3 rounded-xl px-4 py-3 text-slate-600 transition hover:bg-slate-200/70 dark:text-slate-400 dark:hover:bg-slate-800/60">
+        <a href="#reportsSection" class="flex items-center gap-3 rounded-xl px-4 py-3 text-slate-600 transition hover:bg-slate-200/70 dark:text-slate-400 dark:hover:bg-slate-800/60">
           <span class="material-symbols-outlined">summarize</span>
           <span class="headline-font text-sm font-medium">Reports</span>
         </a>
         <!-- Escalations: view escalated & SLA-breached complaints -->
-        <a href="#" class="flex items-center gap-3 rounded-xl px-4 py-3 text-slate-600 transition hover:bg-slate-200/70 dark:text-slate-400 dark:hover:bg-slate-800/60">
+        <a href="#escalationsSection" class="flex items-center gap-3 rounded-xl px-4 py-3 text-slate-600 transition hover:bg-slate-200/70 dark:text-slate-400 dark:hover:bg-slate-800/60">
           <span class="material-symbols-outlined">warning</span>
           <span class="headline-font text-sm font-medium">Escalations</span>
         </a>
         <!-- System Health: API status, DB connectivity, uptime -->
-        <a href="#" class="flex items-center gap-3 rounded-xl px-4 py-3 text-slate-600 transition hover:bg-slate-200/70 dark:text-slate-400 dark:hover:bg-slate-800/60">
+        <a href="#systemHealthSection" class="flex items-center gap-3 rounded-xl px-4 py-3 text-slate-600 transition hover:bg-slate-200/70 dark:text-slate-400 dark:hover:bg-slate-800/60">
           <span class="material-symbols-outlined">monitor_heart</span>
           <span class="headline-font text-sm font-medium">System Health</span>
         </a>
@@ -243,7 +243,7 @@
         </div>
       </div>
 
-      <div class="mb-10 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-6">
+      <div id="analyticsSection" class="mb-10 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-6">
         <div class="rounded-2xl bg-surface-container-lowest p-6 shadow-sm">
           <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Total Complaints</p>
           <p id="metricTotal" class="mt-3 text-4xl font-black headline-font">0</p>
@@ -270,7 +270,7 @@
         </div>
       </div>
 
-      <section class="mb-10 overflow-hidden rounded-2xl border border-outline-variant bg-surface-container-lowest shadow-sm">
+      <section id="reportsSection" class="mb-10 overflow-hidden rounded-2xl border border-outline-variant bg-surface-container-lowest shadow-sm">
         <div class="border-b border-outline-variant px-5 py-4">
           <div class="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
             <h2 class="headline-font text-xl font-bold">Global Complaint Overview</h2>
@@ -349,11 +349,40 @@
             <h3 class="headline-font mb-4 text-lg font-bold">Admin Performance</h3>
             <canvas id="adminPerformanceChart" height="220"></canvas>
           </div>
-          <div class="rounded-2xl bg-surface-container-low p-6 shadow-sm">
+          <div id="escalationsSection" class="rounded-2xl bg-surface-container-low p-6 shadow-sm">
             <h3 class="headline-font mb-4 text-lg font-bold">Escalation Log</h3>
             <ul id="escalationLog" class="space-y-3 text-sm text-on-surface-variant">
               <li>Loading escalations...</li>
             </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="systemHealthSection" class="mb-10 rounded-2xl border border-outline-variant bg-surface-container-lowest shadow-sm overflow-hidden">
+        <div class="border-b border-outline-variant px-5 py-4">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <h2 class="headline-font text-xl font-bold">System Health</h2>
+              <p class="text-sm text-on-surface-variant">Live service and provider checks for the authority portal.</p>
+            </div>
+            <button id="refreshHealthBtn" type="button" class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white">Refresh</button>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 gap-4 p-5 md:grid-cols-3">
+          <div class="rounded-2xl bg-surface-container-low p-4 shadow-sm">
+            <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">API Health</p>
+            <p id="apiHealthStatus" class="mt-2 text-2xl font-black headline-font">Checking...</p>
+            <p id="apiHealthDetail" class="mt-1 text-sm text-on-surface-variant">Polling /health</p>
+          </div>
+          <div class="rounded-2xl bg-surface-container-low p-4 shadow-sm">
+            <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Data / DB Health</p>
+            <p id="dbHealthStatus" class="mt-2 text-2xl font-black headline-font">Checking...</p>
+            <p id="dbHealthDetail" class="mt-1 text-sm text-on-surface-variant">Polling authority dashboard</p>
+          </div>
+          <div class="rounded-2xl bg-surface-container-low p-4 shadow-sm">
+            <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">AI Providers</p>
+            <p id="aiHealthStatus" class="mt-2 text-2xl font-black headline-font">Checking...</p>
+            <p id="aiHealthDetail" class="mt-1 text-sm text-on-surface-variant">Polling /health/ai</p>
           </div>
         </div>
       </section>
@@ -552,9 +581,66 @@
       if (typeof submitPriorityOverride === 'function') submitPriorityOverride();
     }
 
+    function setHealthState(statusEl, detailEl, state, detail) {
+      if (statusEl) {
+        const tone = state === 'healthy' ? 'text-green-700 dark:text-green-400'
+          : state === 'degraded' ? 'text-amber-700 dark:text-amber-400'
+          : 'text-red-700 dark:text-red-400';
+        statusEl.className = `mt-2 text-2xl font-black headline-font ${tone}`;
+        statusEl.textContent = state === 'healthy' ? 'Online' : state === 'degraded' ? 'Degraded' : 'Down';
+      }
+      if (detailEl) detailEl.textContent = detail || '';
+    }
+
+    async function loadSystemHealth() {
+      const apiStatusEl = document.getElementById('apiHealthStatus');
+      const apiDetailEl = document.getElementById('apiHealthDetail');
+      const dbStatusEl = document.getElementById('dbHealthStatus');
+      const dbDetailEl = document.getElementById('dbHealthDetail');
+      const aiStatusEl = document.getElementById('aiHealthStatus');
+      const aiDetailEl = document.getElementById('aiHealthDetail');
+
+      try {
+        const [apiRes, dashboardRes, aiRes] = await Promise.allSettled([
+          fetch(`${API_BASE}/health`, { headers: getAuthHeaders() }),
+          fetch(`${API_BASE}/authority/dashboard`, { headers: getAuthHeaders() }),
+          fetch(`${API_BASE}/health/ai`, { headers: getAuthHeaders() })
+        ]);
+
+        if (apiRes.status === 'fulfilled' && apiRes.value.ok) {
+          const apiData = await apiRes.value.json().catch(() => ({}));
+          setHealthState(apiStatusEl, apiDetailEl, 'healthy', apiData.timestamp ? `Last checked ${new Date(apiData.timestamp).toLocaleString()}` : 'Service reachable');
+        } else {
+          setHealthState(apiStatusEl, apiDetailEl, 'down', 'Unable to reach /health');
+        }
+
+        if (dashboardRes.status === 'fulfilled' && dashboardRes.value.ok) {
+          const dashboardData = await dashboardRes.value.json().catch(() => ({}));
+          setHealthState(dbStatusEl, dbDetailEl, 'healthy', dashboardData.dashboard ? 'Authority dashboard data loaded successfully' : 'Dashboard reachable');
+        } else {
+          setHealthState(dbStatusEl, dbDetailEl, 'down', 'Authority dashboard request failed');
+        }
+
+        if (aiRes.status === 'fulfilled' && aiRes.value.ok) {
+          const aiData = await aiRes.value.json().catch(() => ({}));
+          const configured = aiData.configured ? 'Configured' : 'Not configured';
+          const state = aiData.status?.overall || 'degraded';
+          setHealthState(aiStatusEl, aiDetailEl, state, `Providers: ${configured}`);
+        } else {
+          setHealthState(aiStatusEl, aiDetailEl, 'down', 'AI health endpoint unavailable');
+        }
+      } catch (error) {
+        console.error('❌ Error loading system health:', error);
+        setHealthState(apiStatusEl, apiDetailEl, 'down', 'Health check failed');
+        setHealthState(dbStatusEl, dbDetailEl, 'down', 'Health check failed');
+        setHealthState(aiStatusEl, aiDetailEl, 'down', 'Health check failed');
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
       initTheme();
       updateSidebarAuth();
+      loadSystemHealth();
 
       // Theme toggle
       const themeToggleBtn = document.getElementById('themeToggleBtn');
@@ -608,6 +694,11 @@
       document.getElementById('exportCsvBtn').addEventListener('click', function () {
         if (typeof exportComplaints === 'function') exportComplaints();
       });
+
+      const refreshHealthBtn = document.getElementById('refreshHealthBtn');
+      if (refreshHealthBtn) {
+        refreshHealthBtn.addEventListener('click', loadSystemHealth);
+      }
     });
   </script>
 </body>
